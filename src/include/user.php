@@ -282,3 +282,9 @@ function get_attacks_from_array( $id_obj ) {
 
     return $attack_obj;
 }
+
+function get_quests_by_npc( $npc_id ) {
+    return db_fetch_all(
+        'SELECT * FROM quests WHERE npc_id=?', array( $npc_id ),
+        $key_assoc = 'id' );
+}
