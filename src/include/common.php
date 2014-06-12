@@ -56,6 +56,10 @@ function random_string( $length ) {
 }
 
 function explode_meta( $s ) {
+    if ( 0 == strlen( $s ) ) {
+        return array();
+    }
+
     $meta_obj = array();
     $s_obj = explode( ';', $s );
     foreach ( $s_obj as $x ) {
