@@ -32,4 +32,6 @@ $setting_map = array(
 
 $custom_setting_map = array();
 
-require( GAME_CUSTOM_PATH . 'custom-core.php' );
+if ( defined( 'GAME_CUSTOM_PATH' ) ) {
+    require( GAME_CUSTOM_PATH . 'custom-core.php' );
+}

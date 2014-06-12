@@ -4,6 +4,21 @@ if ( ! defined( 'game_nonce_life' ) ) {
     define( 'game_nonce_life', 60 );
 }
 
+function debug_print( $x ) {
+    if ( is_array( $x ) ) {
+        echo '<p>';
+        print_r( $x );
+        echo '</p>';
+    } else {
+        echo '<p>' . $x . '</p>';
+    }
+}
+
+function debug_time() {
+    list( $usec, $sec ) = explode( ' ', microtime() );
+    return ( ( float ) $usec + ( float ) $sec );
+}
+
 function get_bit( $val, $bit ) {
     if ( $val & ( 1 << $bit ) ) {
         return TRUE;

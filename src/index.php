@@ -7,7 +7,9 @@ require( GAME_PATH . 'game-load.php' );
 $time_start = micro_time();
 
 if ( FALSE == $user ) {
-    include( GAME_CUSTOM_PATH . $custom_start_page );
+    if ( isset( $custom_start_page ) ) {
+        include( GAME_CUSTOM_PATH . $custom_start_page );
+    }
     exit;
 }
 
@@ -22,7 +24,7 @@ if ( isset( $_GET[ 'action' ] ) ) {
 }
 do_action( 'action_set' );
 
-if ( '' == $game->get_action() ) {
+if ( ( '' == $game->get_action() ) && ( isset( $custom_default_action ) ) ) {
     $game->set_action( $custom_default_action );
 }
 
