@@ -1,0 +1,5 @@
+Options -Indexes
+<Limit GET POST>
+order allow,deny
+allow from all
+</LIMIT>
