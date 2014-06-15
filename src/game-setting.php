@@ -30,11 +30,15 @@ foreach ( $_GET as $k => $v ) {
 }
 
 do_action( 'pre_setting_map' );
+
 if ( isset( $setting_map[ $setting ] ) ) {
-    call_user_func_array( $setting_map[ $setting ], $args );
+    call_user_func_array(
+        $setting_map[ $setting ], array( $args ) );
 } else if ( isset( $custom_setting_map[ $setting ] ) ) {
-    call_user_func_array( $custom_setting_map[ $setting ], array( $args ) );
+    call_user_func_array(
+        $custom_setting_map[ $setting ], array( $args ) );
 }
+
 do_action( 'post_setting_map' );
 
 
