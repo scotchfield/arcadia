@@ -283,8 +283,69 @@ function get_attacks_from_array( $id_obj ) {
     return $attack_obj;
 }
 
+function ensure_character_quests() {
+    global $character;
+
+    if ( isset( $character[ 'quests' ] ) ) {
+        return;
+    }
+
+    $character[ 'quests' ] = db_fetch_all(
+        'SELECT * FROM character_quests WHERE character_id=?',
+        array( $character[ 'id' ] ),
+        $key_assoc = 'quest_id' );
+}
+
+function get_quest( $quest_id ) {
+    return db_fetch(
+        'SELECT * FROM quests WHERE id=?', array( $quest_id ) );
+}
+
 function get_quests_by_npc( $npc_id ) {
     return db_fetch_all(
         'SELECT * FROM quests WHERE npc_id=?', array( $npc_id ),
         $key_assoc = 'id' );
+}
+
+function character_quest_accept( $args ) {
+    global $character;
+
+    $quest = get_quest( $args[ 'id' ] );
+    $quest_obj = get_character_quests_by_ids( array( $args[ 'id' ] ) );
+
+    $quest_accept = TRUE;
+    foreach ( $quest_obj as $q ) {
+        if ( 0 == $q[ 'completed' ] ) {
+            $quest_accept = FALSE;
+        } else if ( ( $q[ 'completed' ] > 0 ) &&
+                    ( 0 != $quest[ 'repeatable' ] ) ) {
+            $quest_accept = FALSE;
+        }
+    }
+
+    if ( $quest_accept ) {
+        db_execute(
+            'INSERT INTO character_quests ' .
+                '( character_id, quest_id, completed, quest_meta ) ' .
+                'VALUES ( ?, ?, 0, \'\' )',
+            array( $character[ 'id' ], $quest[ 'id' ] ) );
+    }
+
+    $GLOBALS[ 'redirect_header' ] = GAME_URL . '?action=questlog';
+    // TODO: proper return location after quest accept
+}
+
+function get_quests_by_ids( $quest_obj ) {
+    return db_fetch_all(
+        'SELECT * FROM quests WHERE id IN (?)',
+        array( join( ',', $quest_obj ) ));
+}
+
+function get_character_quests_by_ids( $quest_obj ) {
+    global $character;
+
+    return db_fetch_all(
+        'SELECT * FROM character_quests ' .
+            'WHERE character_id=? AND quest_id IN (?)',
+        array( $character[ 'id' ], join( ',', $quest_obj ) ) );
 }
