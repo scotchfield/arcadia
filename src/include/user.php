@@ -335,6 +335,33 @@ function character_quest_accept( $args ) {
     // TODO: proper return location after quest accept
 }
 
+function character_quest_complete( $args ) {
+    global $character;
+
+    $quest = get_quest( $args[ 'id' ] );
+    $quest_obj = get_character_quests_by_ids( array( $args[ 'id' ] ) );
+
+    $quest_active = FALSE;
+    foreach ( $quest_obj as $q ) {
+        if ( 0 == $q[ 'completed' ] ) {
+            $quest_active = TRUE;
+        }
+    }
+
+    if ( $quest_active ) {
+        do_action( 'full_character' );
+
+        $quest_complete = eval( $quest[ 'quest_complete' ] );
+
+        if ( $quest_complete ) {
+debug_print( 'yes' );
+        }
+    }
+
+    $GLOBALS[ 'redirect_header' ] = GAME_URL . '?action=npc&id=' .
+        $quest[ 'npc_id' ] . '&quest_id=' . $quest[ 'id' ];
+}
+
 function get_quests_by_ids( $quest_obj ) {
     return db_fetch_all(
         'SELECT * FROM quests WHERE id IN (?)',

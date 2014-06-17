@@ -29,6 +29,7 @@ $setting_map = array(
     'select_character' => 'user_select_character',
     'change_character' => 'user_clear_character',
     'quest_accept' => 'character_quest_accept',
+    'quest_complete' => 'character_quest_complete',
 );
 
 $custom_setting_map = array();
