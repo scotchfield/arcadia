@@ -292,8 +292,7 @@ function ensure_character_quests() {
 
     $character[ 'quests' ] = db_fetch_all(
         'SELECT * FROM character_quests WHERE character_id=?',
-        array( $character[ 'id' ] ),
-        $key_assoc = 'quest_id' );
+        array( $character[ 'id' ] ) );
 }
 
 function get_quest( $quest_id ) {
@@ -354,12 +353,16 @@ function character_quest_complete( $args ) {
         $quest_complete = eval( $quest[ 'quest_complete' ] );
 
         if ( $quest_complete ) {
-debug_print( 'yes' );
+            db_execute(
+                'UPDATE character_quests SET completed=? ' .
+                    'WHERE character_id=? AND quest_id=? AND completed=0',
+                array( time(), $character[ 'id' ], $quest[ 'id' ] ) );
         }
     }
 
     $GLOBALS[ 'redirect_header' ] = GAME_URL . '?action=npc&id=' .
-        $quest[ 'npc_id' ] . '&quest_id=' . $quest[ 'id' ];
+        $quest[ 'npc_id' ] . '&quest_id=' . $quest[ 'id' ] .
+        '&quest_complete';
 }
 
 function get_quests_by_ids( $quest_obj ) {
@@ -375,4 +378,20 @@ function get_character_quests_by_ids( $quest_obj ) {
         'SELECT * FROM character_quests ' .
             'WHERE character_id=? AND quest_id IN (?)',
         array( $character[ 'id' ], join( ',', $quest_obj ) ) );
+}
+
+function get_character_completed_quests() {
+    global $character;
+
+    ensure_character_quests();
+
+    $quest_obj = array();
+
+    foreach ( $character[ 'quests' ] as $quest ) {
+        if ( $quest[ 'completed' ] > 0 ) {
+            $quest_obj[ $quest[ 'quest_id' ] ] = TRUE;
+        }
+    }
+
+    return $quest_obj;
 }
