@@ -317,7 +317,7 @@ function character_quest_accept( $args ) {
         if ( 0 == $q[ 'completed' ] ) {
             $quest_accept = FALSE;
         } else if ( ( $q[ 'completed' ] > 0 ) &&
-                    ( 0 != $quest[ 'repeatable' ] ) ) {
+                    ( 0 == $quest[ 'repeatable' ] ) ) {
             $quest_accept = FALSE;
         }
     }
@@ -331,7 +331,6 @@ function character_quest_accept( $args ) {
     }
 
     $GLOBALS[ 'redirect_header' ] = GAME_URL . '?action=questlog';
-    // TODO: proper return location after quest accept
 }
 
 function character_quest_complete( $args ) {
