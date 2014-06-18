@@ -306,6 +306,23 @@ function get_quests_by_npc( $npc_id ) {
         $key_assoc = 'id' );
 }
 
+function get_available_quests_by_npc( $npc_id ) {
+    global $character;
+
+    $completed_quests = get_character_completed_quests();
+
+    $quest_obj = get_quests_by_npc( $npc_id );
+
+    foreach ( $quest_obj as $k => $quest ) {
+        if ( ( strlen( $quest[ 'quest_prereq' ] ) > 0 ) &&
+             ( ! eval( $quest[ 'quest_prereq' ] ) ) ) {
+            unset( $quest_obj[ $k ] );
+        }
+    }
+
+    return $quest_obj;
+}
+
 function character_quest_accept( $args ) {
     global $character;
 
@@ -388,6 +405,22 @@ function get_character_completed_quests() {
 
     foreach ( $character[ 'quests' ] as $quest ) {
         if ( $quest[ 'completed' ] > 0 ) {
+            $quest_obj[ $quest[ 'quest_id' ] ] = TRUE;
+        }
+    }
+
+    return $quest_obj;
+}
+
+function get_character_active_quests() {
+    global $character;
+
+    ensure_character_quests();
+
+    $quest_obj = array();
+
+    foreach ( $character[ 'quests' ] as $quest ) {
+        if ( 0 == $quest[ 'completed' ] ) {
             $quest_obj[ $quest[ 'quest_id' ] ] = TRUE;
         }
     }
