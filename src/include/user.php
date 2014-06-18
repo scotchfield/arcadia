@@ -236,11 +236,11 @@ function get_character_items( $id, $full_description = FALSE ) {
     return $item_obj;
 }
 
-function add_character_item( $character_id, $item_id, $item_state ) {
+function add_character_item( $character_id, $item_id, $item_meta ) {
     db_execute(
         'INSERT INTO character_items ' .
-            '( character_id, item_id, item_state ) VALUES ( ?, ?, ? )',
-        array( $character_id, $item_id, $item_state ) );
+            '( character_id, item_id, item_meta ) VALUES ( ?, ?, ? )',
+        array( $character_id, $item_id, $item_meta ) );
 }
 
 function remove_character_item( $character_id, $item_row_id ) {
