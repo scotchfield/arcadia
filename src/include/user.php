@@ -228,6 +228,13 @@ function get_character_items( $id, $full_description = FALSE ) {
                       $k => $v ) {
                 if ( ! isset( $item_obj[ $item_key ][ $k ] ) ) {
                     $item_obj[ $item_key ][ $k ] = $v;
+                } else if ( ! strcmp( $k, 'item_meta' ) ) {
+                    if ( strlen( $item_obj[ $item_key ][ $k ] ) > 0 ) {
+                        $item_obj[ $item_key ][ $k ] = $item_obj[
+                            $item_key ][ $k ] . ';' . $v;
+                    } else {
+                        $item_obj[ $item_key ][ $k ] = $v;
+                    }
                 }
             }
         }
