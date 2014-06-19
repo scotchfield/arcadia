@@ -346,12 +346,17 @@ function character_quest_accept( $args ) {
         }
     }
 
+    $quest_meta = '';
+    if ( strlen( $quest[ 'quest_acceptmeta' ] ) > 0 ) {
+        $quest_meta = eval( $quest[ 'quest_acceptmeta' ] );
+    }
+
     if ( $quest_accept ) {
         db_execute(
             'INSERT INTO character_quests ' .
                 '( character_id, quest_id, completed, quest_meta ) ' .
-                'VALUES ( ?, ?, 0, \'\' )',
-            array( $character[ 'id' ], $quest[ 'id' ] ) );
+                'VALUES ( ?, ?, 0, ? )',
+            array( $character[ 'id' ], $quest[ 'id' ], $quest_meta ) );
     }
 
     $GLOBALS[ 'redirect_header' ] = GAME_URL . '?action=questlog';
