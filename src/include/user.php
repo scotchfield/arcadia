@@ -378,6 +378,9 @@ function character_quest_complete( $args ) {
     if ( $quest_active ) {
         do_action( 'full_character' );
 
+        $current_quest_state = get_character_active_quest( $quest[ 'id' ] );
+        $quest_meta_obj = explode_meta( $current_quest_state[ 'quest_meta' ] );
+
         $quest_complete = eval( $quest[ 'quest_complete' ] );
 
         if ( $quest_complete ) {
@@ -438,4 +441,46 @@ function get_character_active_quests() {
     }
 
     return $quest_obj;
+}
+
+function get_character_active_quest( $quest_id ) {
+    global $character;
+
+    ensure_character_quests();
+
+    foreach ( $character[ 'quests' ] as $quest ) {
+        if ( ( $quest[ 'quest_id' ] == $quest_id ) &&
+             ( $quest[ 'completed' ] == 0 ) ) {
+            return $quest;
+        }
+    }
+
+    return FALSE;
+}
+
+function character_buy_item( $args ) {
+    global $character;
+
+    if ( ( ! isset( $args[ 'zone_id' ] ) ) ||
+         ( ! isset( $args[ 'item_id' ] ) ) ) {
+        return;
+    }
+
+    $item = get_zone_item_full( $args[ 'zone_id' ], $args[ 'item_id' ] );
+
+    $GLOBALS[ 'game_buy_item' ] = $item;
+
+    do_action( 'buy_item' );
+
+    if ( FALSE != $GLOBALS[ 'game_buy_item' ] ) {
+        add_character_item( $character[ 'id' ], $item[ 'id' ], '' );
+    }
+
+    $GLOBALS[ 'redirect_header' ] = GAME_URL . '?action=zone&zone_tag=' .
+        'mequip';
+}
+
+function character_sell_item( $args ) {
+    global $character;
+
 }

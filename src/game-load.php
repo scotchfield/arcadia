@@ -30,6 +30,8 @@ $setting_map = array(
     'change_character' => 'user_clear_character',
     'quest_accept' => 'character_quest_accept',
     'quest_complete' => 'character_quest_complete',
+    'buy_item' => 'character_buy_item',
+    'sell_item' => 'character_sell_item',
 );
 
 $custom_setting_map = array();
