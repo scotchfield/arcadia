@@ -140,11 +140,12 @@ function get_character_meta( $id, $type = FALSE ) {
 
         $obj = array();
         foreach ( $meta_obj as $meta ) {
-            if ( ! isset( $obj[ $meta[ 'key_type' ] ] ) ) {
-                $obj[ $meta[ 'key_type' ] ] = array();
+            if ( ! isset( $obj[ intval( $meta[ 'key_type' ] ) ] ) ) {
+                $obj[ intval( $meta[ 'key_type' ] ) ] = array();
             }
-            $obj[ $meta[ 'key_type' ] ][ $meta[ 'meta_key' ] ] =
-                $meta[ 'meta_value' ];
+            $obj[ intval( $meta[ 'key_type' ] ) ][
+                intval( $meta[ 'meta_key' ] ) ] =
+                    $meta[ 'meta_value' ];
         }
     } else {
         $meta_obj = db_fetch_all(
@@ -153,7 +154,7 @@ function get_character_meta( $id, $type = FALSE ) {
 
         $obj = array();
         foreach ( $meta_obj as $meta ) {
-            $obj[ $meta[ 'meta_key' ] ] = $meta[ 'meta_value' ];
+            $obj[ intval( $meta[ 'meta_key' ] ) ] = $meta[ 'meta_value' ];
         }
     }
 
