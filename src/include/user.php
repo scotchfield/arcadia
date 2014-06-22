@@ -202,46 +202,26 @@ function character_meta( $key_type, $meta_key ) {
     return '';
 }
 
-function get_character_items( $id, $full_description = FALSE ) {
-    $item_obj = db_fetch_all(
+function get_character_items( $id ) {//, $full_description = FALSE ) {
+    return db_fetch_all(
         'SELECT * FROM character_items WHERE character_id=?',
         array( $id ),
         $key_assoc = 'id' );
+}
 
-    if ( TRUE == $full_description ) {
-        $id_obj = array();
-        $pdo_obj = array(); // todo: better way??
-        foreach ( $item_obj as $item ) {
-            if ( ! in_array( $item[ 'item_id' ], $id_obj ) ) {
-                $id_obj[] = $item[ 'item_id' ];
-                $pdo_obj[] = '?';
-            }
-        }
+function get_character_items_full( $id ) {
+    return db_fetch_all(
+        'SELECT i.*, ci.* FROM character_items AS ci, items AS i ' .
+            'WHERE ci.character_id=? AND ci.item_id=i.id',
+        array( $id ),
+        $key_assoc = 'id' );
+}
 
-        $desc_obj = db_fetch_all(
-            'SELECT * FROM items WHERE id IN ( ' .
-                join( ',', $pdo_obj ) . ' )',
-            $id_obj,
-            $key_assoc = 'id' );
-
-        foreach ( array_keys( $item_obj ) as $item_key ) {
-            foreach ( $desc_obj[ $item_obj[ $item_key ][ 'item_id' ] ] as
-                      $k => $v ) {
-                if ( ! isset( $item_obj[ $item_key ][ $k ] ) ) {
-                    $item_obj[ $item_key ][ $k ] = $v;
-                } else if ( ! strcmp( $k, 'item_meta' ) ) {
-                    if ( strlen( $item_obj[ $item_key ][ $k ] ) > 0 ) {
-                        $item_obj[ $item_key ][ $k ] = $item_obj[
-                            $item_key ][ $k ] . ';' . $v;
-                    } else {
-                        $item_obj[ $item_key ][ $k ] = $v;
-                    }
-                }
-            }
-        }
-    }
-
-    return $item_obj;
+function get_character_item_full( $character_id, $item_row_id ) {
+    return db_fetch(
+        'SELECT * FROM character_items WHERE character_id=? AND id=?',
+        array( $character_id, $item_row_id ),
+        $key_assoc = 'id' );
 }
 
 function add_character_item( $character_id, $item_id, $item_meta ) {
@@ -330,4 +310,11 @@ function character_buy_item( $args ) {
 function character_sell_item( $args ) {
     global $character;
 
+    if ( ! isset( $args[ 'item_id' ] ) ) {
+        return;
+    }
+
+    $item = get_character_item_full( $character[ 'id' ], $args[ 'item_id' ] );
+    debug_print( $item );
+exit;
 }
