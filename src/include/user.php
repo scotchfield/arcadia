@@ -294,12 +294,29 @@ function get_attacks_from_array( $id_obj ) {
 function character_buy_item( $args ) {
     global $character;
 
-    if ( ( ! isset( $args[ 'zone_id' ] ) ) ||
-         ( ! isset( $args[ 'item_id' ] ) ) ) {
+    if ( ( ! isset( $args[ 'zone_id' ] ) ) &&
+         ( ! isset( $args[ 'zone_tag' ] ) ) ) {
         return;
     }
 
-    $item = get_zone_item_full( $args[ 'zone_id' ], $args[ 'item_id' ] );
+    if ( ! isset( $args[ 'item_id' ] ) ) {
+        return;
+    }
+
+    if ( isset( $args[ 'zone_tag' ] ) ) {
+        $zone = get_zone_by_tag( $args[ 'zone_tag' ] );
+        $zone_id = $zone[ 'id' ];
+
+        $GLOBALS[ 'redirect_header' ] = GAME_URL . '?action=zone&zone_tag=' .
+            $args[ 'zone_tag' ];
+    } else {
+        $zone_id = $args[ 'zone_id' ];
+
+        $GLOBALS[ 'redirect_header' ] = GAME_URL . '?action=zone&zone_id=' .
+            $zone_id;
+    }
+
+    $item = get_zone_item_full( $zone_id, $args[ 'item_id' ] );
 
     $GLOBALS[ 'game_buy_item' ] = $item;
 
@@ -308,9 +325,6 @@ function character_buy_item( $args ) {
     if ( FALSE != $GLOBALS[ 'game_buy_item' ] ) {
         add_character_item( $character[ 'id' ], $item[ 'id' ], '' );
     }
-
-    $GLOBALS[ 'redirect_header' ] = GAME_URL . '?action=zone&zone_tag=' .
-        'mequip';
 }
 
 function character_sell_item( $args ) {
