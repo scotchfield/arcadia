@@ -33,7 +33,7 @@ CREATE TABLE `character_items` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `character_id` int(10) unsigned NOT NULL,
   `item_id` int(11) NOT NULL,
-  `item_meta` longtext NOT NULL,
+  `charitem_meta` longtext NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`character_id`,`item_id`),
   KEY `user_id_2` (`character_id`)
