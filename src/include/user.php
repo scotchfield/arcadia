@@ -219,7 +219,8 @@ function get_character_items_full( $id ) {
 
 function get_character_item_full( $character_id, $item_row_id ) {
     return db_fetch(
-        'SELECT * FROM character_items WHERE character_id=? AND id=?',
+        'SELECT i.*, ci.* FROM character_items AS ci, items AS i ' .
+            'WHERE ci.character_id=? AND ci.id=? AND ci.item_id=i.id',
         array( $character_id, $item_row_id ),
         $key_assoc = 'id' );
 }
@@ -227,7 +228,7 @@ function get_character_item_full( $character_id, $item_row_id ) {
 function add_character_item( $character_id, $item_id, $item_meta ) {
     db_execute(
         'INSERT INTO character_items ' .
-            '( character_id, item_id, item_meta ) VALUES ( ?, ?, ? )',
+            '( character_id, item_id, charitem_meta ) VALUES ( ?, ?, ? )',
         array( $character_id, $item_id, $item_meta ) );
 }
 
@@ -315,6 +316,20 @@ function character_sell_item( $args ) {
     }
 
     $item = get_character_item_full( $character[ 'id' ], $args[ 'item_id' ] );
-    debug_print( $item );
-exit;
+
+    $GLOBALS[ 'game_sell_item' ] = $item;
+
+    do_action( 'sell_item' );
+
+    if ( FALSE != $GLOBALS[ 'game_sell_item' ] ) {
+        remove_character_item( $character[ 'id' ], $item[ 'id' ] );
+    }
+
+    if ( isset( $args[ 'zone_tag' ] ) ) {
+        $GLOBALS[ 'redirect_header' ] = GAME_URL . '?action=zone&zone_tag=' .
+            $args[ 'zone_tag' ];
+    } else if ( isset( $args[ 'zone_id' ] ) ) {
+        $GLOBALS[ 'redirect_header' ] = GAME_URL . '?action=zone&zone_id=' .
+            $zone_id;
+    }
 }
