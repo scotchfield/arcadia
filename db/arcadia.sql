@@ -93,6 +93,7 @@ CREATE TABLE `npcs` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `npc_name` varchar(100) NOT NULL,
   `npc_description` longtext NOT NULL,
+  `npc_defeated` longtext NOT NULL,
   `npc_state` longtext NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
