@@ -1,4 +1,4 @@
-<?
+<?php
 
 $GLOBALS[ 'game_db' ] = new PDO(
     'mysql:host=' . DB_ADDRESS . ';dbname=' . DB_NAME . ';charset=utf8',
