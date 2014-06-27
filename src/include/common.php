@@ -134,3 +134,7 @@ function number_with_suffix( $n ) {
 
     return $n . 'th';
 }
+
+function get_item( $id ) {
+    return db_fetch( 'SELECT * FROM items WHERE id=?', array( $id ) );
+}
