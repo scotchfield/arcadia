@@ -19,6 +19,13 @@ function debug_time() {
     return ( ( float ) $usec + ( float ) $sec );
 }
 
+function get_array_if_set( $array, $key, $default ) {
+    if ( isset( $array[ $key ] ) ) {
+        return $array[ $key ];
+    }
+    return $default;
+}
+
 function get_bit( $val, $bit ) {
     if ( $val & ( 1 << $bit ) ) {
         return TRUE;
