@@ -11,10 +11,20 @@ function game_dashboard_content() {
          '<h2>Dashboard (' . $user[ 'user_name' ] . ')</h2>' .
          '</div>';
 
+    $cmd = get_array_if_set( $_GET, 'cmd', FALSE );
+
     if ( is_user_dev( $user ) ) {
 ?>
 <div class="col-md-6">
   <h3>Developer Tools</h3>
+    <ul>
+      <li><a href="<?php echo( GAME_URL ); ?>?action=dashboard&cmd=item">
+        Item Browser</a></li>
+      <li><a href="<?php echo( GAME_URL ); ?>?action=dashboard&cmd=npc">
+        NPC Browser</a></li>
+      <li><a href="<?php echo( GAME_URL ); ?>?action=dashboard&cmd=zone">
+        Zone Browser</a></li>
+    </ul>
 </div>
 <?php
     }
