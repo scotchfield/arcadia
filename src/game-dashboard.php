@@ -1,9 +1,58 @@
 <?php
 
-function echo_form( $label, $input_type, $value ) {
-    echo( '<div class="form-group"><label>' . $label . '</label>' .
-          '<input type="' . $input_type . '" class="form-control" value="' .
-          $value . '"></div>' );
+function game_dashboard_echo_header( $title, $cmd, $id ) {
+?>
+<div class="row">
+  <form role="form" class="form-horizontal" method="get"
+        action="<?php echo( GAME_URL ); ?>">
+    <input type="hidden" name="action" value="dashboard">
+    <input type="hidden" name="cmd" value="<?php echo( $cmd ); ?>">
+  <div class="col-md-6"><h3><?php echo( $title ); ?></h3></div>
+  <div class="form-group">
+    <label for="id" class="col-md-4 text-right">Jump to:</label>
+    <div class="col-md-2">
+      <input type="number" class="form-control" name="id"
+             value="<?php echo( $id ); ?>">
+    </div>
+  </div>
+  </form>
+</div>
+<form role="form" class="form-horizontal" method="get"
+      action="<?php echo( GAME_URL ); ?>">
+  <input type="hidden" name="action" value="dashboard">
+  <input type="hidden" name="cmd" value="<?php echo( $cmd ); ?>">
+  <div class="row">
+<?
+}
+
+function game_dashboard_echo_footer() {
+?>
+  </div>
+  <div class="row">
+    <div class="col-md-12 text-right">
+      <button type="submit" class="btn btn-primary">Submit Changes</button>
+    </div>
+  </div>
+</form>
+<div class="row">
+  <h3 class="text-center">
+    <a href="<?php echo( GAME_URL ); ?>?action=dashboard">Back
+       to Dashboard</a>
+  </h3>
+</div>
+<?
+}
+
+function game_dashboard_echo_form( $label, $input_type, $key, $value ) {
+?>
+<div class="form-group">
+  <label class="col-md-2 text-right"><?php echo( $label ); ?></label>
+  <div class="col-md-10">
+    <input type="<?php echo( $input_type ); ?>" class="form-control"
+           name="<?php echo( $key ); ?>" value="<?php echo( $value ); ?>">
+  </div>
+</div>
+<?
 }
 
 function game_dashboard_content() {
@@ -25,39 +74,66 @@ function game_dashboard_content() {
         if ( ! strcmp( $cmd, 'item' ) ) {
 
             $item = get_item( $id );
-            echo( '<div class="col-md-12"><h3>Item Browser</h3>' .
-                  '<form role="form">' );
-            echo_form( 'ID', 'number', $item[ 'id' ] );
-            echo_form( 'Name', 'text', $item[ 'name' ] );
-            echo_form( 'Description', 'text', $item[ 'description' ] );
-            echo_form( 'Weight', 'number', $item[ 'weight' ] );
-            echo_form( 'Meta', 'text', $item[ 'item_meta' ] );
-            echo( '</form></div>' );
+
+            game_dashboard_echo_header(
+                'Item Browser', 'item', $item[ 'id' ] );
+
+            game_dashboard_echo_form(
+                'ID', 'number', 'id', $item[ 'id' ] );
+            game_dashboard_echo_form(
+                'Name', 'text', 'name', $item[ 'name' ] );
+            game_dashboard_echo_form(
+                'Description', 'text', 'description', $item[ 'description' ] );
+            game_dashboard_echo_form(
+                'Weight', 'number', 'weight', $item[ 'weight' ] );
+            game_dashboard_echo_form(
+                'Meta', 'text', 'item_meta', $item[ 'item_meta' ] );
+
+            game_dashboard_echo_footer();
 
         } else if ( ! strcmp( $cmd, 'npc' ) ) {
 
             $npc = get_npc_by_id( $id );
-            echo( '<div class="col-md-12"><h3>NPC Browser</h3>' .
-                  '<form role="form">' );
-            echo_form( 'ID', 'number', $npc[ 'id' ] );
-            echo_form( 'Name', 'text', $npc[ 'npc_name' ] );
-            echo_form( 'Description', 'text', $npc[ 'npc_description' ] );
-            echo_form( 'Defeated', 'text', $npc[ 'npc_defeated' ] );
-            echo_form( 'State', 'text', $npc[ 'npc_state' ] );
-            echo( '</form></div>' );
+
+            game_dashboard_echo_header(
+                'NPC Browser', 'npc', $npc[ 'id' ] );
+
+            game_dashboard_echo_form(
+                'ID', 'number', 'id', $npc[ 'id' ] );
+            game_dashboard_echo_form(
+                'Name', 'text', 'npc_name', $npc[ 'npc_name' ] );
+            game_dashboard_echo_form(
+                'Description', 'text', 'npc_description',
+                $npc[ 'npc_description' ] );
+            game_dashboard_echo_form(
+                'Defeated', 'text', 'npc_defeated', $npc[ 'npc_defeated' ] );
+            game_dashboard_echo_form(
+                'State', 'text', 'npc_state', $npc[ 'npc_state' ] );
+
+            game_dashboard_echo_footer();
 
         } else if ( ! strcmp( $cmd, 'zone' ) ) {
 
-            $zone = get_zone( 1);//$id );
-            echo( '<div class="col-md-12"><h3>Zone Browser</h3>' .
-                  '<form role="form">' );
-            echo_form( 'ID', 'number', $zone[ 'id' ] );
-            echo_form( 'Tag', 'text', $zone[ 'zone_tag' ] ) ;
-            echo_form( 'Title', 'text', $zone[ 'zone_title' ] );
-            echo_form( 'Description', 'text', $zone[ 'zone_description' ] );
-            echo_form( 'Type', 'text', $zone[ 'zone_type' ] );
-            echo_form( 'Meta', 'text', $zone[ 'zone_meta' ] );
-            echo( '</form></div>' );
+            $zone = get_zone( $id );
+
+            game_dashboard_echo_header(
+                'Zone Browser', 'zone', $zone[ 'id' ] );
+
+            game_dashboard_echo_form(
+                'ID', 'number', 'id', $zone[ 'id' ] );
+            game_dashboard_echo_form(
+                'Tag', 'text', 'zone_tag', $zone[ 'zone_tag' ] ) ;
+            game_dashboard_echo_form(
+                'Title', 'text', 'zone_title', $zone[ 'zone_title' ] );
+            game_dashboard_echo_form(
+                'Description', 'text', 'zone_description',
+                $zone[ 'zone_description' ] );
+            game_dashboard_echo_form(
+                'Type', 'text', 'zone_type', $zone[ 'zone_type' ] );
+            game_dashboard_echo_form(
+                'Meta', 'text', 'zone_meta', $zone[ 'zone_meta' ] );
+
+            game_dashboard_echo_footer();
 
         } else {
 
