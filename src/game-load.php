@@ -5,6 +5,7 @@ require( GAME_PATH . 'include/game.php' );
 require( GAME_PATH . 'include/achieve.php' );
 require( GAME_PATH . 'include/common.php' );
 require( GAME_PATH . 'include/db.php' );
+require( GAME_PATH . 'include/mail.php' );
 require( GAME_PATH . 'include/plugin.php' );
 require( GAME_PATH . 'include/quest.php' );
 require( GAME_PATH . 'include/user.php' );
