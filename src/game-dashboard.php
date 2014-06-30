@@ -48,11 +48,22 @@ function game_dashboard_echo_form( $label, $input_type, $key, $value ) {
 <div class="form-group">
   <label class="col-md-2 text-right"><?php echo( $label ); ?></label>
   <div class="col-md-10">
+<?php
+    if ( ! strcmp( $input_type, 'textarea' ) ) {
+?>
+    <textarea name="<?php echo( $key ); ?>" class="form-control"
+              rows="5"><?php echo( $value ); ?></textarea>
+<?php
+    } else {
+?>
     <input type="<?php echo( $input_type ); ?>" class="form-control"
            name="<?php echo( $key ); ?>" value="<?php echo( $value ); ?>">
+<?php
+    }
+?>
   </div>
 </div>
-<?
+<?php
 }
 
 function game_dashboard_content() {
@@ -122,7 +133,7 @@ function game_dashboard_content() {
             game_dashboard_echo_form(
                 'ID', 'number', 'id', $zone[ 'id' ] );
             game_dashboard_echo_form(
-                'Tag', 'text', 'zone_tag', $zone[ 'zone_tag' ] ) ;
+                'Tag', 'text', 'zone_tag', $zone[ 'zone_tag' ] );
             game_dashboard_echo_form(
                 'Title', 'text', 'zone_title', $zone[ 'zone_title' ] );
             game_dashboard_echo_form(
@@ -132,6 +143,44 @@ function game_dashboard_content() {
                 'Type', 'text', 'zone_type', $zone[ 'zone_type' ] );
             game_dashboard_echo_form(
                 'Meta', 'text', 'zone_meta', $zone[ 'zone_meta' ] );
+
+            game_dashboard_echo_footer();
+
+        } else if ( ! strcmp( $cmd, 'quest' ) ) {
+
+            $quest = get_quest( $id );
+
+            game_dashboard_echo_header(
+                'Quest Browser', 'quest', $quest[ 'id' ] );
+
+            game_dashboard_echo_form(
+                'ID', 'number', 'id', $quest[ 'id' ] );
+            game_dashboard_echo_form(
+                'Name', 'text', 'name', $quest[ 'name' ] );
+            game_dashboard_echo_form(
+                'Start Text', 'textarea', 'start_text',
+                $quest[ 'start_text' ] );
+            game_dashboard_echo_form(
+                'End Text', 'textarea', 'end_text', $quest[ 'end_text' ] );
+            game_dashboard_echo_form(
+                'NPC ID', 'number', 'npc_id', $quest[ 'npc_id' ] );
+            game_dashboard_echo_form(
+                'Quest Prereq', 'textarea', 'quest_prereq',
+                $quest[ 'quest_prereq' ] );
+            game_dashboard_echo_form(
+                'Quest Accept Meta', 'textarea', 'quest_acceptmeta',
+                $quest[ 'quest_acceptmeta' ] );
+            game_dashboard_echo_form(
+                'Quest Progress', 'textarea', 'quest_progress',
+                $quest[ 'quest_progress' ] );
+            game_dashboard_echo_form(
+                'Quest Complete', 'textarea', 'quest_complete',
+                $quest[ 'quest_complete' ] );
+            game_dashboard_echo_form(
+                'Repeatable', 'number', 'repeatable',
+                $quest[ 'repeatable' ] );
+            game_dashboard_echo_form(
+                'Quest Meta', 'text', 'quest_meta', $quest[ 'quest_meta' ] );
 
             game_dashboard_echo_footer();
 
@@ -145,6 +194,8 @@ function game_dashboard_content() {
         Item Browser</a></li>
       <li><a href="<?php echo( GAME_URL ); ?>?action=dashboard&cmd=npc">
         NPC Browser</a></li>
+      <li><a href="<?php echo( GAME_URL ); ?>?action=dashboard&cmd=quest">
+        Quest Browser</a></li>
       <li><a href="<?php echo( GAME_URL ); ?>?action=dashboard&cmd=zone">
         Zone Browser</a></li>
     </ul>
