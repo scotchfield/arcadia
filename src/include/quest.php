@@ -27,6 +27,7 @@ function get_available_quests_by_npc( $npc_id ) {
     global $character;
 
     $completed_quests = get_character_completed_quests();
+    $active_quests = get_character_active_quests();
 
     $quest_obj = get_quests_by_npc( $npc_id );
 
