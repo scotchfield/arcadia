@@ -59,6 +59,8 @@ switch ( $_POST[ 'action' ] ) {
 
         $pass = password_hash( $_POST[ 'pass' ], PASSWORD_DEFAULT );
         add_user( $_POST[ 'user' ], $pass, $_POST[ 'email' ] );
+
+        // TODO: Add proper validate code: email, and set validate key.
         echo( 'Okay!  Sending you an email.  Gotta validate.' );
 
         break;
