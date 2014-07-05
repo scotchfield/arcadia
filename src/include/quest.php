@@ -31,12 +31,13 @@ function get_available_quests_by_npc( $npc_id ) {
 
     $quest_obj = get_quests_by_npc( $npc_id );
 
-    foreach ( $quest_obj as $k => $quest ) {
+    // todo: eliminate eval.  we have a better way.
+    /*foreach ( $quest_obj as $k => $quest ) {
         if ( ( strlen( $quest[ 'quest_prereq' ] ) > 0 ) &&
              ( ! eval( $quest[ 'quest_prereq' ] ) ) ) {
             unset( $quest_obj[ $k ] );
         }
-    }
+    }*/
 
     return $quest_obj;
 }
@@ -57,10 +58,11 @@ function character_quest_accept( $args ) {
         }
     }
 
-    $quest_meta = '';
+    // todo: eliminate eval.  we have a better way.
+    /*$quest_meta = '';
     if ( strlen( $quest[ 'quest_acceptmeta' ] ) > 0 ) {
         $quest_meta = eval( $quest[ 'quest_acceptmeta' ] );
-    }
+    }*/
 
     if ( $quest_accept ) {
         db_execute(
@@ -92,14 +94,15 @@ function character_quest_complete( $args ) {
         $current_quest_state = get_character_active_quest( $quest[ 'id' ] );
         $quest_meta_obj = explode_meta( $current_quest_state[ 'quest_meta' ] );
 
-        $quest_complete = eval( $quest[ 'quest_complete' ] );
+        // todo: eliminate eval.  we have a better way.
+        /*$quest_complete = eval( $quest[ 'quest_complete' ] );
 
         if ( $quest_complete ) {
             db_execute(
                 'UPDATE character_quests SET completed=? ' .
                     'WHERE character_id=? AND quest_id=? AND completed=0',
                 array( time(), $character[ 'id' ], $quest[ 'id' ] ) );
-        }
+        }*/
     }
 
     $GLOBALS[ 'redirect_header' ] = GAME_URL . '?action=npc&id=' .
