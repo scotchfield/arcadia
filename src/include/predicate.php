@@ -5,6 +5,7 @@ if ( ! isset( $valid_predicates ) ) {
     $valid_predicates = array(
         'is_character_quest_active',
         'is_character_quest_completed',
+        'is_character_quest_meta_diff',
     );
 }
 
@@ -61,3 +62,13 @@ function is_character_quest_completed( $quest_id ) {
     return FALSE;
 }
 
+function is_character_quest_meta_diff( $key_type, $meta_key,
+                                       $quest_meta_key, $diff ) {
+    global $character, $quest_meta_obj;
+
+    $n = min( $diff, intval( character_meta( $key_type, $meta_key ) ) - intval(
+                         $quest_meta_obj[ $quest_meta_key ] ) );
+    $complete = $n >= $diff;
+
+    return $complete;
+}

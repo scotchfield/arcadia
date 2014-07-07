@@ -109,6 +109,7 @@ function character_quest_accept( $args ) {
 function character_quest_progress( $quest ) {
     global $character;
 
+    $GLOBALS[ 'quest_current' ] = $quest;
     $quest_complete = TRUE;
 
     $meta_obj = explode_meta_nokey( $quest[ 'quest_progress' ] );
@@ -137,8 +138,9 @@ function character_quest_complete( $args ) {
     if ( $quest_active ) {
         do_action( 'full_character' );
 
-        $current_quest_state = get_character_active_quest( $quest[ 'id' ] );
-        $quest_meta_obj = explode_meta( $current_quest_state[ 'quest_meta' ] );
+        $quest_current_state = get_character_active_quest( $quest[ 'id' ] );
+        $quest_meta_obj = explode_meta( $quest_current_state[ 'quest_meta' ] );
+        $GLOBALS[ 'quest_meta_obj' ] = $quest_meta_obj;
 
         $quest_complete = TRUE;
         $meta_obj = explode_meta_nokey( $quest[ 'quest_complete' ] );
