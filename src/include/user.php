@@ -194,6 +194,11 @@ function character_meta( $key_type, $meta_key ) {
         $character[ 'meta' ] = get_character_meta( $character[ 'id' ] );
     }
 
+    if ( ( ! isset( $character[ 'meta' ][ $key_type ] ) ) &&
+         ( defined( $key_type ) ) ) {
+        $key_type = constant( $key_type );
+    }
+
     if ( isset( $character[ 'meta' ][ $key_type ] ) &&
          isset( $character[ 'meta' ][ $key_type ][ $meta_key ] ) ) {
         return $character[ 'meta' ][ $key_type ][ $meta_key ];
