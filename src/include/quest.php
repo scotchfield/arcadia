@@ -31,13 +31,23 @@ function get_available_quests_by_npc( $npc_id ) {
 
     $quest_obj = get_quests_by_npc( $npc_id );
 
-    // todo: eliminate eval.  we have a better way.
-    /*foreach ( $quest_obj as $k => $quest ) {
-        if ( ( strlen( $quest[ 'quest_prereq' ] ) > 0 ) &&
-             ( ! eval( $quest[ 'quest_prereq' ] ) ) ) {
-            unset( $quest_obj[ $k ] );
+    foreach ( $quest_obj as $k => $quest ) {
+        if ( ( strlen( $quest[ 'quest_prereq' ] ) ) > 0 ) {
+            $meta_obj = explode_meta_nokey( $quest[ 'quest_prereq' ] );
+
+            $can_show = TRUE;
+            foreach ( $meta_obj as $meta ) {
+                if ( ! eval_predicate( $meta[ 0 ], $meta[ 1 ] ) ) {
+                    $can_show = FALSE;
+                    break;
+                }
+            }
+
+            if ( ! $can_show ) {
+                unset( $quest_obj[ $k ] );
+            } 
         }
-    }*/
+    }
 
     return $quest_obj;
 }
