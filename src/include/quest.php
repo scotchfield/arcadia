@@ -23,6 +23,26 @@ function get_quests_by_npc( $npc_id ) {
         $key_assoc = 'id' );
 }
 
+function can_character_accept_quest( $quest ) {
+    global $character;
+
+    $meta_obj = explode_meta_nokey( $quest[ 'quest_prereq' ] );
+
+    $can_accept = TRUE;
+    foreach ( $meta_obj as $meta ) {
+        if ( ! eval_predicate( $meta[ 0 ], $meta[ 1 ] ) ) {
+            $can_accept = FALSE;
+            break;
+        }
+    }
+
+    if ( ! $can_accept ) {
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
 function get_available_quests_by_npc( $npc_id ) {
     global $character;
 
@@ -32,20 +52,8 @@ function get_available_quests_by_npc( $npc_id ) {
     $quest_obj = get_quests_by_npc( $npc_id );
 
     foreach ( $quest_obj as $k => $quest ) {
-        if ( ( strlen( $quest[ 'quest_prereq' ] ) ) > 0 ) {
-            $meta_obj = explode_meta_nokey( $quest[ 'quest_prereq' ] );
-
-            $can_show = TRUE;
-            foreach ( $meta_obj as $meta ) {
-                if ( ! eval_predicate( $meta[ 0 ], $meta[ 1 ] ) ) {
-                    $can_show = FALSE;
-                    break;
-                }
-            }
-
-            if ( ! $can_show ) {
-                unset( $quest_obj[ $k ] );
-            } 
+        if ( ! can_character_accept_quest( $quest ) ) {
+            unset( $quest_obj[ $k ] );
         }
     }
 
@@ -59,30 +67,58 @@ function character_quest_accept( $args ) {
     $quest_obj = get_character_quests_by_ids( array( $args[ 'id' ] ) );
 
     $quest_accept = TRUE;
-    foreach ( $quest_obj as $q ) {
-        if ( 0 == $q[ 'completed' ] ) {
-            $quest_accept = FALSE;
-        } else if ( ( $q[ 'completed' ] > 0 ) &&
-                    ( 0 == $quest[ 'repeatable' ] ) ) {
-            $quest_accept = FALSE;
+
+    if ( ! can_character_accept_quest( $quest ) ) {
+        $quest_accept = FALSE;
+    } else {
+        foreach ( $quest_obj as $q ) {
+            if ( 0 == $q[ 'completed' ] ) {
+                $quest_accept = FALSE;
+            } else if ( ( $q[ 'completed' ] > 0 ) &&
+                        ( 0 == $quest[ 'repeatable' ] ) ) {
+                $quest_accept = FALSE;
+            }
         }
     }
 
-    // todo: eliminate eval.  we have a better way.
-    /*$quest_meta = '';
-    if ( strlen( $quest[ 'quest_acceptmeta' ] ) > 0 ) {
-        $quest_meta = eval( $quest[ 'quest_acceptmeta' ] );
-    }*/
+    if ( ! $quest_accept ) {
+        return FALSE;
+    }
+
+    $quest_meta = array();
+    $meta_obj = explode_meta_nokey( $quest[ 'quest_acceptmeta' ] );
+    foreach ( $meta_obj as $meta ) {
+        $meta_key = $meta[ 0 ];
+        $meta_value = eval_function( $meta[ 1 ][ 0 ],
+                                     array_slice( $meta[ 1 ], 1 ) );
+        $quest_meta[] = $meta_key . '=' . $meta_value;
+    }
 
     if ( $quest_accept ) {
         db_execute(
             'INSERT INTO character_quests ' .
                 '( character_id, quest_id, completed, quest_meta ) ' .
                 'VALUES ( ?, ?, 0, ? )',
-            array( $character[ 'id' ], $quest[ 'id' ], $quest_meta ) );
+            array( $character[ 'id' ], $quest[ 'id' ],
+                   join( ';', $quest_meta ) ) );
     }
 
     $GLOBALS[ 'redirect_header' ] = GAME_URL . '?action=questlog';
+}
+
+function character_quest_progress( $quest ) {
+    global $character;
+
+    $quest_complete = TRUE;
+
+    $meta_obj = explode_meta_nokey( $quest[ 'quest_progress' ] );
+    foreach ( $meta_obj as $meta ) {
+        if ( ! eval_function( $meta[ 0 ], $meta[ 1 ] ) ) {
+            $quest_complete = FALSE;
+        }
+    }
+
+    return $quest_complete;
 }
 
 function character_quest_complete( $args ) {

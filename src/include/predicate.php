@@ -20,6 +20,8 @@ function eval_predicate( $predicate, $param_obj ) {
 
     if ( in_array( $predicate, $valid_predicates ) ) {
         return call_user_func_array( $predicate, $param_obj );
+    } else {
+        debug_print( 'Call to invalid predicate: ' . $predicate );
     }
 
     return FALSE;
@@ -29,7 +31,9 @@ function eval_function( $function, $param_obj ) {
     global $valid_functions;
 
     if ( in_array( $function, $valid_functions ) ) {
-        return call_user_func_array( $function,  $param_obj );
+        return call_user_func_array( $function, $param_obj );
+    } else {
+        debug_print( 'Call to invalid function: ' . $function );
     }
 
     return FALSE;
@@ -37,20 +41,20 @@ function eval_function( $function, $param_obj ) {
 
 /* --- */
 
-function is_character_quest_active( $obj ) {
+function is_character_quest_active( $quest_id ) {
     $active_quests = get_character_active_quests();    
 
-    if ( isset( $active_quests[ $obj[ 0 ] ] ) ) {
+    if ( isset( $active_quests[ $quest_id ] ) ) {
         return TRUE;
     }
 
     return FALSE;
 }
 
-function is_character_quest_completed( $obj ) {
+function is_character_quest_completed( $quest_id ) {
     $completed_quests = get_character_completed_quests();
 
-    if ( isset( $completed_quests[ $obj[ 0 ] ] ) ) {
+    if ( isset( $completed_quests[ $quest_id ] ) ) {
         return TRUE;
     }
 
