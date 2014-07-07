@@ -157,9 +157,10 @@ function character_quest_complete( $args ) {
 }
 
 function get_quests_by_ids( $quest_obj ) {
+    $place_holders = implode( ',', array_fill( 0, count( $quest_obj ), '?' ) );
     return db_fetch_all(
-        'SELECT * FROM quests WHERE id IN (?)',
-        array( join( ',', $quest_obj ) ));
+        'SELECT * FROM quests WHERE id IN (' . $place_holders . ')',
+        $quest_obj );
 }
 
 function get_character_quests_by_ids( $quest_obj ) {

@@ -244,14 +244,10 @@ function remove_character_item( $character_id, $item_row_id ) {
 }
 
 function get_items_from_array( $id_obj ) {
-    $pdo_obj = array(); // todo: better way??
-    for ( $i = 0 ; $i < count( $id_obj ) ; $i++ ) {
-        $pdo_obj[] = '?';
-    }
+    $place_holders = implode( ',', array_fill( 0, count( $id_obj ), '?' ) );
 
     $item_obj = db_fetch_all(
-        'SELECT * FROM items WHERE id IN ( ' .
-            join( ',', $pdo_obj ) . ' )',
+        'SELECT * FROM items WHERE id IN (' . $place_holders . ')',
         $id_obj,
         $key_assoc = 'id' );
 
@@ -263,14 +259,10 @@ function get_npc_by_id( $id ) {
 }
 
 function get_attacks_from_array( $id_obj ) {
-    $pdo_obj = array(); // todo: better way??
-    for ( $i = 0 ; $i < count( $id_obj ) ; $i++ ) {
-        $pdo_obj[] = '?';
-    }
+    $place_holders = implode( ',', array_fill( 0, count( $id_obj ), '?' ) );
 
     $attack_obj = db_fetch_all(
-        'SELECT * FROM attacks WHERE id IN ( ' .
-            join( ',', $pdo_obj ) . ' )',
+        'SELECT * FROM attacks WHERE id IN (' . $place_holders . ')',
         $id_obj,
         $key_assoc = 'id' );
 
