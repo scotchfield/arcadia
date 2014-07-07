@@ -140,15 +140,20 @@ function character_quest_complete( $args ) {
         $current_quest_state = get_character_active_quest( $quest[ 'id' ] );
         $quest_meta_obj = explode_meta( $current_quest_state[ 'quest_meta' ] );
 
-        // todo: eliminate eval.  we have a better way.
-        /*$quest_complete = eval( $quest[ 'quest_complete' ] );
+        $quest_complete = TRUE;
+        $meta_obj = explode_meta_nokey( $quest[ 'quest_complete' ] );
+        foreach ( $meta_obj as $meta ) {
+            if ( ! eval_predicate( $meta[ 0 ], $meta[ 1 ] ) ) {
+                $quest_complete = FALSE;
+            }
+        }
 
         if ( $quest_complete ) {
             db_execute(
                 'UPDATE character_quests SET completed=? ' .
                     'WHERE character_id=? AND quest_id=? AND completed=0',
                 array( time(), $character[ 'id' ], $quest[ 'id' ] ) );
-        }*/
+        }
     }
 
     $GLOBALS[ 'redirect_header' ] = GAME_URL . '?action=npc&id=' .
