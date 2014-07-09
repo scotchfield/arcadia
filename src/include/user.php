@@ -24,12 +24,32 @@ function game_user_logged_in() {
 }
 
 function add_user( $name, $pass, $email ) {
+    $activate = random_string( 10 );
+
     db_execute(
         'INSERT INTO users ( user_name, user_pass, email, registered, ' .
             'activation, status ) VALUES ( ?, ?, ?, ?, ?, ? )',
-        array( $name, $pass, $email, date( 'Y-m-d H:i:s' ), 'abcdefg', 0 ) );
+        array( $name, $pass, $email, date( 'Y-m-d H:i:s' ),
+            $activate, 0 ) );
 
-    return db_last_insert_id();
+    $user_id = db_last_insert_id();
+
+    $text = 'Dear ' . $name . ",\n\nWelcome to " . GAME_NAME . ".\n\n" .
+        "To complete your registration, please visit this URL:\n" .
+        GAME_URL . 'game-login.php?user=' . $user_id . '&activate=' .
+        $activate;
+
+    $text = wordwrap( $text, 70 );
+
+    mail( $email, GAME_NAME . ' Registration', $text, 'From: ' . GAME_EMAIL );
+
+    return $user_id;
+}
+
+function set_user_status( $user_id, $status ) {
+    db_execute(
+        'UPDATE users SET status=? WHERE id=?',
+        array( $status, $user_id ) );
 }
 
 function is_user_dev( $user ) {
@@ -50,7 +70,7 @@ function is_user_active( $user ) {
     }
 
     if ( get_bit( $user[ 'status' ], game_user_status_active ) ) {
-       return TRUE;
+        return TRUE;
     }
 
     return FALSE;
