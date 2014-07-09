@@ -11,6 +11,10 @@ function get_user_by_id( $id ) {
     return db_fetch( 'SELECT * FROM users WHERE id=?', array( $id ) );
 }
 
+function get_user_by_email( $email ) {
+    return db_fetch( 'SELECT * FROM users WHERE email=?', array( $email ) );
+}
+
 function game_user_logged_in() {
     if ( isset( $_SESSION[ 'u' ] ) ) {
         $user = get_user_by_id( $_SESSION[ 'u' ] );
