@@ -57,7 +57,7 @@ function random_string( $length ) {
     $st = '';
     $values = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
     for ( $i = 0; $i < $length; $i++ ) {
-        $st = $st . $values[ mt_rand( 0, strlen( $values ) ) ];
+        $st = $st . $values[ mt_rand( 0, strlen( $values ) - 1 ) ];
     }
     return $st;
 }
