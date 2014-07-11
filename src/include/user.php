@@ -52,6 +52,12 @@ function set_user_status( $user_id, $status ) {
         array( $status, $user_id ) );
 }
 
+function set_user_max_characters( $user_id, $max_characters ) {
+    db_execute(
+        'UPDATE users SET max_characters=? WHERE id=?',
+        array( $max_characters, $user_id ) );
+}
+
 function is_user_dev( $user ) {
     if ( ! isset( $user[ 'status' ] ) ) {
         return FALSE;
@@ -112,7 +118,10 @@ function user_create_character() {
 //todo: nonce
 //todo: max char count/user
 
-    add_character( $user[ 'id' ], $_GET[ 'char_name' ] );
+    $character_id = add_character( $user[ 'id' ], $_GET[ 'char_name' ] );
+
+    do_action( 'create_character',
+               $args = array( 'character_id' => $character_id ) );
 }
 
 function user_select_character() {
