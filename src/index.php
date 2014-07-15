@@ -3,8 +3,8 @@
 require( dirname( __FILE__ ) . '/game-config.php' );
 require( GAME_PATH . 'game-load.php' );
 
-
 $time_start = micro_time();
+
 
 if ( FALSE == $user ) {
     if ( isset( $custom_start_page ) ) {
@@ -20,12 +20,12 @@ if ( FALSE != $character ) {
 do_action( 'character_load' );
 
 if ( isset( $_GET[ 'action' ] ) ) {
-    $game->set_action( $_GET[ 'action' ] );
+    game_set_action( $_GET[ 'action' ] );
 }
 do_action( 'action_set' );
 
-if ( ( '' == $game->get_action() ) && ( isset( $custom_default_action ) ) ) {
-    $game->set_action( $custom_default_action );
+if ( ( '' == game_get_action() ) && ( isset( $custom_default_action ) ) ) {
+    game_set_action( $custom_default_action );
 }
 
 do_action( 'game_header' );

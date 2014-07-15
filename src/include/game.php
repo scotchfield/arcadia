@@ -1,33 +1,28 @@
 <?php
 
-class Game {
-    function Game() {
-        $this->set_action( '' );
-    }
+$GLOBALS[ 'game_action' ] = '';
 
-    function get_action() {
-        return $this->action;
-    }
-    function set_action( $action ) {
-        $this->action = $action;
-    }
+function game_set_action( $action ) {
+    $GLOBALS[ 'game_action' ] = $action;
+}
 
-    function ensure_meta() {
-        if ( isset( $this->meta ) ) {
-            return;
+function game_get_action() {
+    global $game_action;
+
+    return $game_action;
+}
+
+function get_game_meta() {
+    $meta_obj = db_fetch_all( 'SELECT * FROM game_meta', array() );
+
+    $obj = array();
+    foreach ( $meta_obj as $meta ) {
+        if ( ! isset( $obj[ $meta[ 'key_type' ] ] ) ) {
+            $obj[ $meta[ 'key_type' ] ] = array();
         }
-
-        $meta_obj = db_fetch_all( 'SELECT * FROM game_meta', array() );
-
-        $obj = array();
-        foreach ( $meta_obj as $meta ) {
-            if ( ! isset( $obj[ $meta[ 'key_type' ] ] ) ) {
-                $obj[ $meta[ 'key_type' ] ] = array();
-            }
-            $obj[ $meta[ 'key_type' ] ][ $meta[ 'meta_key' ] ] =
-                $meta[ 'meta_value' ];
-        }
-
-        $this->meta = $obj;
+        $obj[ $meta[ 'key_type' ] ][ $meta[ 'meta_key' ] ] =
+            $meta[ 'meta_value' ];
     }
+
+    return $obj;
 }

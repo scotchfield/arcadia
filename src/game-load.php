@@ -19,7 +19,6 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-$GLOBALS[ 'game' ] = new Game();
 $GLOBALS[ 'user' ] = game_user_logged_in();
 
 $page_map = array(
