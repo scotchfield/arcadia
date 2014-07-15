@@ -220,6 +220,31 @@ function ensure_character_meta( $character_id, $key_type, $meta_key ) {
     }
 }
 
+function ensure_character_meta_keygroup( $character_id, $key_type,
+                                         $meta_key_obj ) {
+    $place_holders = implode(
+        ',', array_fill( 0, count( $meta_key_obj ), '?' ) );
+    $args = array_merge(
+        array( $character_id, $key_type ), $meta_key_obj );
+
+    $obj = db_fetch_all(
+        'SELECT * FROM character_meta WHERE character_id=? AND ' .
+            'key_type=? AND meta_key IN (' . $place_holders . ')',
+        $args,
+        $key_assoc = 'meta_key' );
+
+    foreach ( $meta_key_obj as $k => $v ) {
+        if ( isset( $obj[ $v ] ) ) {
+            unset( $meta_key_obj[ $k ] );
+        }
+    }
+
+    // todo: single insert statement here
+    foreach ( $meta_key_obj as $meta_key ) {
+        add_character_meta( $character_id, $key_type, $meta_key, '' );
+    }
+}
+
 function character_meta( $key_type, $meta_key ) {
     global $character;
 
