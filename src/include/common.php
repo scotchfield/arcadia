@@ -149,6 +149,31 @@ function number_with_suffix( $n ) {
     return $n . 'th';
 }
 
+function get_if_plural( $n, $word ) {
+    if ( 1 != $n ) {
+        return $word . 's';
+    }
+
+    return $word;
+}
+
+function round_time( $time ) {
+    if ( $time < 0 ) {
+        return '';
+    } else if ( $time < 60 ) {
+        return $time . ' ' . get_if_plural( $time, 'second' );
+    } else if ( $time < 60 * 60 ) {
+        $t = floor( $time / 60 );
+        return $t . ' ' . get_if_plural( $t, 'minute' );
+    } else if ( $time < 60 * 60 * 24 ) {
+        $t = floor( $time / ( 60 * 60 ) );
+        return $t . ' ' . get_if_plural( $t, 'hour' );
+    } else {
+        $t = floor( $time / ( 60 * 60 * 24 ) );
+        return $t . ' ' . get_if_plural( $t, 'day' );
+    }
+}
+
 function get_item( $id ) {
     return db_fetch( 'SELECT * FROM items WHERE id=?', array( $id ) );
 }
