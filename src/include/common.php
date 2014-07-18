@@ -4,6 +4,11 @@ if ( ! defined( 'game_nonce_life' ) ) {
     define( 'game_nonce_life', 60 );
 }
 
+define( 'SECONDS_WEEK',    60 * 60 * 24 * 7 );
+define( 'SECONDS_DAY',     60 * 60 * 24 );
+define( 'SECONDS_HOUR',    60 * 60 );
+define( 'SECONDS_MINUTE',  60 );
+
 function debug_print( $x ) {
     if ( is_array( $x ) ) {
         echo '<p>';
@@ -157,7 +162,7 @@ function get_if_plural( $n, $word ) {
     return $word;
 }
 
-function round_time( $time ) {
+function time_round( $time ) {
     if ( $time < 0 ) {
         return '';
     } else if ( $time < 60 ) {
@@ -172,6 +177,27 @@ function round_time( $time ) {
         $t = floor( $time / ( 60 * 60 * 24 ) );
         return $t . ' ' . get_if_plural( $t, 'day' );
     }
+}
+
+function time_expand( $time ) {
+    $st_obj = array();
+    $time_obj = array(
+        array( SECONDS_WEEK, 'week' ),
+        array( SECONDS_DAY, 'day' ),
+        array( SECONDS_HOUR, 'hour' ),
+        array( SECONDS_MINUTE, 'minute' ),
+        array( 1, 'second' ),
+    );
+
+    foreach ( $time_obj as $t ) {
+        if ( $time >= $t[ 0 ] ) {
+            $n = floor( $time / $t[ 0 ] );
+            $st_obj[] = $n . ' ' . get_if_plural( $n, $t[ 1 ] );
+            $time -= $n * $t[ 0 ];
+        }
+    }
+
+    return join( ', ', $st_obj );
 }
 
 function get_item( $id ) {
