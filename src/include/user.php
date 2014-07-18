@@ -135,14 +135,17 @@ function user_select_character() {
         return;
     }
 
-    $char = get_character_by_id( $_GET[ 'id' ] );
+    $character = get_character_by_id( $_GET[ 'id' ] );
 
-    if ( ( FALSE == $char ) || ( $char[ 'user_id' ] != $user[ 'id' ] ) ) {
+    if ( ( FALSE == $character ) ||
+         ( $character[ 'user_id' ] != $user[ 'id' ] ) ) {
         return FALSE;
     }
 
-    $GLOBALS[ 'character' ] = $char;
-    $_SESSION[ 'c' ] = $char[ 'id' ];
+    $character[ 'meta' ] = get_character_meta( $character[ 'id' ] );
+    $GLOBALS[ 'character' ] = $character;
+
+    $_SESSION[ 'c' ] = $character[ 'id' ];
 
     do_action( 'select_character' );
 }
