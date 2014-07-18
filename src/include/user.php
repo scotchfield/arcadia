@@ -224,7 +224,7 @@ function ensure_character_meta( $character_id, $key_type, $meta_key ) {
 }
 
 function ensure_character_meta_keygroup( $character_id, $key_type,
-                                         $meta_key_obj ) {
+                                         $default_value, $meta_key_obj ) {
     $place_holders = implode(
         ',', array_fill( 0, count( $meta_key_obj ), '?' ) );
     $args = array_merge(
@@ -244,7 +244,8 @@ function ensure_character_meta_keygroup( $character_id, $key_type,
 
     // todo: single insert statement here
     foreach ( $meta_key_obj as $meta_key ) {
-        add_character_meta( $character_id, $key_type, $meta_key, '' );
+        add_character_meta(
+            $character_id, $key_type, $meta_key, $default_value );
     }
 }
 
