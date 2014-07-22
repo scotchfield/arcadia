@@ -208,10 +208,17 @@ function add_character_meta( $character_id, $key_type,
 
 function update_character_meta( $character_id, $key_type,
                                 $meta_key, $meta_value ) {
+    global $character;
+
     db_execute(
         'UPDATE character_meta SET meta_value=? WHERE
             character_id=? AND key_type=? AND meta_key=?',
         array( $meta_value, $character_id, $key_type, $meta_key ) );
+
+    if ( ( isset( $character[ 'meta' ] ) ) &&
+         ( isset( $character[ 'meta' ][ $key_type ] ) ) ) {
+        $character[ 'meta' ][ $key_type ][ $meta_key ] = $meta_value;
+    }
 }
 
 function ensure_character_meta( $character_id, $key_type, $meta_key ) {
