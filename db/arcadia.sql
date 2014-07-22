@@ -61,7 +61,7 @@ CREATE TABLE `game_meta` (
   `key_type` int(10) unsigned NOT NULL,
   `meta_key` int(10) unsigned NOT NULL,
   `meta_value` longtext NOT NULL,
-  UNIQUE KEY `meta_key` (`meta_key`),
+  UNIQUE KEY `meta_key` (`key_type`,`meta_key`),
   KEY `key_type` (`key_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
