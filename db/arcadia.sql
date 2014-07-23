@@ -75,20 +75,6 @@ CREATE TABLE `items` (
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
-CREATE TABLE `mail` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `character_id_to` int(10) unsigned NOT NULL,
-  `character_id_from` int(10) unsigned NOT NULL,
-  `character_name_from` tinytext NOT NULL,
-  `subject` tinytext NOT NULL,
-  `text` text NOT NULL,
-  `item_id` int(10) unsigned NOT NULL,
-  `item_meta` longtext NOT NULL,
-  `status` int(10) unsigned NOT NULL,
-  `created` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 CREATE TABLE `npcs` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `npc_name` varchar(100) NOT NULL,

@@ -3,20 +3,23 @@
 define( 'game_mail_unread', 1 );
 
 function get_mail( $character_id ) {
-    return db_fetch_all(
+    /*return db_fetch_all(
         'SELECT * FROM mail WHERE character_id_to=? ORDER BY created',
-        array( $character_id ) );
+        array( $character_id ) );*/
+    return array();
 }
 
 function get_mail_by_id( $character_id, $id ) {
-    return db_fetch(
+    /*return db_fetch(
         'SELECT * FROM mail WHERE character_id_to=? AND id=?',
-        array( $character_id, $id ) );
+        array( $character_id, $id ) );*/
+    return array();
 }
 
 function get_mail_unread_count( $character_id ) {
-    return db_fetch(
+    /*return db_fetch(
         'SELECT COUNT( * ) FROM mail WHERE character_id_to=? AND status=?',
-        array( $character_id, game_mail_unread ) );
+        array( $character_id, game_mail_unread ) );*/
+    return 0;
 }
 
