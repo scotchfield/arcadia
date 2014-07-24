@@ -203,3 +203,10 @@ function time_expand( $time ) {
 function get_item( $id ) {
     return db_fetch( 'SELECT * FROM items WHERE id=?', array( $id ) );
 }
+
+function rand_float( $f_min, $f_max ) {
+    $f_min = floatval( $f_min );
+    $f_max = floatval( $f_max );
+
+    return $f_min + ( mt_rand() / mt_getrandmax() ) * ( $f_max - $f_min );
+}
