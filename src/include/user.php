@@ -276,6 +276,14 @@ function character_meta( $key_type, $meta_key ) {
     return '';
 }
 
+function character_meta_int( $key_type, $meta_key ) {
+    return intval( character_meta( $key_type, $meta_key ) );
+}
+
+function character_meta_float( $key_type, $meta_key ) {
+    return floatval( character_meta( $key_type, $meta_key ) );
+}
+
 function get_character_items( $id ) {//, $full_description = FALSE ) {
     return db_fetch_all(
         'SELECT * FROM character_items WHERE character_id=?',
