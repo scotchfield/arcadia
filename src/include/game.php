@@ -7,9 +7,7 @@ function game_set_action( $action ) {
 }
 
 function game_get_action() {
-    global $game_action;
-
-    return $game_action;
+    return $GLOBALS[ 'game_action' ];
 }
 
 function get_game_meta( $key_type, $meta_key ) {
