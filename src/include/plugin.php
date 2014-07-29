@@ -34,3 +34,14 @@ function add_action_priority( $action_id, $function, $args = array() ) {
 
     array_unshift( $game_actions, array( $action_id, $function, $args ) );
 }
+
+function remove_action( $action_id, $function ) {
+    global $game_actions;
+
+    foreach ( $game_actions as $k => $action ) {
+        if ( ( ! strcmp( $action[ 0 ], $action_id ) ) &&
+             ( ! strcmp( $action[ 1 ], $function ) ) ) {
+            unset( $game_actions[ $k ] );
+        }
+    }
+}
