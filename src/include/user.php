@@ -221,6 +221,12 @@ function update_character_meta( $character_id, $key_type,
     }
 }
 
+function clear_all_character_meta( $character_id ) {
+    db_execute(
+        'DELETE FROM character_meta WHERE character_id=?',
+        array( $character_id ) );
+}
+
 function ensure_character_meta( $character_id, $key_type, $meta_key ) {
     $obj = db_fetch( 'SELECT * FROM character_meta WHERE ' .
         'character_id=? AND key_type=? AND meta_key=?',
