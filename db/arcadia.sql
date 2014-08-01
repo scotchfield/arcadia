@@ -22,13 +22,6 @@ CREATE TABLE `characters` (
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
-CREATE TABLE `character_achievements` (
-  `character_id` int(10) unsigned NOT NULL,
-  `achievement_id` int(11) NOT NULL,
-  `timestamp` int(11) NOT NULL,
-  KEY `character_id` (`character_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 CREATE TABLE `character_items` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `character_id` int(10) unsigned NOT NULL,
