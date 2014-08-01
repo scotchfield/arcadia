@@ -197,7 +197,7 @@ function time_expand( $time ) {
         }
     }
 
-    return join( ', ', $st_obj );
+    return implode( ', ', $st_obj );
 }
 
 function get_item( $id ) {

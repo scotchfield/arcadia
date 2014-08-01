@@ -100,7 +100,7 @@ function character_quest_accept( $args ) {
                 '( character_id, quest_id, completed, quest_meta ) ' .
                 'VALUES ( ?, ?, 0, ? )',
             array( $character[ 'id' ], $quest[ 'id' ],
-                   join( ';', $quest_meta ) ) );
+                   implode( ';', $quest_meta ) ) );
     }
 
     $GLOBALS[ 'redirect_header' ] = GAME_URL . '?action=questlog';
@@ -176,7 +176,7 @@ function get_character_quests_by_ids( $quest_obj ) {
     return db_fetch_all(
         'SELECT * FROM character_quests ' .
             'WHERE character_id=? AND quest_id IN (?)',
-        array( $character[ 'id' ], join( ',', $quest_obj ) ) );
+        array( $character[ 'id' ], implode( ',', $quest_obj ) ) );
 }
 
 function get_character_completed_quests() {
