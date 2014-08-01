@@ -1,18 +1,13 @@
 <?php
 
-function ensure_character_achievements() {
-    global $character;
-
-    if ( FALSE == $character ) {
-        return;
+function achievement_init() {
+    if ( ! defined( 'game_meta_type_achievement' ) ) {
+        define( 'game_meta_type_achievement', 10000 );
     }
-
-    if ( isset( $character[ 'achievements' ] ) ) {
-        return;
-    }
-
-    $character[ 'achievements' ] = get_achievements( $character[ 'id' ] );
 }
+
+add_action( 'post_load', 'achievement_init' );
+
 
 function get_achievement( $achievement_id ) {
     return db_fetch( 'SELECT * FROM achievements WHERE id=?',
@@ -40,21 +35,14 @@ function award_achievement( $achievement_id ) {
         return;
     }
 
-    ensure_character_achievements();
-
-    if ( isset( $character[ 'achievements' ][ $achievement_id ] ) ) {
+    if ( isset( $character[ 'meta' ][ game_meta_type_achievement ][
+                    $achievement_id ] ) ) {
         return;
     }
 
-    db_execute(
-        'INSERT INTO character_achievements ' .
-            '( character_id, achievement_id, timestamp ) ' .
-            'VALUES ( ?, ?, ? )',
-        array( $character[ 'id' ], $achievement_id, time() )
-    );
+    add_character_meta( $character[ 'id' ], game_meta_type_achievement,
+        $achievement_id, time() );
 
     do_action( 'award_achievement',
                array( 'achievement_id' => $achievement_id ) );
 }
-
-

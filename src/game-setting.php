@@ -3,6 +3,8 @@
 require( dirname( __FILE__ ) . '/game-config.php' );
 require( GAME_PATH . 'game-load.php' );
 
+do_action( 'post_load' );
+
 $GLOBALS[ 'redirect_header' ] = GAME_URL;
 
 

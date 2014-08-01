@@ -1,9 +1,13 @@
 <?php
 
+$time_start = microtime( $get_as_float = TRUE );
+
 require( dirname( __FILE__ ) . '/game-config.php' );
 require( GAME_PATH . 'game-load.php' );
 
-$time_start = micro_time();
+//$time_start = micro_time();
+
+do_action( 'post_load' );
 
 
 if ( FALSE == $user ) {
