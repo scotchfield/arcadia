@@ -20,10 +20,11 @@ function get_all_achievements() {
 
 function get_achievements( $character_id ) {
     return db_fetch_all(
-        'SELECT * FROM achievements AS a, character_achievements AS c ' .
-            'WHERE a.id=c.achievement_id AND c.character_id=? ' .
+        'SELECT * FROM achievements AS a, character_meta AS c ' .
+            'WHERE a.id=c.meta_key AND c.character_id=? ' .
+            'AND c.key_type=? ' .
             'ORDER BY a.id',
-        array( $character_id ),
+        array( $character_id, game_meta_type_achievement ),
         'id'
     );
 }
