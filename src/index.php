@@ -5,17 +5,7 @@ $time_start = microtime( $get_as_float = TRUE );
 require( dirname( __FILE__ ) . '/game-config.php' );
 require( GAME_PATH . 'game-load.php' );
 
-//$time_start = micro_time();
-
 do_action( 'post_load' );
-
-
-if ( FALSE == $user ) {
-    if ( isset( $custom_start_page ) ) {
-        include( GAME_CUSTOM_PATH . $custom_start_page );
-    }
-    exit;
-}
 
 $GLOBALS[ 'character' ] = game_character_active();
 if ( FALSE != $character ) {
@@ -28,8 +18,8 @@ if ( isset( $_GET[ 'action' ] ) ) {
 }
 do_action( 'action_set' );
 
-if ( ( '' == game_get_action() ) && ( isset( $custom_default_action ) ) ) {
-    game_set_action( $custom_default_action );
+if ( '' == game_get_action() ) {
+    do_action( 'set_default_action' );
 }
 
 do_action( 'game_header' );
@@ -40,7 +30,6 @@ do_action( 'post_page_content' );
 
 do_action( 'game_footer' );
 
-
-$time_diff = micro_time() - $time_start;
-//debug_print( '<p>Page rendered in ' .
-//    number_format( $time_diff, 5, '.', '.' ) . 's</p>' );
+$time_diff = microtime( $get_as_float = TRUE ) - $time_start;
+debug_print( '<p>Page rendered in ' .
+             round( $time_diff, $precision = 4 ) . 's</p>' );
