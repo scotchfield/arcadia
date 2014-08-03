@@ -200,10 +200,6 @@ function time_expand( $time ) {
     return implode( ', ', $st_obj );
 }
 
-function get_item( $id ) {
-    return db_fetch( 'SELECT * FROM items WHERE id=?', array( $id ) );
-}
-
 function rand_float( $f_min, $f_max ) {
     $f_min = floatval( $f_min );
     $f_max = floatval( $f_max );
