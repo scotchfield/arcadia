@@ -53,11 +53,6 @@ function bit_count( $val ) {
     return $c;
 }
 
-function micro_time() {
-    list( $usec, $sec ) = explode( ' ', microtime() );
-    return ( ( float ) $usec + ( float ) $sec );
-}
-
 function random_string( $length ) {
     $st = '';
     $values = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
