@@ -2,7 +2,7 @@
 
 function item_init() {
     if ( ! defined( 'game_meta_type_item' ) ) {
-        define( 'game_meta_type_item', 10010 );
+        define( 'game_meta_type_item', 20010 );
     }
 }
 

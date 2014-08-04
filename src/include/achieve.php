@@ -2,7 +2,7 @@
 
 function achievement_init() {
     if ( ! defined( 'game_meta_type_achievement' ) ) {
-        define( 'game_meta_type_achievement', 10000 );
+        define( 'game_meta_type_achievement', 20000 );
     }
 }
 
