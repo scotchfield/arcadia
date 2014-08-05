@@ -1,11 +1,3 @@
-CREATE TABLE `achievements` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `achieve_title` varchar(100) NOT NULL,
-  `achieve_text` longtext NOT NULL,
-  `achieve_type` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
 CREATE TABLE `attacks` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `attack_name` text NOT NULL,
