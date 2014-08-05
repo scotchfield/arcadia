@@ -4,27 +4,37 @@ function achievement_init() {
     if ( ! defined( 'game_meta_type_achievement' ) ) {
         define( 'game_meta_type_achievement', 20000 );
     }
+
+    if ( ! defined( 'game_character_meta_type_achievement' ) ) {
+        define( 'game_character_meta_type_achievement', 20000 );
+    }
 }
 
 add_action( 'post_load', 'achievement_init' );
 
 
-function get_achievement( $achievement_id ) {
-    return db_fetch( 'SELECT * FROM achievements WHERE id=?',
-                     array( $achievement_id ) );
+function get_achievement( $id ) {
+    return db_fetch(
+        'SELECT * FROM game_meta WHERE key_type=? AND meta_key=?',
+        array( game_meta_type_achievement, $id ) );
 }
 
 function get_all_achievements() {
-    return db_fetch_all( 'SELECT * FROM achievements ORDER BY id', array() );
+    return db_fetch_all(
+        'SELECT * FROM game_meta WHERE key_type=? ORDER BY id',
+        array( game_meta_type_achievement ) );
 }
 
 function get_achievements( $character_id ) {
     return db_fetch_all(
-        'SELECT * FROM achievements AS a, character_meta AS c ' .
-            'WHERE a.id=c.meta_key AND c.character_id=? ' .
-            'AND c.key_type=? ' .
-            'ORDER BY a.id',
-        array( $character_id, game_meta_type_achievement ),
+        'SELECT a.meta_key AS id, a.meta_value AS meta_value, ' .
+            'c.meta_value AS timestamp ' .
+            'FROM game_meta AS a, character_meta AS c ' .
+            'WHERE a.key_type=? AND c.key_type=? AND ' .
+            'a.meta_key=c.meta_key AND c.character_id=? ORDER BY a.meta_key',
+        array( game_meta_type_achievement,
+               game_character_meta_type_achievement,
+               $character_id ),
         'id'
     );
 }
