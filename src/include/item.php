@@ -48,5 +48,5 @@ function award_item( $meta_key, $meta_value ) {
         $meta_key, $meta_value );
 
     do_action( 'award_item',
-               array( 'item_id' => $item_id ) );
+               array( 'item_id' => $meta_key ) );
 }

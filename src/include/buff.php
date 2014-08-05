@@ -36,3 +36,72 @@ function get_buffs( $character_id ) {
         'meta_key'
     );
 }
+
+function award_buff( $buff_id, $duration ) {
+    global $character;
+
+    if ( FALSE == $character ) {
+        return;
+    }
+
+    ensure_character_meta( $character[ 'id' ], game_meta_type_buff,
+        $buff_id );
+    update_character_meta( $character[ 'id' ], game_meta_type_buff,
+        $buff_id, time() + $duration );
+
+    do_action( 'award_buff',
+               array( 'buff_id' => $buff_id ) );
+}
+
+function check_buff( $buff_id ) {
+    global $character;
+
+    if ( FALSE == $character ) {
+        return FALSE;
+    }
+
+    if ( ! isset( $character[ 'meta' ][ game_character_meta_type_buff ] ) ) {
+        return FALSE;
+    }
+
+    if ( ! isset( $character[ 'meta' ][ game_character_meta_type_buff
+                      ][ $buff_id ] ) ) {
+        return FALSE;
+    }
+
+    $t = intval( $character[ 'meta' ][ game_character_meta_type_buff
+                     ][ $buff_id ] ) - time();
+
+    if ( $t <= 0 ) {
+        return FALSE;
+    }
+
+    return $t;
+}
+
+function remove_buff( $buff_id ) {
+    db_execute(
+        'DELETE FROM character_meta WHERE key_type=? AND meta_key=?',
+        array( game_character_meta_type_buff, $buff_id ) );
+}
+
+function update_buffs() {
+    global $character;
+
+    if ( FALSE == $character ) {
+        return;
+    }
+
+    if ( ! isset( $character[ 'meta' ][ game_character_meta_type_buff ] ) ) {
+        return;
+    }
+
+    foreach ( $character[ 'meta' ][ game_character_meta_type_buff ] as
+                  $buff_id => $buff_expire ) {
+        if ( intval( $buff_expire ) <= time() ) {
+            remove_buff( $buff_id );
+        } else {
+//todo: action to apply bonuses for a buff
+        }
+    }
+}
