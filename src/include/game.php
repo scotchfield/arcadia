@@ -37,3 +37,9 @@ function get_game_meta_all() {
 
     return $obj;
 }
+
+function update_game_meta( $key_type, $meta_key, $meta_value ) {
+    db_execute(
+        'UPDATE game_meta SET meta_value=? WHERE key_type=? AND meta_key=?',
+        array( $meta_value, $key_type, $meta_key ) );
+}
