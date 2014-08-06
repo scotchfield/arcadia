@@ -80,6 +80,10 @@ function check_buff( $buff_id ) {
 }
 
 function remove_buff( $buff_id ) {
+    global $character;
+
+    unset( $character[ 'meta' ][ game_character_meta_type_buff ][ $buff_id ] );
+
     db_execute(
         'DELETE FROM character_meta WHERE key_type=? AND meta_key=?',
         array( game_character_meta_type_buff, $buff_id ) );
@@ -100,8 +104,8 @@ function update_buffs() {
                   $buff_id => $buff_expire ) {
         if ( intval( $buff_expire ) <= time() ) {
             remove_buff( $buff_id );
-        } else {
-//todo: action to apply bonuses for a buff
         }
     }
+
+    do_action( 'apply_buffs' );
 }
