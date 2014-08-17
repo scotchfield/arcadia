@@ -1,8 +1,13 @@
 <?php
 
-$GLOBALS[ 'game_db' ] = new PDO(
-    'mysql:host=' . DB_ADDRESS . ';dbname=' . DB_NAME . ';charset=utf8',
-    DB_USER, DB_PASSWORD );
+try {
+    $GLOBALS[ 'game_db' ] = new PDO(
+        'mysql:host=' . DB_ADDRESS . ';dbname=' . DB_NAME . ';charset=utf8',
+        DB_USER, DB_PASSWORD );
+} catch ( PDOException $e ) {
+    echo( 'Warning: Database not found!' );
+    die();
+}
 
 function db_fetch( $query, $args ) {
     global $game_db;
