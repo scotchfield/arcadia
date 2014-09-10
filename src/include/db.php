@@ -9,7 +9,7 @@ try {
     die();
 }
 
-function db_fetch( $query, $args ) {
+function db_fetch( $query, $args = array() ) {
     global $game_db;
 
     $stmt = $game_db->prepare( $query );
@@ -19,7 +19,7 @@ function db_fetch( $query, $args ) {
     return $obj;
 }
 
-function db_fetch_all( $query, $args, $key_assoc = FALSE ) {
+function db_fetch_all( $query, $args = array(), $key_assoc = FALSE ) {
     global $game_db;
 
     $stmt = $game_db->prepare( $query );
@@ -37,11 +37,11 @@ function db_fetch_all( $query, $args, $key_assoc = FALSE ) {
     return $obj;
 }
 
-function db_execute( $query, $args ) {
+function db_execute( $query, $args = array() ) {
     global $game_db;
 
     $stmt = $game_db->prepare( $query );
-    $stmt->execute( $args );
+    return $stmt->execute( $args );
 }
 
 function db_last_insert_id() {
