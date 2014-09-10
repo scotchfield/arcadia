@@ -199,11 +199,26 @@ function get_character_meta( $id, $type = FALSE ) {
 
 function add_character_meta( $character_id, $key_type,
                              $meta_key, $meta_value ) {
+    global $character;
+
     db_execute(
         'INSERT INTO character_meta ( ' .
             'character_id, key_type, meta_key, meta_value ) ' .
             'VALUES ( ?, ?, ?, ? )',
         array( $character_id, $key_type, $meta_key, $meta_value ) );
+
+    if ( ( isset( $character[ 'id' ] ) ) &&
+         ( $character[ 'id' ] == $character_id ) ) {
+
+	if ( ! isset( $character[ 'meta' ] ) ) {
+	    $character[ 'meta' ] = array();
+        }
+	if ( ! isset( $character[ 'meta' ][ $key_type ] ) ) {
+	    $character[ 'meta' ][ $key_type ] = array();
+	}
+
+        $character[ 'meta' ][ $key_type ][ $meta_key ] = $meta_value;
+    }
 }
 
 function update_character_meta( $character_id, $key_type,

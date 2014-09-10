@@ -21,7 +21,7 @@ function get_achievement( $id ) {
 
 function get_all_achievements() {
     return db_fetch_all(
-        'SELECT * FROM game_meta WHERE key_type=? ORDER BY id',
+        'SELECT * FROM game_meta WHERE key_type=?',
         array( game_meta_type_achievement ) );
 }
 
@@ -43,12 +43,12 @@ function award_achievement( $achievement_id ) {
     global $character;
 
     if ( FALSE == $character ) {
-        return;
+        return FALSE;
     }
 
     if ( isset( $character[ 'meta' ][ game_meta_type_achievement ][
                     $achievement_id ] ) ) {
-        return;
+        return FALSE;
     }
 
     add_character_meta( $character[ 'id' ], game_meta_type_achievement,
@@ -56,4 +56,6 @@ function award_achievement( $achievement_id ) {
 
     do_action( 'award_achievement',
                array( 'achievement_id' => $achievement_id ) );
+
+    return TRUE;
 }
