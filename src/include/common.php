@@ -39,6 +39,10 @@ function get_bit( $val, $bit ) {
 }
 
 function set_bit( $val, $bit ) {
+    if ( $bit < 0 ) {
+        return $val;
+    }
+
     return $val | ( 1 << $bit );
 }
 
