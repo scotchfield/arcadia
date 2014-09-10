@@ -10,12 +10,6 @@ function game_get_action() {
     return $GLOBALS[ 'game_action' ];
 }
 
-function get_game_meta( $key_type, $meta_key ) {
-    return db_fetch(
-        'SELECT * FROM game_meta WHERE key_type=? AND meta_key=?',
-        array( $key_type, $meta_key ) );
-}
-
 function get_game_meta_keytype( $key_type ) {
     return db_fetch_all(
         'SELECT * FROM game_meta WHERE key_type=?',

@@ -1,6 +1,7 @@
 <?php
 
 require( GAME_PATH . 'include/game.php' );
+require( GAME_PATH . 'include/game_meta.php' );
 require( GAME_PATH . 'include/plugin.php' );
 
 require( GAME_PATH . 'include/achieve.php' );
