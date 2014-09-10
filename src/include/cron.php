@@ -23,4 +23,6 @@ function do_crons() {
     foreach ( $cron_obj as $cron ) {
 //        debug_print( $cron );
     }
+//todo: process crons, return FALSE if something goes wrong
+    return TRUE;
 }
