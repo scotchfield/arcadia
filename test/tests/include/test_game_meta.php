@@ -49,7 +49,7 @@ class TestArcadiaGameMeta extends PHPUnit_Framework_TestCase {
 
         $this->assertNotFalse( $result );
         $this->assertCount( 1, $result );
-        $this->assertEquals( 'test 1', $result[ 0 ][ 'meta_value' ] );
+        $this->assertEquals( 'test 1', $result[ 1 ][ 'meta_value' ] );
     }
 
     /**
