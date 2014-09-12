@@ -5,7 +5,7 @@ try {
         'mysql:host=' . DB_ADDRESS . ';dbname=' . DB_NAME . ';charset=utf8',
         DB_USER, DB_PASSWORD );
 } catch ( PDOException $e ) {
-    echo( 'Warning: Database not found!' );
+    echo( "Warning: Database not found!\n" );
     die();
 }
 
