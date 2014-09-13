@@ -13,6 +13,19 @@ function get_game_meta( $key_type, $meta_key ) {
         array( $key_type, $meta_key ) );
 }
 
+function get_game_meta_array( $key_type, $meta_key_array ) {
+    $place_holders = implode(
+        ',', array_fill( 0, count( $meta_key_array ), '?' ) );
+    $args = array_merge( array( $key_type ), $meta_key_array );
+
+    return db_fetch_all(
+        'SELECT * FROM game_meta WHERE key_type=? AND meta_key IN (' .
+            $place_holders . ')',
+        $args,
+        $key_assoc = 'meta_key'
+    );
+}
+
 function get_game_meta_by_key( $key_type ) {
     return db_fetch_all(
         'SELECT * FROM game_meta WHERE key_type=?',

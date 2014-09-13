@@ -13,7 +13,8 @@ class TestArcadiaGameMeta extends PHPUnit_Framework_TestCase {
         );
         db_execute(
             'INSERT INTO game_meta ( key_type, meta_key, meta_value ) ' .
-                'VALUES ( 1, 1, "test 1" ), ( 2, 2, "test 2" )'
+                'VALUES ( 1, 1, "test 1" ), ( 2, 2, "test 2" ), ' .
+                '( 2, 3, "test 2 3" )'
         );
     }
 
@@ -50,6 +51,27 @@ class TestArcadiaGameMeta extends PHPUnit_Framework_TestCase {
         $this->assertNotFalse( $result );
         $this->assertCount( 1, $result );
         $this->assertEquals( 'test 1', $result[ 1 ][ 'meta_value' ] );
+    }
+
+    /**
+     * @covers ::get_game_meta_array
+     */
+    public function test_get_game_meta_array_simple() {
+        $result = get_game_meta_array( 1, array( 1 ) );
+
+        $this->assertNotFalse( $result );
+        $this->assertEquals( 'test 1', $result[ 1 ][ 'meta_value' ] );
+    }
+
+    /**
+     * @covers ::get_game_meta_array
+     */
+    public function test_get_game_meta_array() {
+        $result = get_game_meta_array( 2, array( 2, 3 ) );
+
+        $this->assertNotFalse( $result );
+        $this->assertEquals( 'test 2', $result[ 2 ][ 'meta_value' ] );
+        $this->assertEquals( 'test 2 3', $result[ 3 ][ 'meta_value' ] );
     }
 
     /**
