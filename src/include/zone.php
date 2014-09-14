@@ -14,9 +14,9 @@ add_action( 'post_load', 'zone_init' );
 
 
 function get_zone( $id ) {
-    return get_game_meta( get_meta_type_zone, $id );
+    return get_game_meta( game_meta_type_zone, $id );
 }
 
 function get_zone_array( $id_array ) {
-    return get_game_meta_array( get_meta_type_zone, $id_array );
+    return get_game_meta_array( game_meta_type_zone, $id_array );
 }
