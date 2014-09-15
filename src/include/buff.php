@@ -2,11 +2,11 @@
 
 function buff_init() {
     if ( ! defined( 'game_meta_type_buff' ) ) {
-        define( 'game_meta_type_buff', 20020 );
+        define( 'game_meta_type_buff', 202 );
     }
 
     if ( ! defined( 'game_character_meta_type_buff' ) ) {
-        define( 'game_character_meta_type_buff', 20020 );
+        define( 'game_character_meta_type_buff', 202 );
     }
 }
 

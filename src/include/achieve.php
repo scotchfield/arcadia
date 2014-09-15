@@ -2,11 +2,11 @@
 
 function achievement_init() {
     if ( ! defined( 'game_meta_type_achievement' ) ) {
-        define( 'game_meta_type_achievement', 20000 );
+        define( 'game_meta_type_achievement', 200 );
     }
 
     if ( ! defined( 'game_character_meta_type_achievement' ) ) {
-        define( 'game_character_meta_type_achievement', 20000 );
+        define( 'game_character_meta_type_achievement', 200 );
     }
 }
 

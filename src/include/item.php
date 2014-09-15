@@ -2,11 +2,11 @@
 
 function item_init() {
     if ( ! defined( 'game_meta_type_item' ) ) {
-        define( 'game_meta_type_item', 20010 );
+        define( 'game_meta_type_item', 201 );
     }
 
     if ( ! defined( 'game_character_meta_type_item' ) ) {
-        define( 'game_character_meta_type_item', 20010 );
+        define( 'game_character_meta_type_item', 201 );
     }
 }
 
