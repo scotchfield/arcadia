@@ -18,6 +18,16 @@ class TestArcadiaAchieve extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @covers ::achievement_init
+     */
+    public function test_achievement_init() {
+        achievement_init();
+
+        $this->assertTrue( defined( 'game_meta_type_achievement' ) );
+        $this->assertTrue( defined( 'game_character_meta_type_achievement' ) );
+    }
+
+    /**
      * @covers ::get_achievement
      */
     public function test_get_achievement_empty() {
