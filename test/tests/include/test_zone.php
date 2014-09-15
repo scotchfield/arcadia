@@ -17,6 +17,16 @@ class TestArcadiaZone extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @covers ::zone_init
+     */
+    public function test_zone_init() {
+        zone_init();
+
+        $this->assertTrue( defined( 'game_meta_type_zone' ) );
+        $this->assertTrue( defined( 'game_character_meta_type_zone' ) );
+    }
+
+    /**
      * @covers ::get_zone
      */
     public function test_get_zone_simple() {

@@ -73,4 +73,32 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
         $this->assertFalse( $user );
     }
 
+    /**
+     * @covers ::game_user_logged_in
+     */
+    public function test_game_user_logged_in_none() {
+        $result = game_user_logged_in();
+
+        $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ::game_user_logged_in
+     */
+    public function test_game_user_logged_in_simple() {
+        $_SESSION[ 'u' ] = 1;
+
+        $result = game_user_logged_in();
+
+        $this->assertNotFalse( $result );
+        $this->assertEquals( 1, $result[ 'id' ] );
+
+        unset( $_SESSION[ 'u' ] );
+    }
+
+
+
+
+
+
 }
