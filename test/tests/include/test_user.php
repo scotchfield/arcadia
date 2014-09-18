@@ -177,4 +177,57 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
         $this->assertEquals( $max_characters, $user[ 'max_characters' ] );
     }
 
+    /**
+     * @covers ::is_user_dev
+     */
+    public function test_is_user_dev_empty() {
+        $this->assertFalse( is_user_dev( array() ) );
+    }
+
+    /**
+     * @covers ::is_user_dev
+     */
+    public function test_is_user_dev_no() {
+        $user = get_user_by_name( 'name' );
+
+        $this->assertFalse( is_user_dev( $user ) );
+    }
+
+    /**
+     * @covers ::is_user_dev
+     */
+    public function test_is_user_dev_yes() {
+        $user = get_user_by_name( 'name' );
+
+        $user[ 'status' ] = set_bit( $user[ 'status' ], game_user_status_dev );
+
+        $this->assertTrue( is_user_dev( $user ) );
+    }
+
+    /**
+     * @covers ::is_user_active
+     */
+    public function test_is_user_active_empty() {
+        $this->assertFalse( is_user_active( array() ) );
+    }
+
+    /**
+     * @covers ::is_user_active
+     */
+    public function test_is_user_active_no() {
+        $user = get_user_by_name( 'name' );
+
+        $this->assertFalse( is_user_active( $user ) );
+    }
+
+    /**
+     * @covers ::is_user_active
+     */
+    public function test_is_user_active_yes() {
+        $user = get_user_by_name( 'name' );
+
+        $user[ 'status' ] = set_bit( $user[ 'status' ], game_user_status_active );
+
+        $this->assertTrue( is_user_active( $user ) );
+    }
 }
