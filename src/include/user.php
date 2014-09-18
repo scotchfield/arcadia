@@ -24,6 +24,14 @@ function game_user_logged_in() {
 }
 
 function add_user( $name, $pass, $email, $send_email = TRUE ) {
+    $name = strip_tags( $name );
+
+    if ( FALSE != get_user_by_name( $name ) ) {
+        return FALSE;
+    } else if ( strlen( $name ) < 3 ) {
+        return FALSE;
+    }
+
     $activate = random_string( 10 );
 
     db_execute(
@@ -43,7 +51,7 @@ function add_user( $name, $pass, $email, $send_email = TRUE ) {
 
     if ( $send_email ) {
         mail( $email, GAME_NAME . ' Registration', $text,
-	      'From: ' . GAME_EMAIL );
+	          'From: ' . GAME_EMAIL );
     }
 
     return $user_id;

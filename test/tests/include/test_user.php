@@ -96,9 +96,85 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
         unset( $_SESSION[ 'u' ] );
     }
 
+    /**
+     * @covers ::add_user
+     */
+    public function test_add_user_simple() {
+        $name = 'test_name';
+        $pass = 'test_pass';
+        $email = 'test_email';
 
+        $user_id = add_user( $name, $pass, $email, $send_email = FALSE );
 
+        $this->assertGreaterThan( 1, $user_id );
+    }
 
+    /**
+     * @covers ::add_user
+     */
+    public function test_add_user_duplicate() {
+        $name = 'test_name';
+        $pass = 'test_pass';
+        $email = 'test_email';
 
+        $user_id = add_user( $name, $pass, $email, $send_email = FALSE );
+        $duplicate_user_id = add_user( $name, $pass, $email, $send_email = FALSE );
+
+        $this->assertFalse( $duplicate_user_id );
+    }
+
+    /**
+     * @covers ::add_user
+     */
+    public function test_add_user_deny_tags() {
+        $name = '<b>name</b>';
+        $pass = 'test_pass';
+        $email = 'test_email';
+
+        $user_id = add_user( $name, $pass, $email, $send_email = FALSE );
+
+        $this->assertFalse( $user_id );
+    }
+
+    /**
+     * @covers ::add_user
+     */
+    public function test_add_user_too_short() {
+        $name = 'a';
+        $pass = 'test_pass';
+        $email = 'test_email';
+
+        $user_id = add_user( $name, $pass, $email, $send_email = FALSE );
+
+        $this->assertFalse( $user_id );
+    }
+
+    /**
+     * @covers ::set_user_status
+     */
+    public function test_set_user_status_simple() {
+        $user = get_user_by_name( 'name' );
+
+        $status = '123';
+        set_user_status( $user[ 'id' ], $status );
+
+        $user = get_user_by_name( 'name' );
+
+        $this->assertEquals( $status, $user[ 'status' ] );
+    }
+
+    /**
+     * @covers ::set_user_max_characters
+     */
+    public function test_set_user_max_characters_simple() {
+        $user = get_user_by_name( 'name' );
+
+        $max_characters = '135';
+        set_user_max_characters( $user[ 'id' ], $max_characters );
+
+        $user = get_user_by_name( 'name' );
+
+        $this->assertEquals( $max_characters, $user[ 'max_characters' ] );
+    }
 
 }
