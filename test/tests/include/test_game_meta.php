@@ -85,4 +85,27 @@ class TestArcadiaGameMeta extends PHPUnit_Framework_TestCase {
         $this->assertEquals( 'test 1', $result[ 1 ][ 'meta_value' ] );
     }
 
+    /**
+     * @covers ::get_game_meta_all
+     */
+    public function test_get_game_meta_all_simple() {
+        $result = get_game_meta_all();
+
+        $this->assertNotFalse( $result );
+        $this->assertCount( 2, $result );
+    }
+
+    /**
+     * @covers ::update_game_meta
+     */
+    public function test_update_game_meta_simple() {
+        $new_value = 'update test 1';
+        update_game_meta( 1, 1, $new_value );
+
+        $result = get_game_meta( 1, 1 );
+
+        $this->assertNotFalse( $result );
+        $this->assertEquals( $new_value, $result[ 'meta_value' ] );
+    }
+
 }
