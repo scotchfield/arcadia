@@ -117,34 +117,41 @@ function add_character( $user_id, $name ) {
     return db_last_insert_id();
 }
 
-function user_create_character() {
+function user_create_character( $user_name = FALSE ) {
     global $user;
 
     if ( FALSE == $user ) {
-        return;
+        return FALSE;
     }
 
-    if ( ! isset( $_GET[ 'char_name' ] ) ) {
-        return;
+    if ( isset( $_GET[ 'char_name' ] ) ) {
+        $user_name = $_GET[ 'char_name' ];
     }
+
+    if ( FALSE == $user_name ) {
+        return FALSE;
+    }
+
 //todo: nonce
 //todo: max char count/user
 
-    $character_id = add_character( $user[ 'id' ], $_GET[ 'char_name' ] );
+    $character_id = add_character( $user[ 'id' ], $user_name );
 
     do_action( 'create_character',
                $args = array( 'character_id' => $character_id ) );
+
+    return TRUE;
 }
 
 function user_select_character() {
     global $user;
 
     if ( FALSE == $user ) {
-        return;
+        return FALSE;
     }
 
     if ( ! isset( $_GET[ 'id' ] ) ) {
-        return;
+        return FALSE;
     }
 
     $character = get_character_by_id( $_GET[ 'id' ] );

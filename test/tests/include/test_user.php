@@ -305,4 +305,69 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
         $this->assertEquals( $name, $char_obj[ 'character_name' ] );
     }
 
+    /**
+     * @covers ::user_create_character
+     */
+    public function test_user_create_character() {
+        $GLOBALS[ 'user' ] = get_user_by_id( 1 );
+
+        $name = 'test_create';
+
+        $result = user_create_character( $char_name = $name );
+
+        $char_obj = get_character_by_name( 'test_create' );
+
+        $this->assertTrue( $result );
+        $this->assertEquals( $name, $char_obj[ 'character_name' ] );
+
+        unset( $GLOBALS[ 'user' ] );
+    }
+
+    /**
+     * @covers ::user_create_character
+     */
+    public function test_user_create_character_no_user() {
+        $name = 'test_create';
+
+        $result = user_create_character( $char_name = $name );
+
+        $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ::user_create_character
+     */
+    public function test_user_create_character_get_name() {
+        $GLOBALS[ 'user' ] = get_user_by_id( 1 );
+
+        $name = 'test_create';
+        $_GET[ 'char_name' ] = $name;
+
+        $result = user_create_character();
+
+        $char_obj = get_character_by_name( $name );
+
+        $this->assertTrue( $result );
+        $this->assertEquals( $name, $char_obj[ 'character_name' ] );
+
+        unset( $_GET[ 'char_name' ] );
+
+        unset( $GLOBALS[ 'user' ] );
+    }
+
+    /**
+     * @covers ::user_create_character
+     */
+    public function test_user_create_character_no_name() {
+        $GLOBALS[ 'user' ] = get_user_by_id( 1 );
+
+        $result = user_create_character();
+
+        $this->assertFalse( $result );
+        
+        unset( $GLOBALS[ 'user' ] );
+    }
+
+
+
 }
