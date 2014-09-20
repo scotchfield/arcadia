@@ -351,7 +351,6 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
         $this->assertEquals( $name, $char_obj[ 'character_name' ] );
 
         unset( $_GET[ 'char_name' ] );
-
         unset( $GLOBALS[ 'user' ] );
     }
 
@@ -368,6 +367,88 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
         unset( $GLOBALS[ 'user' ] );
     }
 
+    /**
+     * @covers ::user_select_character
+     */
+    public function test_user_select_character() {
+        $GLOBALS[ 'user' ] = get_user_by_id( 1 );
+
+        $result = user_select_character( $id = 1 );
+
+        $char_obj = get_character_by_id( $_SESSION[ 'c' ] );
+
+        $this->assertTrue( $result );
+        $this->assertEquals( 1, $char_obj[ 'id' ] );
+
+        unset( $_SESSION[ 'c' ] );
+        unset( $GLOBALS[ 'user' ] );
+    }
+
+    /**
+     * @covers ::user_select_character
+     */
+    public function test_user_select_character_no_user() {
+        $result = user_select_character( $id = 1 );
+
+        $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ::user_select_character
+     */
+    public function test_user_select_character_get_id() {
+        $GLOBALS[ 'user' ] = get_user_by_id( 1 );
+
+        $_GET[ 'id' ] = 1;
+
+        $result = user_select_character();
+
+        $char_obj = get_character_by_id( $_SESSION[ 'c' ] );
+
+        $this->assertTrue( $result );
+        $this->assertEquals( 1, $char_obj[ 'id' ] );
+
+        unset( $_GET[ 'id' ] );
+        unset( $_SESSION[ 'c' ] );
+        unset( $GLOBALS[ 'user' ] );
+    }
+
+    /**
+     * @covers ::user_select_character
+     */
+    public function test_user_select_character_no_id() {
+        $GLOBALS[ 'user' ] = get_user_by_id( 1 );
+
+        $result = user_select_character();
+
+        $this->assertFalse( $result );
+
+        unset( $GLOBALS[ 'user' ] );
+    }
+
+    /**
+     * @covers ::user_select_character
+     */
+    public function test_user_select_character_invalid_character() {
+        $GLOBALS[ 'user' ] = get_user_by_id( 1 );
+
+        $result = user_select_character( $id = -1 );
+
+        $this->assertFalse( $result );
+
+        unset( $GLOBALS[ 'user' ] );
+    }
+
+    /**
+     * @covers ::user_clear_character
+     */
+    public function test_user_clear_character() {
+        $_SESSION[ 'c' ] = 1;
+
+        user_clear_character();
+
+        $this->assertArrayNotHasKey( 'c', $_SESSION );
+    }
 
 
 }

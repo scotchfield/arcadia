@@ -143,18 +143,22 @@ function user_create_character( $user_name = FALSE ) {
     return TRUE;
 }
 
-function user_select_character() {
+function user_select_character( $id = FALSE ) {
     global $user;
 
     if ( FALSE == $user ) {
         return FALSE;
     }
 
-    if ( ! isset( $_GET[ 'id' ] ) ) {
+    if ( isset( $_GET[ 'id' ] ) ) {
+        $id = $_GET[ 'id' ];
+    }
+
+    if ( FALSE == $id ) {
         return FALSE;
     }
 
-    $character = get_character_by_id( $_GET[ 'id' ] );
+    $character = get_character_by_id( $id );
 
     if ( ( FALSE == $character ) ||
          ( $character[ 'user_id' ] != $user[ 'id' ] ) ) {
@@ -167,15 +171,11 @@ function user_select_character() {
     $_SESSION[ 'c' ] = $character[ 'id' ];
 
     do_action( 'select_character' );
+
+    return TRUE;
 }
 
 function user_clear_character() {
-    global $user;
-
-    if ( FALSE == $user ) {
-        return;
-    }
-
     unset( $_SESSION[ 'c' ] );
 }
 
