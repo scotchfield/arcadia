@@ -1,25 +1,22 @@
 <?php
 
-define( 'game_mail_unread', 1 );
+function mail_init() {
+    if ( ! defined( 'game_meta_type_mail' ) ) {
+        define( 'game_meta_type_mail', 205 );
+    }
 
-function get_mail( $character_id ) {
-    /*return db_fetch_all(
-        'SELECT * FROM mail WHERE character_id_to=? ORDER BY created',
-        array( $character_id ) );*/
-    return array();
+    if ( ! defined( 'game_character_meta_type_mail' ) ) {
+        define( 'game_character_meta_type_mail', 205 );
+    }
 }
 
-function get_mail_by_id( $character_id, $id ) {
-    /*return db_fetch(
-        'SELECT * FROM mail WHERE character_id_to=? AND id=?',
-        array( $character_id, $id ) );*/
-    return array();
+add_action( 'post_load', 'mail_init' );
+
+
+function get_mail( $id ) {
+    return get_game_meta( game_meta_type_mail, $id );
 }
 
-function get_mail_unread_count( $character_id ) {
-    /*return db_fetch(
-        'SELECT COUNT( * ) FROM mail WHERE character_id_to=? AND status=?',
-        array( $character_id, game_mail_unread ) );*/
-    return 0;
+function get_mail_array( $id_array ) {
+    return get_game_meta_array( game_meta_type_mail, $id_array );
 }
-
