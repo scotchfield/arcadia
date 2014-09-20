@@ -10,10 +10,16 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
                 '( id, user_name, user_pass, email, registered, activation, status, max_characters ) ' .
                 'VALUES ( 1, "name", "pass", "email", "2014-01-01 01:00:00", "abc", 0, 1 )'
         );
+        
+        db_execute(
+            'INSERT INTO characters ( id, user_id, character_name ) ' .
+                'VALUES ( 1, 1, "character_name" )'
+        );
     }
 
     public function tearDown() {
-        db_execute( 'DELETE FROM users', array() );
+        db_execute( 'DELETE FROM characters' );
+        db_execute( 'DELETE FROM users' );
     }
 
     /**
@@ -230,4 +236,73 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
 
         $this->assertTrue( is_user_active( $user ) );
     }
+
+    /**
+     * @covers ::get_characters_for_user
+     */
+    public function test_get_characters_for_user_simple() {
+        $char_obj = get_characters_for_user( 1 );
+
+        $this->assertCount( 1, $char_obj );
+        $this->assertEquals( 'character_name', $char_obj[ 1 ][ 'character_name' ] );
+    }
+
+    /**
+     * @covers ::get_characters_for_user
+     */
+    public function test_get_characters_for_user_none() {
+        $char_obj = get_characters_for_user( 0 );
+
+        $this->assertEmpty( $char_obj );
+    }
+
+    /**
+     * @covers ::get_character_by_name
+     */
+    public function test_get_character_by_name_simple() {
+        $char_obj = get_character_by_name( 'character_name' );
+
+        $this->assertEquals( 'character_name', $char_obj[ 'character_name' ] );
+    }
+
+    /**
+     * @covers ::get_character_by_name
+     */
+    public function test_get_character_by_name_none() {
+        $char_obj = get_character_by_name( '' );
+
+        $this->assertFalse( $char_obj );
+    }
+
+    /**
+     * @covers ::get_character_by_id
+     */
+    public function test_get_character_by_id_simple() {
+        $char_obj = get_character_by_id( 1 );
+
+        $this->assertEquals( 'character_name', $char_obj[ 'character_name' ] );
+    }
+
+    /**
+     * @covers ::get_character_by_id
+     */
+    public function test_get_character_by_id_none() {
+        $char_obj = get_character_by_id( 0 );
+
+        $this->assertFalse( $char_obj );
+    }
+
+    /**
+     * @covers ::add_character
+     */
+    public function test_add_character() {
+        $name = 'new test name';
+
+        $char_id = add_character( 1, $name );
+
+        $char_obj = get_character_by_id( $char_id );
+
+        $this->assertEquals( $name, $char_obj[ 'character_name' ] );
+    }
+
 }

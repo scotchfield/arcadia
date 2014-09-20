@@ -95,7 +95,8 @@ function is_user_active( $user ) {
 
 function get_characters_for_user( $user_id ) {
     return db_fetch_all(
-        'SELECT * FROM characters WHERE user_id=?', array( $user_id ) );
+        'SELECT * FROM characters WHERE user_id=?',
+        array( $user_id ), $key_assoc = 'id' );
 }
 
 function get_character_by_name( $name ) {
