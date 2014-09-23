@@ -11,7 +11,7 @@ function do_action( $action_id, $args = array() ) {
     global $game_actions;
 
     foreach ( $game_actions as $action ) {
-        if ( ! strcmp( $action[ 0 ], $action_id ) ) {
+        if ( $action[ 0 ] == $action_id ) {
             if ( 0 == count( $args ) ) {
                 $arg_obj = array( $action[ 2 ] );
             } else {
@@ -39,9 +39,21 @@ function remove_action( $action_id, $function ) {
     global $game_actions;
 
     foreach ( $game_actions as $k => $action ) {
-        if ( ( ! strcmp( $action[ 0 ], $action_id ) ) &&
-             ( ! strcmp( $action[ 1 ], $function ) ) ) {
+        if ( ( $action[ 0 ] == $action_id ) &&
+             ( $action[ 1 ] == $function ) ) {
             unset( $game_actions[ $k ] );
         }
     }
+}
+
+function action_exists( $action_id ) {
+    global $game_actions;
+
+    foreach ( $game_actions as $action ) {
+        if ( $action_id == $action[ 0 ] ) {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
 }
