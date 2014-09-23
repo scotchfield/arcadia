@@ -21,8 +21,6 @@ function eval_predicate( $predicate, $param_obj ) {
 
     if ( in_array( $predicate, $valid_predicates ) ) {
         return call_user_func_array( $predicate, $param_obj );
-    } else {
-        debug_print( 'Call to invalid predicate: ' . $predicate );
     }
 
     return FALSE;
@@ -33,8 +31,6 @@ function eval_function( $function, $param_obj ) {
 
     if ( in_array( $function, $valid_functions ) ) {
         return call_user_func_array( $function, $param_obj );
-    } else {
-        debug_print( 'Call to invalid function: ' . $function );
     }
 
     return FALSE;
