@@ -22,7 +22,8 @@ function get_achievement( $id ) {
 function get_all_achievements() {
     return db_fetch_all(
         'SELECT * FROM game_meta WHERE key_type=?',
-        array( game_meta_type_achievement ) );
+        array( game_meta_type_achievement ),
+        $assoc = 'meta_key' );
 }
 
 function get_achievements( $character_id ) {

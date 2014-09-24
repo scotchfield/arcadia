@@ -53,7 +53,7 @@ class TestArcadiaAchieve extends PHPUnit_Framework_TestCase {
         $achievements = get_all_achievements();
 
         $this->assertCount( 1, $achievements );
-        $this->assertEquals( 'test', $achievements[ 0 ][ 'meta_value' ] );
+        $this->assertEquals( 'test', $achievements[ 1 ][ 'meta_value' ] );
     }
 
     /**
