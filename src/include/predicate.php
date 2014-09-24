@@ -3,24 +3,24 @@
 global $valid_predicates;
 if ( ! isset( $valid_predicates ) ) {
     $valid_predicates = array(
-        'is_character_quest_active',
-        'is_character_quest_completed',
-        'is_character_quest_meta_diff',
+        'is_character_quest_active' => 'is_character_quest_active',
+        'is_character_quest_completed' => 'is_character_quest_completed',
+        'is_character_quest_meta_diff' => 'is_character_quest_meta_diff',
     );
 }
 
 global $valid_functions;
 if ( ! isset( $valid_functions ) ) {
     $valid_functions = array(
-        'character_meta',
+        'character_meta' => 'character_meta',
     );
 }
 
 function eval_predicate( $predicate, $param_obj ) {
     global $valid_predicates;
 
-    if ( in_array( $predicate, $valid_predicates ) ) {
-        return call_user_func_array( $predicate, $param_obj );
+    if ( isset( $valid_predicates[ $predicate ] ) ) {
+        return call_user_func_array( $valid_predicates[ $predicate ], $param_obj );
     }
 
     return FALSE;
@@ -29,8 +29,8 @@ function eval_predicate( $predicate, $param_obj ) {
 function eval_function( $function, $param_obj ) {
     global $valid_functions;
 
-    if ( in_array( $function, $valid_functions ) ) {
-        return call_user_func_array( $function, $param_obj );
+    if ( isset( $valid_functions[ $function ] ) ) {
+        return call_user_func_array( $valid_functions[ $function ], $param_obj );
     }
 
     return FALSE;
