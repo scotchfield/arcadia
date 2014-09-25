@@ -9,6 +9,7 @@ require( GAME_PATH . 'include/buff.php' );
 require( GAME_PATH . 'include/common.php' );
 require( GAME_PATH . 'include/cron.php' );
 require( GAME_PATH . 'include/db.php' );
+require( GAME_PATH . 'include/heartbeat.php' );
 require( GAME_PATH . 'include/item.php' );
 require( GAME_PATH . 'include/mail.php' );
 require( GAME_PATH . 'include/predicate.php' );
