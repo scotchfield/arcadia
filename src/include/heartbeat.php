@@ -27,7 +27,7 @@ function add_heartbeat() {
         '( character_id, key_type, meta_key, meta_value ) VALUES ' .
         '( ?, ?, 0, ? )',
         array( $character[ 'id' ], game_character_meta_type_heartbeat,
-               time() )
+               '{"t":' . time() . '}' )
     );
 }
 
