@@ -20,8 +20,14 @@ require( GAME_PATH . 'include/zone.php' );
 require( GAME_PATH . 'game-dashboard.php' );
 
 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
+if ( function_exists( 'session_status' ) ) {
+    if ( session_status() == PHP_SESSION_NONE ) {
+        session_start();
+    }
+} else {
+    if ( session_id() == '' ) {
+        session_start();
+    }
 }
 
 $GLOBALS[ 'user' ] = game_user_logged_in();
