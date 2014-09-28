@@ -12,7 +12,7 @@ function heartbeat_init() {
 
 add_action( 'post_load', 'heartbeat_init' );
 
-function add_heartbeat() {
+function add_heartbeat( $meta_value = array() ) {
     global $character;
 
     if ( ! isset( $character ) || FALSE == $character ) {
@@ -25,9 +25,9 @@ function add_heartbeat() {
 
     return db_execute( 'INSERT INTO character_meta ' .
         '( character_id, key_type, meta_key, meta_value ) VALUES ' .
-        '( ?, ?, 0, ? )',
+        '( ?, ?, ?, ? )',
         array( $character[ 'id' ], game_character_meta_type_heartbeat,
-               '{"t":' . time() . '}' )
+               time(), json_encode( $meta_value, JSON_FORCE_OBJECT ) )
     );
 }
 
