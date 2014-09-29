@@ -37,3 +37,16 @@ function get_all_heartbeats() {
         array( game_character_meta_type_heartbeat )
     );
 }
+
+function get_heartbeat_characters( $time_delta ) {
+    $time_value = time() - $time_delta;
+
+    return db_fetch_all(
+        'SELECT c.id, c.character_name, m.meta_key, m.meta_value ' .
+            'FROM characters AS c, character_meta AS m ' .
+            'WHERE c.id=m.character_id AND meta_key >= ? ' .
+            'ORDER BY c.character_name ASC',
+        array( $time_value ),
+        $assoc = 'id'
+    );
+}
