@@ -31,5 +31,5 @@ do_action( 'post_page_content' );
 do_action( 'game_footer' );
 
 $time_diff = microtime( $get_as_float = TRUE ) - $time_start;
-debug_print( '<p>Page rendered in ' .
-             round( $time_diff, $precision = 4 ) . 's</p>' );
+//debug_print( '<p>Page rendered in ' .
+//             round( $time_diff, $precision = 4 ) . 's</p>' );
