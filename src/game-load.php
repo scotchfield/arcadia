@@ -11,6 +11,7 @@ require( GAME_PATH . 'include/cron.php' );
 require( GAME_PATH . 'include/db.php' );
 require( GAME_PATH . 'include/heartbeat.php' );
 require( GAME_PATH . 'include/item.php' );
+require( GAME_PATH . 'include/log.php' );
 require( GAME_PATH . 'include/mail.php' );
 require( GAME_PATH . 'include/predicate.php' );
 require( GAME_PATH . 'include/quest.php' );
