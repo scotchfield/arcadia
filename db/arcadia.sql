@@ -22,6 +22,14 @@ CREATE TABLE `game_meta` (
   KEY `key_type` (`key_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE `logs` (
+  `log_type` int(10) unsigned NOT NULL,
+  `char_id` int(10) unsigned NOT NULL,
+  `timestamp` int(10) unsigned NOT NULL,
+  `meta_value` longtext NOT NULL,
+  KEY `log_type` (`log_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_name` varchar(64) NOT NULL,
