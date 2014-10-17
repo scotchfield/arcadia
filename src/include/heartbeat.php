@@ -16,7 +16,7 @@ function add_heartbeat( $meta_value = array() ) {
     global $character;
 
     if ( ! isset( $character ) || FALSE == $character ) {
-        return;
+        return FALSE;
     }
 
     db_execute( 'DELETE FROM character_meta ' .
