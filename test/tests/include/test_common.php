@@ -229,4 +229,60 @@ class TestArcadiaCommon extends PHPUnit_Framework_TestCase {
         $this->assertEquals( '11th', number_with_suffix( 11 ) );
     }
 
+    /**
+     * @covers ::get_if_plural
+     */
+    public function test_get_if_plural_no() {
+        $this->assertEquals( 'word', get_if_plural( 1, 'word' ) );
+    }
+
+    /**
+     * @covers ::get_if_plural
+     */
+    public function test_get_if_plural_yes() {
+        $this->assertEquals( 'words', get_if_plural( 2, 'word' ) );
+    }
+
+    /**
+     * @covers ::time_round
+     */
+    public function test_time_round_negative() {
+        $this->assertEquals( '', time_round( -1 ) );
+    }
+
+    /**
+     * @covers ::time_round
+     */
+    public function test_time_round_zero() {
+        $this->assertEquals( '0 seconds', time_round( 0 ) );
+    }
+
+    /**
+     * @covers ::time_round
+     */
+    public function test_time_round_one() {
+        $this->assertEquals( '1 second', time_round( 1 ) );
+    }
+
+    /**
+     * @covers ::time_round
+     */
+    public function test_time_round_minute() {
+        $this->assertEquals( '1 minute', time_round( 60 ) );
+    }
+
+    /**
+     * @covers ::time_round
+     */
+    public function test_time_round_hour() {
+        $this->assertEquals( '1 hour', time_round( 60 * 60 ) );
+    }
+
+    /**
+     * @covers ::time_round
+     */
+    public function test_time_round_day() {
+        $this->assertEquals( '1 day', time_round( 60 * 60 * 24 ) );
+    }
+
 }
