@@ -194,4 +194,39 @@ class TestArcadiaCommon extends PHPUnit_Framework_TestCase {
         $this->assertGreaterThan( 0, $nonce_tick );
     }
 
+    /**
+     * @covers ::number_with_suffix
+     */
+    public function test_number_with_suffix_zero() {
+        $this->assertEquals( '0th', number_with_suffix( 0 ) );
+    }
+
+    /**
+     * @covers ::number_with_suffix
+     */
+    public function test_number_with_suffix_one() {
+        $this->assertEquals( '1st', number_with_suffix( 1 ) );
+    }
+
+    /**
+     * @covers ::number_with_suffix
+     */
+    public function test_number_with_suffix_two() {
+        $this->assertEquals( '2nd', number_with_suffix( 2 ) );
+    }
+
+    /**
+     * @covers ::number_with_suffix
+     */
+    public function test_number_with_suffix_three() {
+        $this->assertEquals( '3rd', number_with_suffix( 3 ) );
+    }
+
+    /**
+     * @covers ::number_with_suffix
+     */
+    public function test_number_with_suffix_eleven() {
+        $this->assertEquals( '11th', number_with_suffix( 11 ) );
+    }
+
 }
