@@ -3,16 +3,18 @@
 class TestArcadiaGame extends PHPUnit_Framework_TestCase {
 
     /**
-     * @covers ::game_set_action
-     * @covers ::game_get_action
+     * @covers Arcadia_Game::get_action
+     * @covers Arcadia_Game::set_action
      */
     public function test_game_set_action() {
-    	$original = game_get_action();
+        $game = new Arcadia_Game();
+
+    	$original = $game->get_action();
 
     	$test = 'test_action';
-    	game_set_action( $test );
+        $game->set_action( $test );
 
-    	$result = game_get_action();
+    	$result = $game->get_action();
 
     	$this->assertNotEquals( $original, $result );
     	$this->assertEquals( $test, $result );
