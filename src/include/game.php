@@ -1,11 +1,15 @@
 <?php
 
-$GLOBALS[ 'game_action' ] = '';
+class Arcadia_Game {
+    private $game_action = '';
 
-function game_set_action( $action ) {
-    $GLOBALS[ 'game_action' ] = $action;
+    public function get_action() {
+        return $this->game_action;
+    }
+
+    public function set_action( $action ) {
+        $this->game_action = $action;
+    }
 }
 
-function game_get_action() {
-    return $GLOBALS[ 'game_action' ];
-}
+$GLOBALS[ 'game' ] = new Arcadia_Game();

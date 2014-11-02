@@ -2,6 +2,8 @@
 
 $time_start = microtime( $get_as_float = TRUE );
 
+global $game;
+
 require( dirname( __FILE__ ) . '/game-config.php' );
 require( GAME_PATH . 'game-load.php' );
 
@@ -14,11 +16,11 @@ if ( FALSE != $character ) {
 do_action( 'character_load' );
 
 if ( isset( $_GET[ 'action' ] ) ) {
-    game_set_action( $_GET[ 'action' ] );
+    $game->set_action( $_GET[ 'action' ] );
 }
 do_action( 'action_set' );
 
-if ( '' == game_get_action() ) {
+if ( '' == $game->get_action() ) {
     do_action( 'set_default_action' );
 }
 
