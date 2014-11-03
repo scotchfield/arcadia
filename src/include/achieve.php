@@ -62,5 +62,3 @@ class ArcadiaAchievement {
     }
 
 }
-
-$GLOBALS[ 'game' ]->set_component( 'achievement', new ArcadiaAchievement() );
