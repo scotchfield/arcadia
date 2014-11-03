@@ -1,62 +1,66 @@
 <?php
 
-function achievement_init() {
-    if ( ! defined( 'game_meta_type_achievement' ) ) {
-        define( 'game_meta_type_achievement', 200 );
+class ArcadiaAchievement {
+
+    private $flag_game_meta = 200;
+    private $flag_character_meta = 200;
+
+    public function get_flag_game_meta() {
+        return $this->flag_game_meta;
     }
 
-    if ( ! defined( 'game_character_meta_type_achievement' ) ) {
-        define( 'game_character_meta_type_achievement', 200 );
-    }
-}
-
-add_action( 'post_load', 'achievement_init' );
-
-
-function get_achievement( $id ) {
-    return db_fetch(
-        'SELECT * FROM game_meta WHERE key_type=? AND meta_key=?',
-        array( game_meta_type_achievement, $id ) );
-}
-
-function get_all_achievements() {
-    return db_fetch_all(
-        'SELECT * FROM game_meta WHERE key_type=?',
-        array( game_meta_type_achievement ),
-        $assoc = 'meta_key' );
-}
-
-function get_achievements( $character_id ) {
-    return db_fetch_all(
-        'SELECT a.meta_key AS id, a.meta_value AS meta_value, ' .
-            'c.meta_value AS timestamp ' .
-            'FROM game_meta AS a, character_meta AS c ' .
-            'WHERE a.key_type=? AND c.key_type=? AND ' .
-            'a.meta_key=c.meta_key AND c.character_id=? ORDER BY a.meta_key',
-        array( game_meta_type_achievement,
-               game_character_meta_type_achievement,
-               $character_id ),
-        'id'
-    );
-}
-
-function award_achievement( $achievement_id ) {
-    global $character;
-
-    if ( FALSE == $character ) {
-        return FALSE;
+    public function get_flag_character_meta() {
+        return $this->flag_character_meta;
     }
 
-    if ( isset( $character[ 'meta' ][ game_meta_type_achievement ][
-                    $achievement_id ] ) ) {
-        return FALSE;
+    public function get_achievement( $id ) {
+        return db_fetch(
+            'SELECT * FROM game_meta WHERE key_type=? AND meta_key=?',
+            array( $this->flag_game_meta, $id ) );
     }
 
-    add_character_meta( $character[ 'id' ], game_meta_type_achievement,
-        $achievement_id, time() );
+    public function get_all_achievements() {
+        return db_fetch_all(
+            'SELECT * FROM game_meta WHERE key_type=?',
+            array( $this->flag_game_meta ),
+            $assoc = 'meta_key' );
+    }
 
-    do_action( 'award_achievement',
-               array( 'achievement_id' => $achievement_id ) );
+    public function get_achievements( $character_id ) {
+        return db_fetch_all(
+            'SELECT a.meta_key AS id, a.meta_value AS meta_value, ' .
+                'c.meta_value AS timestamp ' .
+                'FROM game_meta AS a, character_meta AS c ' .
+                'WHERE a.key_type=? AND c.key_type=? AND ' .
+                'a.meta_key=c.meta_key AND c.character_id=? ORDER BY a.meta_key',
+            array( $this->flag_game_meta,
+                   $this->flag_character_meta,
+                   $character_id ),
+            'id'
+        );
+    }
 
-    return TRUE;
+    function award_achievement( $achievement_id ) {
+        global $character;
+
+        if ( FALSE == $character ) {
+            return FALSE;
+        }
+
+        if ( isset( $character[ 'meta' ][ $this->flag_game_meta ][
+                        $achievement_id ] ) ) {
+            return FALSE;
+        }
+
+        add_character_meta( $character[ 'id' ], $this->flag_game_meta,
+            $achievement_id, time() );
+
+        do_action( 'award_achievement',
+                   array( 'achievement_id' => $achievement_id ) );
+
+        return TRUE;
+    }
+
 }
+
+$GLOBALS[ 'game' ]->set_component( 'achievement', new ArcadiaAchievement() );
