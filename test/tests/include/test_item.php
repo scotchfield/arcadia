@@ -3,13 +3,21 @@
 class TestArcadiaItem extends PHPUnit_Framework_TestCase {
 
     /**
-     * @covers ::item_init
+     * @covers ArcadiaItem::get_flag_game_meta
      */
-    public function test_item_init() {
-        item_init();
+    public function test_buff_get_flag_game_meta() {
+        $component = new ArcadiaItem();
 
-        $this->assertTrue( defined( 'game_meta_type_item' ) );
-        $this->assertTrue( defined( 'game_character_meta_type_item' ) );
+        $this->assertNotNull( $component->get_flag_game_meta() );
+    }
+
+    /**
+     * @covers ArcadiaItem::get_flag_character_meta
+     */
+    public function test_buff_get_flag_character_meta() {
+        $component = new ArcadiaItem();
+
+        $this->assertNotNull( $component->get_flag_character_meta() );
     }
 
 }
