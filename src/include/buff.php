@@ -1,16 +1,10 @@
 <?php
 
-class ArcadiaBuff {
+class ArcadiaBuff extends ArcadiaComponent {
 
-    private $flag_game_meta = 202;
-    private $flag_character_meta = 202;
-
-    public function get_flag_game_meta() {
-        return $this->flag_game_meta;
-    }
-
-    public function get_flag_character_meta() {
-        return $this->flag_character_meta;
+    function __construct() {
+        $this->flag_game_meta = 202;
+        $this->flag_character_meta = 202;
     }
 
     public function get_buff( $id ) {

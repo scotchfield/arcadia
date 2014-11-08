@@ -1,16 +1,10 @@
 <?php
 
-class ArcadiaAchievement {
+class ArcadiaAchievement extends ArcadiaComponent {
 
-    private $flag_game_meta = 200;
-    private $flag_character_meta = 200;
-
-    public function get_flag_game_meta() {
-        return $this->flag_game_meta;
-    }
-
-    public function get_flag_character_meta() {
-        return $this->flag_character_meta;
+    function __construct() {
+        $this->flag_game_meta = 200;
+        $this->flag_character_meta = 200;
     }
 
     public function get_achievement( $id ) {
