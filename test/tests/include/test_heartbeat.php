@@ -3,11 +3,13 @@
 class TestArcadiaHeartbeat extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
+        $component = new ArcadiaHeartbeat();
+
         $GLOBALS[ 'character' ] = array( 'id' => 1 );
 
         db_execute( 'DELETE FROM character_meta WHERE character_id=1 ' .
             'AND key_type=?',
-            array( game_character_meta_type_heartbeat ) );
+            array( $component->get_flag_character_meta() ) );
     }
 
     public function tearDown() {
@@ -15,46 +17,60 @@ class TestArcadiaHeartbeat extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ::heartbeat_init
+     * @covers ArcadiaHeartbeat::get_flag_game_meta
      */
-    public function test_heartbeat_init() {
-        heartbeat_init();
+    public function test_buff_get_flag_game_meta() {
+        $component = new ArcadiaHeartbeat();
 
-        $this->assertTrue( defined( 'game_meta_type_heartbeat' ) );
-        $this->assertTrue( defined( 'game_character_meta_type_heartbeat' ) );
+        $this->assertNotNull( $component->get_flag_game_meta() );
     }
 
     /**
-     * @covers ::add_heartbeat
+     * @covers ArcadiaHeartbeat::get_flag_character_meta
+     */
+    public function test_buff_get_flag_character_meta() {
+        $component = new ArcadiaHeartbeat();
+
+        $this->assertNotNull( $component->get_flag_character_meta() );
+    }
+
+    /**
+     * @covers ArcadiaHeartbeat::add_heartbeat
      */
     public function test_add_heartbeat_no_character() {
         unset( $GLOBALS[ 'character' ] );
 
-        $result = add_heartbeat();
+        $component = new ArcadiaHeartbeat();
+
+        $result = $component->add_heartbeat();
 
         $this->assertFalse( $result );
     }
 
     /**
-     * @covers ::add_heartbeat
+     * @covers ArcadiaHeartbeat::add_heartbeat
      */
     public function test_add_heartbeat_simple() {
-        $result = add_heartbeat();
+        $component = new ArcadiaHeartbeat();
+
+        $result = $component->add_heartbeat();
 
         $this->assertTrue( $result );
     }
 
     /**
-     * @covers ::add_heartbeat
-     * @covers ::get_all_heartbeats
+     * @covers ArcadiaHeartbeat::add_heartbeat
+     * @covers ArcadiaHeartbeat::get_all_heartbeats
      */
     public function test_get_all_heartbeats_add_one() {
-        $result = get_all_heartbeats();
+        $component = new ArcadiaHeartbeat();
+
+        $result = $component->get_all_heartbeats();
 
         $this->assertCount( 0, $result );
 
-        add_heartbeat();
-        $result = get_all_heartbeats();
+        $component->add_heartbeat();
+        $result = $component->get_all_heartbeats();
 
         $this->assertCount( 1, $result );
     }
