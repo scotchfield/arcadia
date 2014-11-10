@@ -113,4 +113,16 @@ class TestArcadiaAchieve extends PHPUnit_Framework_TestCase {
                 $component->get_flag_game_meta() ] );
     }
 
+   /**
+     * @covers ArcadiaAchievement::award_achievement
+     */
+    public function test_award_achievement_double_false() {
+        $component = new ArcadiaAchievement();
+
+        $component->award_achievement( 1 );
+        $result = $component->award_achievement( 1 );
+
+        $this->assertFalse( $result );
+    }
+
 }
