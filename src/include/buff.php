@@ -35,7 +35,7 @@ class ArcadiaBuff extends ArcadiaComponent {
         global $character;
 
         if ( FALSE == $character ) {
-            return;
+            return FALSE;
         }
 
         ensure_character_meta( $character[ 'id' ], $this->flag_game_meta,
@@ -45,6 +45,8 @@ class ArcadiaBuff extends ArcadiaComponent {
 
         do_action( 'award_buff',
                    array( 'buff_id' => $buff_id ) );
+
+        return TRUE;
     }
 
     public function check_buff( $buff_id ) {
