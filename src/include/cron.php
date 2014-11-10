@@ -1,28 +1,28 @@
 <?php
 
-function cron_init() {
-    if ( ! defined( 'game_meta_type_cron' ) ) {
-        define( 'game_meta_type_cron', 10000 );
+class ArcadiaCron extends ArcadiaComponent {
+
+    function __construct() {
+        $this->flag_game_meta = 1000;
+        $this->flag_character_meta = 1000;
     }
 
-    do_crons();
-}
-
-add_action( 'post_load', 'cron_init' );
-
-function get_crons() {
-    return db_fetch_all(
-        'SELECT * FROM game_meta WHERE key_type=?',
-        array( game_meta_type_cron ),
-        'meta_key' );
-}
-
-function do_crons() {
-    $cron_obj = get_crons();
-
-    foreach ( $cron_obj as $cron ) {
-//        debug_print( $cron );
+    public function get_crons() {
+        return db_fetch_all(
+            'SELECT * FROM game_meta WHERE key_type=?',
+            array( $this->flag_game_meta ),
+            'meta_key' );
     }
-//todo: process crons, return FALSE if something goes wrong
-    return TRUE;
+
+    public function do_crons() {
+        $cron_obj = $this->get_crons();
+
+        foreach ( $cron_obj as $cron ) {
+            // debug_print( $cron );
+        }
+
+        // todo: process crons, return FALSE if something goes wrong
+        return TRUE;
+    }
+
 }
