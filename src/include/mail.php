@@ -1,22 +1,18 @@
 <?php
 
-function mail_init() {
-    if ( ! defined( 'game_meta_type_mail' ) ) {
-        define( 'game_meta_type_mail', 205 );
+class ArcadiaMail extends ArcadiaComponent {
+
+    function __construct() {
+        $this->flag_game_meta = 205;
+        $this->flag_character_meta = 205;
     }
 
-    if ( ! defined( 'game_character_meta_type_mail' ) ) {
-        define( 'game_character_meta_type_mail', 205 );
+    public function get_mail( $id ) {
+        return get_game_meta( $this->flag_game_meta, $id );
     }
-}
 
-add_action( 'post_load', 'mail_init' );
+    public function get_mail_array( $id_array ) {
+        return get_game_meta_array( $this->flag_game_meta, $id_array );
+    }
 
-
-function get_mail( $id ) {
-    return get_game_meta( game_meta_type_mail, $id );
-}
-
-function get_mail_array( $id_array ) {
-    return get_game_meta_array( game_meta_type_mail, $id_array );
 }

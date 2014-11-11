@@ -3,12 +3,15 @@
 class TestArcadiaMail extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
+        $component = new ArcadiaMail();
+
         do_action( 'post_load' );
 
         db_execute(
             'INSERT INTO game_meta ( key_type, meta_key, meta_value ) ' .
                 'VALUES ( ?, 1, "mail 1" ), ( ?, 2, "mail 2" )',
-            array( game_meta_type_mail, game_meta_type_mail )
+            array( $component->get_flag_game_meta(),
+                   $component->get_flag_game_meta() )
         );
     }
 
@@ -17,30 +20,44 @@ class TestArcadiaMail extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ::mail_init
+     * @covers ArcadiaMail::__construct
+     * @covers ArcadiaMail::get_flag_game_meta
      */
-    public function test_mail_init() {
-        mail_init();
+    public function test_mail_get_flag_game_meta() {
+        $component = new ArcadiaMail();
 
-        $this->assertTrue( defined( 'game_meta_type_mail' ) );
-        $this->assertTrue( defined( 'game_character_meta_type_mail' ) );
+        $this->assertNotNull( $component->get_flag_game_meta() );
     }
 
     /**
-     * @covers ::get_mail
+     * @covers ArcadiaMail::__construct
+     * @covers ArcadiaMail::get_flag_character_meta
+     */
+    public function test_mail_get_flag_character_meta() {
+        $component = new ArcadiaMail();
+
+        $this->assertNotNull( $component->get_flag_character_meta() );
+    }
+
+    /**
+     * @covers ArcadiaMail::get_mail
      */
     public function test_get_mail_simple() {
-        $result = get_mail( 1 );
+        $component = new ArcadiaMail();
+
+        $result = $component->get_mail( 1 );
 
         $this->assertNotFalse( $result );
         $this->assertEquals( 'mail 1', $result[ 'meta_value' ] );
     }
 
     /**
-     * @covers ::get_mail_array
+     * @covers ArcadiaMail::get_mail_array
      */
     public function test_get_mail_array() {
-        $result = get_mail_array( array( 1, 2 ) );
+        $component = new ArcadiaMail();
+
+        $result = $component->get_mail_array( array( 1, 2 ) );
 
         $this->assertNotFalse( $result );
         $this->assertEquals( 'mail 1', $result[ 1 ][ 'meta_value' ] );
