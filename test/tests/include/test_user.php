@@ -450,5 +450,28 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
         $this->assertArrayNotHasKey( 'c', $_SESSION );
     }
 
+    /**
+     * @covers ::game_character_active
+     */
+    public function test_game_character_active_yes() {
+        $_SESSION[ 'c' ] = 1;
+
+        $result = game_character_active();
+
+        $this->assertNotFalse( $result );
+        $this->assertEquals( 1, $result[ 'id' ] );
+
+        unset( $_SESSION[ 'c' ] );
+    }
+
+    /**
+     * @covers ::game_character_active
+     */
+    public function test_game_character_active_no() {
+        $result = game_character_active();
+
+        $this->assertFalse( $result );
+    }
+
 
 }
