@@ -1,56 +1,56 @@
 <?php
 
-global $game_actions;
+global $game_states;
 
-if ( ! isset( $game_actions ) ) {
-    $game_actions = array();
+if ( ! isset( $game_states ) ) {
+    $game_states = array();
 }
 
 
-function do_action( $action_id, $args = array() ) {
-    global $game_actions;
+function do_state( $state_id, $args = array() ) {
+    global $game_states;
 
-    foreach ( $game_actions as $action ) {
-        if ( $action[ 0 ] == $action_id ) {
+    foreach ( $game_states as $state ) {
+        if ( $state[ 0 ] == $state_id ) {
             if ( 0 == count( $args ) ) {
-                $arg_obj = array( $action[ 2 ] );
+                $arg_obj = array( $state[ 2 ] );
             } else {
-                $arg_obj = array( array_merge( $action[ 2 ], $args ) );
+                $arg_obj = array( array_merge( $state[ 2 ], $args ) );
             }
 
-            call_user_func_array( $action[ 1 ], $arg_obj );
+            call_user_func_array( $state[ 1 ], $arg_obj );
         }
     }
 }
 
-function add_action( $action_id, $function, $args = array() ) {
-    global $game_actions;
+function add_state( $state_id, $function, $args = array() ) {
+    global $game_states;
 
-    $game_actions[] = array( $action_id, $function, $args );
+    $game_states[] = array( $state_id, $function, $args );
 }
 
-function add_action_priority( $action_id, $function, $args = array() ) {
-    global $game_actions;
+function add_state_priority( $state_id, $function, $args = array() ) {
+    global $game_states;
 
-    array_unshift( $game_actions, array( $action_id, $function, $args ) );
+    array_unshift( $game_states, array( $state_id, $function, $args ) );
 }
 
-function remove_action( $action_id, $function ) {
-    global $game_actions;
+function remove_state( $state_id, $function ) {
+    global $game_states;
 
-    foreach ( $game_actions as $k => $action ) {
-        if ( ( $action[ 0 ] == $action_id ) &&
-             ( $action[ 1 ] == $function ) ) {
-            unset( $game_actions[ $k ] );
+    foreach ( $game_states as $k => $state ) {
+        if ( ( $state[ 0 ] == $state_id ) &&
+             ( $state[ 1 ] == $function ) ) {
+            unset( $game_states[ $k ] );
         }
     }
 }
 
-function action_exists( $action_id ) {
-    global $game_actions;
+function state_exists( $state_id ) {
+    global $game_states;
 
-    foreach ( $game_actions as $action ) {
-        if ( $action_id == $action[ 0 ] ) {
+    foreach ( $game_states as $state ) {
+        if ( $state_id == $state[ 0 ] ) {
             return TRUE;
         }
     }

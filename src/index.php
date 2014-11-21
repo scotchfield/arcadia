@@ -7,30 +7,30 @@ global $game;
 require( dirname( __FILE__ ) . '/game-config.php' );
 require( GAME_PATH . 'game-load.php' );
 
-do_action( 'post_load' );
+do_state( 'post_load' );
 
 $GLOBALS[ 'character' ] = game_character_active();
 if ( FALSE != $character ) {
     $character[ 'meta' ] = get_character_meta( $character[ 'id' ] );
 }
-do_action( 'character_load' );
+do_state( 'character_load' );
 
-if ( isset( $_GET[ 'action' ] ) ) {
-    $game->set_action( $_GET[ 'action' ] );
+if ( isset( $_GET[ 'state' ] ) ) {
+    $game->set_state( $_GET[ 'state' ] );
 }
-do_action( 'action_set' );
+do_state( 'state_set' );
 
-if ( '' == $game->get_action() ) {
-    do_action( 'set_default_action' );
+if ( '' == $game->get_state() ) {
+    do_state( 'set_default_state' );
 }
 
-do_action( 'game_header' );
+do_state( 'game_header' );
 
-do_action( 'pre_page_content' );
-do_action( 'do_page_content' );
-do_action( 'post_page_content' );
+do_state( 'pre_page_content' );
+do_state( 'do_page_content' );
+do_state( 'post_page_content' );
 
-do_action( 'game_footer' );
+do_state( 'game_footer' );
 
 $time_diff = microtime( $get_as_float = TRUE ) - $time_start;
 //debug_print( '<p>Page rendered in ' .

@@ -3,7 +3,7 @@
 require( dirname( __FILE__ ) . '/game-config.php' );
 require( GAME_PATH . 'game-load.php' );
 
-do_action( 'post_load' );
+do_state( 'post_load' );
 
 $GLOBALS[ 'redirect_header' ] = GAME_URL;
 
@@ -31,7 +31,7 @@ foreach ( $_GET as $k => $v ) {
     $args[ $k ] = $v;
 }
 
-do_action( 'pre_setting_map' );
+do_state( 'pre_setting_map' );
 
 if ( isset( $setting_map[ $setting ] ) ) {
     call_user_func_array(
@@ -41,7 +41,7 @@ if ( isset( $setting_map[ $setting ] ) ) {
         $custom_setting_map[ $setting ], array( $args ) );
 }
 
-do_action( 'post_setting_map' );
+do_state( 'post_setting_map' );
 
 
 header( 'Location: ' . $GLOBALS[ 'redirect_header' ] );

@@ -1,16 +1,16 @@
 <?php
 
 class Arcadia_Game {
-    private $game_action = '';
+    private $game_state = '';
 
     private $components = array();
 
-    public function get_action() {
-        return $this->game_action;
+    public function get_state() {
+        return $this->game_state;
     }
 
-    public function set_action( $action ) {
-        $this->game_action = $action;
+    public function set_state( $state ) {
+        $this->game_state = $state;
     }
 
     public function set_component( $component_id, $component ) {

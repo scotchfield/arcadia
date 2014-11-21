@@ -5,7 +5,7 @@ function game_dashboard_echo_header( $title, $cmd, $id ) {
 <div class="row">
   <form role="form" class="form-horizontal" method="get"
         action="<?php echo( GAME_URL ); ?>">
-    <input type="hidden" name="action" value="dashboard">
+    <input type="hidden" name="state" value="dashboard">
     <input type="hidden" name="cmd" value="<?php echo( $cmd ); ?>">
   <div class="col-md-6"><h3><?php echo( $title ); ?></h3></div>
   <div class="form-group">
@@ -19,7 +19,7 @@ function game_dashboard_echo_header( $title, $cmd, $id ) {
 </div>
 <form role="form" class="form-horizontal" method="get"
       action="<?php echo( GAME_URL ); ?>">
-  <input type="hidden" name="action" value="dashboard">
+  <input type="hidden" name="state" value="dashboard">
   <input type="hidden" name="cmd" value="<?php echo( $cmd ); ?>">
   <div class="row">
 <?
@@ -36,7 +36,7 @@ function game_dashboard_echo_footer() {
 </form>
 <div class="row">
   <h3 class="text-center">
-    <a href="<?php echo( GAME_URL ); ?>?action=dashboard">Back
+    <a href="<?php echo( GAME_URL ); ?>?state=dashboard">Back
        to Dashboard</a>
   </h3>
 </div>
@@ -69,7 +69,7 @@ function game_dashboard_echo_form( $label, $input_type, $key, $value ) {
 function game_dashboard_content() {
     global $game, $user;
 
-    if ( strcmp( 'dashboard', $game->get_action() ) ) {
+    if ( strcmp( 'dashboard', $game->get_state() ) ) {
         return;
     }
 
@@ -190,13 +190,13 @@ function game_dashboard_content() {
 <div class="col-md-6">
   <h3>Developer Tools</h3>
     <ul>
-      <li><a href="<?php echo( GAME_URL ); ?>?action=dashboard&cmd=item">
+      <li><a href="<?php echo( GAME_URL ); ?>?state=dashboard&cmd=item">
         Item Browser</a></li>
-      <li><a href="<?php echo( GAME_URL ); ?>?action=dashboard&cmd=npc">
+      <li><a href="<?php echo( GAME_URL ); ?>?state=dashboard&cmd=npc">
         NPC Browser</a></li>
-      <li><a href="<?php echo( GAME_URL ); ?>?action=dashboard&cmd=quest">
+      <li><a href="<?php echo( GAME_URL ); ?>?state=dashboard&cmd=quest">
         Quest Browser</a></li>
-      <li><a href="<?php echo( GAME_URL ); ?>?action=dashboard&cmd=zone">
+      <li><a href="<?php echo( GAME_URL ); ?>?state=dashboard&cmd=zone">
         Zone Browser</a></li>
     </ul>
 </div>
@@ -212,4 +212,4 @@ function game_dashboard_content() {
 <?php
 }
 
-add_action( 'do_page_content', 'game_dashboard_content' );
+add_state( 'do_page_content', 'game_dashboard_content' );

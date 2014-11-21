@@ -98,7 +98,7 @@ function nonce_tick() {
     return ceil( time() / ( game_nonce_life / 2 ) );
 }
 
-function nonce_verify( $nonce, $action = -1 ) {
+function nonce_verify( $nonce, $state = -1 ) {
     global $character;
 
     if ( FALSE == $character ) {
@@ -108,11 +108,11 @@ function nonce_verify( $nonce, $action = -1 ) {
     $tick = nonce_tick();
     $c_id = intval( $character[ 'id' ] );
 
-    if ( $nonce === substr( md5( $tick . $action . $c_id ), 0, 10 ) ) {
+    if ( $nonce === substr( md5( $tick . $state . $c_id ), 0, 10 ) ) {
         return TRUE;
     }
 
-    if ( $nonce === substr( md5( ( $tick - 1 ) . $action . $c_id ),
+    if ( $nonce === substr( md5( ( $tick - 1 ) . $state . $c_id ),
                             0, 10 ) ) {
         return TRUE;
     }
@@ -120,7 +120,7 @@ function nonce_verify( $nonce, $action = -1 ) {
     return false;
 }
 
-function nonce_create( $action = -1 ) {
+function nonce_create( $state = -1 ) {
     global $character;
 
     if ( FALSE == $character ) {
@@ -130,7 +130,7 @@ function nonce_create( $action = -1 ) {
     $tick = nonce_tick();
     $c_id = intval( $character[ 'id' ] );
 
-    return substr( md5( $tick . $action . $c_id ), 0, 10 );
+    return substr( md5( $tick . $state . $c_id ), 0, 10 );
 }
 
 function number_with_suffix( $n ) {

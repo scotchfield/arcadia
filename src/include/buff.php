@@ -43,8 +43,8 @@ class ArcadiaBuff extends ArcadiaComponent {
         update_character_meta( $character[ 'id' ], $this->flag_game_meta,
             $buff_id, time() + $duration );
 
-        do_action( 'award_buff',
-                   array( 'buff_id' => $buff_id ) );
+        do_state( 'award_buff',
+                  array( 'buff_id' => $buff_id ) );
 
         return TRUE;
     }
@@ -103,7 +103,7 @@ class ArcadiaBuff extends ArcadiaComponent {
             }
         }
 
-        do_action( 'apply_buffs' );
+        do_state( 'apply_buffs' );
     }
 
 }

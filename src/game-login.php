@@ -15,8 +15,8 @@ define( 'GAME_LOGIN_NOTIFY_ALREADY_VALIDATED', 101 );
 define( 'GAME_LOGIN_NOTIFY_VALIDATE_SUCCESS',  102 );
 
 
-if ( isset( $_POST[ 'action' ] ) ) {
-    switch ( $_POST[ 'action' ] ) {
+if ( isset( $_POST[ 'state' ] ) ) {
+    switch ( $_POST[ 'state' ] ) {
         case 'login':
             $user = get_user_by_name( $_POST[ 'user' ] );
             if ( FALSE == $user ) {
@@ -107,7 +107,7 @@ if ( isset( $_POST[ 'action' ] ) ) {
             set_user_status( $user[ 'id' ],
                 set_bit( $user[ 'status' ], game_user_status_active ) );
 
-            do_action( 'validate_user',
+            do_state( 'validate_user',
                 $args = array( 'user_id' => $user[ 'id' ] ) );
 
             header( 'Location: ' . GAME_URL . '?notify=' .

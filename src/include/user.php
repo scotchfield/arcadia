@@ -137,8 +137,8 @@ function user_create_character( $user_name = FALSE ) {
 
     $character_id = add_character( $user[ 'id' ], $user_name );
 
-    do_action( 'create_character',
-               $args = array( 'character_id' => $character_id ) );
+    do_state( 'create_character',
+              $args = array( 'character_id' => $character_id ) );
 
     return TRUE;
 }
@@ -170,7 +170,7 @@ function user_select_character( $id = FALSE ) {
 
     $_SESSION[ 'c' ] = $character[ 'id' ];
 
-    do_action( 'select_character' );
+    do_state( 'select_character' );
 
     return TRUE;
 }

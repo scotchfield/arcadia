@@ -10,7 +10,7 @@ function quest_init() {
     }
 }
 
-add_action( 'post_load', 'quest_init' );
+add_state( 'post_load', 'quest_init' );
 
 
 function get_quest( $id ) {

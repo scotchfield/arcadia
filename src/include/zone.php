@@ -10,7 +10,7 @@ function zone_init() {
     }
 }
 
-add_action( 'post_load', 'zone_init' );
+add_state( 'post_load', 'zone_init' );
 
 
 function get_zone( $id ) {
