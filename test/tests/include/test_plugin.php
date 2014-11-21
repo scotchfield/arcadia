@@ -7,84 +7,84 @@ class TestArcadiaPlugin extends PHPUnit_Framework_TestCase {
     public function setUp() {
         $this->result = FALSE;
 
-        add_action( 'test_action', array( $this, 'action_function' ) );
+        add_state( 'test_state', array( $this, 'state_function' ) );
     }
 
     public function tearDown() {
-        remove_action( 'test_action', array( $this, 'action_function' ) );
+        remove_state( 'test_state', array( $this, 'state_function' ) );
     }
 
-    public function action_function() {
+    public function state_function() {
         $this->result = TRUE;
     }
 
     /**
-     * @covers ::do_action
+     * @covers ::do_state
      */
-    public function test_do_action_none() {
-        $this->assertNull( do_action( '' ) );
+    public function test_do_state_none() {
+        $this->assertNull( do_state( '' ) );
     }
 
     /**
-     * @covers ::do_action
+     * @covers ::do_state
      */
-    public function test_do_action_test_action() {
-        $this->assertNull( do_action( 'test_action' ) );
+    public function test_do_state_test_state() {
+        $this->assertNull( do_state( 'test_state' ) );
         $this->assertTrue( $this->result );
     }
 
     /**
-     * @covers ::do_action
+     * @covers ::do_state
      */
-    public function test_do_action_test_action_args() {
-        $this->assertNull( do_action( 'test_action', array( TRUE ) ) );
+    public function test_do_state_test_state_args() {
+        $this->assertNull( do_state( 'test_state', array( TRUE ) ) );
         $this->assertTrue( $this->result );
     }
 
     /**
-     * @covers ::add_action
+     * @covers ::add_state
      */
-    public function test_add_action_simple() {
+    public function test_add_state_simple() {
         $test_id = 'test_id';
         $test_function = 'test_function';
 
-        add_action( $test_id, $test_function );
+        add_state( $test_id, $test_function );
 
-        $this->assertTrue( action_exists( $test_id ) );
+        $this->assertTrue( state_exists( $test_id ) );
     }
 
     /**
-     * @covers ::add_action_priority
+     * @covers ::add_state_priority
      */
-    public function test_add_action_priority_simple() {
+    public function test_add_state_priority_simple() {
         $test_id = 'test_id';
         $test_function = 'test_function';
 
-        add_action_priority( $test_id, $test_function );
+        add_state_priority( $test_id, $test_function );
 
-        $this->assertTrue( action_exists( $test_id ) );
+        $this->assertTrue( state_exists( $test_id ) );
     }
 
     /**
-     * @covers ::remove_action
+     * @covers ::remove_state
      */
-    public function test_remove_action_simple() {
-        remove_action( 'test_action', array( $this, 'action_function' ) );
+    public function test_remove_state_simple() {
+        remove_state( 'test_state', array( $this, 'state_function' ) );
 
-        $this->assertFalse( action_exists( 'test_action' ) );
+        $this->assertFalse( state_exists( 'test_state' ) );
     }
 
     /**
-     * @covers ::action_exists
+     * @covers ::state_exists
      */
-    public function test_action_exists_simple() {
-        $this->assertTrue( action_exists( 'test_action' ) );
+    public function test_state_exists_simple() {
+        $this->assertTrue( state_exists( 'test_state' ) );
     }
 
     /**
-     * @covers ::action_exists
+     * @covers ::state_exists
      */
-    public function test_action_exists_false() {
-        $this->assertFalse( action_exists( '123abc' ) );
+    public function test_state_exists_false() {
+        $this->assertFalse( state_exists( '123abc' ) );
     }
 }

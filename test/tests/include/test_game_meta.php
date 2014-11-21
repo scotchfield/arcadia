@@ -3,7 +3,7 @@
 class TestArcadiaGameMeta extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
-        do_action( 'post_load' );
+        do_state( 'post_load' );
 
         db_execute(
             'INSERT INTO character_meta ' .
