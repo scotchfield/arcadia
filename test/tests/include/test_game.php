@@ -3,11 +3,11 @@
 class TestArcadiaGame extends PHPUnit_Framework_TestCase {
 
     /**
-     * @covers Arcadia_Game::get_state
-     * @covers Arcadia_Game::set_state
+     * @covers ArcadiaGame::get_state
+     * @covers ArcadiaGame::set_state
      */
     public function test_game_set_state() {
-        $game = new Arcadia_Game();
+        $game = new ArcadiaGame();
 
     	$original = $game->get_state();
 
