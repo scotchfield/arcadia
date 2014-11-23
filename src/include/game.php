@@ -1,10 +1,12 @@
 <?php
 
-class Arcadia_Game {
+class ArcadiaGame {
     private $game_state = '';
     private $game_state_args = array();
 
     private $components = array();
+
+    private $logger = FALSE;
 
     public function get_state() {
         return $this->game_state;
@@ -39,6 +41,16 @@ class Arcadia_Game {
     public function c( $component_id ) {
         return $this->get_component( $component_id );
     }
+
+    public function set_logger( $logger ) {
+        $this->logger = $logger;
+    }
+
+    public function log_add( $log_type, $char_id, $meta_value ) {
+        if ( FALSE != $this->logger ) {
+            $this->logger->log_add( $log_type, $char_id, $meta_value );
+        }
+    }
 }
 
-$GLOBALS[ 'game' ] = new Arcadia_Game();
+$GLOBALS[ 'game' ] = new ArcadiaGame();

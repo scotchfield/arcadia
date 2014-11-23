@@ -32,6 +32,8 @@ if ( function_exists( 'session_status' ) ) {
     }
 }
 
+$GLOBALS[ 'game' ]->set_logger( new ArcadiaLog() );
+
 $GLOBALS[ 'user' ] = game_user_logged_in();
 
 $page_map = array(
