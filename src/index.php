@@ -18,6 +18,9 @@ do_state( 'character_load' );
 if ( isset( $_GET[ 'state' ] ) ) {
     $game->set_state( $_GET[ 'state' ] );
 }
+foreach( $_GET as $k => $v ) {
+    $game->set_state_arg( $k, $v );
+}
 do_state( 'state_set' );
 
 if ( '' == $game->get_state() ) {
