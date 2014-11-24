@@ -3,9 +3,11 @@
 class TestArcadiaHeartbeat extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
-        $component = new ArcadiaHeartbeat();
+        global $ag;
 
-        $GLOBALS[ 'character' ] = array( 'id' => 1 );
+        $ag->char = array( 'id' => 1 );
+
+        $component = new ArcadiaHeartbeat();
 
         db_execute( 'INSERT INTO characters ' .
             '( id, user_id, character_name ) VALUES ' .
@@ -17,8 +19,6 @@ class TestArcadiaHeartbeat extends PHPUnit_Framework_TestCase {
     }
 
     public function tearDown() {
-        unset( $GLOBALS[ 'character' ] );
-
         db_execute( 'DELETE FROM characters' );
     }
 
@@ -46,7 +46,9 @@ class TestArcadiaHeartbeat extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaHeartbeat::add_heartbeat
      */
     public function test_add_heartbeat_no_character() {
-        unset( $GLOBALS[ 'character' ] );
+        global $ag;
+
+        $ag->char = FALSE;
 
         $component = new ArcadiaHeartbeat();
 

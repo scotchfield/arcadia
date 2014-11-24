@@ -18,6 +18,10 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
     }
 
     public function tearDown() {
+        global $ag;
+
+        $ag->user = FALSE;
+
         db_execute( 'DELETE FROM characters' );
         db_execute( 'DELETE FROM users' );
     }
@@ -309,7 +313,9 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
      * @covers ::user_create_character
      */
     public function test_user_create_character() {
-        $GLOBALS[ 'user' ] = get_user_by_id( 1 );
+        global $ag;
+
+        $ag->user = get_user_by_id( 1 );
 
         $name = 'test_create';
 
@@ -319,8 +325,6 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
 
         $this->assertTrue( $result );
         $this->assertEquals( $name, $char_obj[ 'character_name' ] );
-
-        unset( $GLOBALS[ 'user' ] );
     }
 
     /**
@@ -338,7 +342,9 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
      * @covers ::user_create_character
      */
     public function test_user_create_character_get_name() {
-        $GLOBALS[ 'user' ] = get_user_by_id( 1 );
+        global $ag;
+
+        $ag->user = get_user_by_id( 1 );
 
         $name = 'test_create';
         $_GET[ 'char_name' ] = $name;
@@ -351,27 +357,28 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
         $this->assertEquals( $name, $char_obj[ 'character_name' ] );
 
         unset( $_GET[ 'char_name' ] );
-        unset( $GLOBALS[ 'user' ] );
     }
 
     /**
      * @covers ::user_create_character
      */
     public function test_user_create_character_no_name() {
-        $GLOBALS[ 'user' ] = get_user_by_id( 1 );
+        global $ag;
+
+        $ag->user = get_user_by_id( 1 );
 
         $result = user_create_character();
 
         $this->assertFalse( $result );
-        
-        unset( $GLOBALS[ 'user' ] );
     }
 
     /**
      * @covers ::user_select_character
      */
     public function test_user_select_character() {
-        $GLOBALS[ 'user' ] = get_user_by_id( 1 );
+        global $ag;
+
+        $ag->user = get_user_by_id( 1 );
 
         $result = user_select_character( $id = 1 );
 
@@ -381,7 +388,6 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
         $this->assertEquals( 1, $char_obj[ 'id' ] );
 
         unset( $_SESSION[ 'c' ] );
-        unset( $GLOBALS[ 'user' ] );
     }
 
     /**
@@ -397,7 +403,9 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
      * @covers ::user_select_character
      */
     public function test_user_select_character_get_id() {
-        $GLOBALS[ 'user' ] = get_user_by_id( 1 );
+        global $ag;
+
+        $ag->user = get_user_by_id( 1 );
 
         $_GET[ 'id' ] = 1;
 
@@ -410,33 +418,32 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
 
         unset( $_GET[ 'id' ] );
         unset( $_SESSION[ 'c' ] );
-        unset( $GLOBALS[ 'user' ] );
     }
 
     /**
      * @covers ::user_select_character
      */
     public function test_user_select_character_no_id() {
-        $GLOBALS[ 'user' ] = get_user_by_id( 1 );
+        global $ag;
+
+        $ag->user = get_user_by_id( 1 );
 
         $result = user_select_character();
 
         $this->assertFalse( $result );
-
-        unset( $GLOBALS[ 'user' ] );
     }
 
     /**
      * @covers ::user_select_character
      */
     public function test_user_select_character_invalid_character() {
-        $GLOBALS[ 'user' ] = get_user_by_id( 1 );
+        global $ag;
+
+        $ag->user = get_user_by_id( 1 );
 
         $result = user_select_character( $id = -1 );
 
         $this->assertFalse( $result );
-
-        unset( $GLOBALS[ 'user' ] );
     }
 
     /**

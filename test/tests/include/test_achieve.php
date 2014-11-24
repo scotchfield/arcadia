@@ -3,6 +3,10 @@
 class TestArcadiaAchieve extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
+        global $ag;
+
+        $ag->char = array( 'id' => 1 );
+
         $component = new ArcadiaAchievement();
 
         do_state( 'post_load' );
@@ -11,8 +15,6 @@ class TestArcadiaAchieve extends PHPUnit_Framework_TestCase {
             'INSERT INTO game_meta ( key_type, meta_key, meta_value ) ' .
                 'VALUES ( ?, 1, "test" )',
             array( $component->get_flag_game_meta() ) );
-
-        $GLOBALS[ 'character' ] = array( 'id' => 1 );
     }
 
     public function tearDown() {
@@ -90,9 +92,11 @@ class TestArcadiaAchieve extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaAchievement::award_achievement
      */
     public function test_award_achievement_empty() {
+        global $ag;
+
         $component = new ArcadiaAchievement();
 
-        $GLOBALS[ 'character' ] = FALSE;
+        $ag->char = FALSE;
 
         $result = $component->award_achievement( 1 );
 
@@ -103,14 +107,15 @@ class TestArcadiaAchieve extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaAchievement::award_achievement
      */
     public function test_award_achievement_single() {
+        global $ag;
+
         $component = new ArcadiaAchievement();
 
         $result = $component->award_achievement( 1 );
 
         $this->assertTrue( $result );
         $this->assertArrayHasKey( 1,
-            $GLOBALS[ 'character' ][ 'meta' ][
-                $component->get_flag_game_meta() ] );
+            $ag->char[ 'meta' ][ $component->get_flag_game_meta() ] );
     }
 
    /**
