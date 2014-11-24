@@ -2,7 +2,7 @@
 
 $time_start = microtime( $get_as_float = TRUE );
 
-global $game;
+global $ag;
 
 require( dirname( __FILE__ ) . '/game-config.php' );
 require( GAME_PATH . 'game-load.php' );
@@ -16,14 +16,14 @@ if ( FALSE != $character ) {
 do_state( 'character_load' );
 
 if ( isset( $_GET[ 'state' ] ) ) {
-    $game->set_state( $_GET[ 'state' ] );
+    $ag->set_state( $_GET[ 'state' ] );
 }
 foreach( $_GET as $k => $v ) {
-    $game->set_state_arg( $k, $v );
+    $ag->set_state_arg( $k, $v );
 }
 do_state( 'state_set' );
 
-if ( '' == $game->get_state() ) {
+if ( '' == $ag->get_state() ) {
     do_state( 'set_default_state' );
 }
 

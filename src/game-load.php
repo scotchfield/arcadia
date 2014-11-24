@@ -19,7 +19,7 @@ require( GAME_PATH . 'include/quest.php' );
 require( GAME_PATH . 'include/user.php' );
 require( GAME_PATH . 'include/zone.php' );
 
-require( GAME_PATH . 'game-dashboard.php' );
+//require( GAME_PATH . 'game-dashboard.php' );
 
 
 if ( function_exists( 'session_status' ) ) {
@@ -32,7 +32,8 @@ if ( function_exists( 'session_status' ) ) {
     }
 }
 
-$GLOBALS[ 'game' ]->set_logger( new ArcadiaLog() );
+$GLOBALS[ 'ag' ] = new ArcadiaGame();
+$GLOBALS[ 'ag' ]->set_logger( new ArcadiaLog() );
 
 $GLOBALS[ 'user' ] = game_user_logged_in();
 

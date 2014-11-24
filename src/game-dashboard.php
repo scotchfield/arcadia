@@ -67,9 +67,9 @@ function game_dashboard_echo_form( $label, $input_type, $key, $value ) {
 }
 
 function game_dashboard_content() {
-    global $game, $user;
+    global $ag, $user;
 
-    if ( strcmp( 'dashboard', $game->get_state() ) ) {
+    if ( strcmp( 'dashboard', $ag->get_state() ) ) {
         return;
     }
 

@@ -52,5 +52,3 @@ class ArcadiaGame {
         }
     }
 }
-
-$GLOBALS[ 'game' ] = new ArcadiaGame();
