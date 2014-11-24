@@ -60,7 +60,7 @@ function is_character_quest_completed( $quest_id ) {
 
 function is_character_quest_meta_diff( $key_type, $meta_key,
                                        $quest_meta_key, $diff ) {
-    global $character, $quest_meta_obj;
+    global $ag, $quest_meta_obj;
 
     $n = min( $diff, intval( character_meta( $key_type, $meta_key ) ) - intval(
                          $quest_meta_obj[ $quest_meta_key ] ) );

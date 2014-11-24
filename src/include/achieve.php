@@ -35,18 +35,18 @@ class ArcadiaAchievement extends ArcadiaComponent {
     }
 
     function award_achievement( $achievement_id ) {
-        global $character;
+        global $ag;
 
-        if ( FALSE == $character ) {
+        if ( FALSE == $ag->char ) {
             return FALSE;
         }
 
-        if ( isset( $character[ 'meta' ][ $this->flag_game_meta ][
+        if ( isset( $ag->char[ 'meta' ][ $this->flag_game_meta ][
                         $achievement_id ] ) ) {
             return FALSE;
         }
 
-        add_character_meta( $character[ 'id' ], $this->flag_game_meta,
+        add_character_meta( $ag->char[ 'id' ], $this->flag_game_meta,
             $achievement_id, time() );
 
         do_state( 'award_achievement',

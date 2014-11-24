@@ -33,13 +33,13 @@ class ArcadiaItem extends ArcadiaComponent {
     }
 
     function award_item( $meta_key, $meta_value ) {
-        global $character;
+        global $ag;
 
-        if ( FALSE == $character ) {
+        if ( FALSE == $ag->char ) {
             return;
         }
 
-        add_character_meta( $character[ 'id' ], $this->flag_game_meta,
+        add_character_meta( $ag->char[ 'id' ], $this->flag_game_meta,
             $meta_key, $meta_value );
 
         do_state( 'award_item',

@@ -32,8 +32,7 @@ if ( function_exists( 'session_status' ) ) {
 
 $GLOBALS[ 'ag' ] = new ArcadiaGame();
 $GLOBALS[ 'ag' ]->set_logger( new ArcadiaLog() );
-
-$GLOBALS[ 'user' ] = game_user_logged_in();
+$GLOBALS[ 'ag' ]->user = game_user_logged_in();
 
 $page_map = array(
     'account' => 'account.php',

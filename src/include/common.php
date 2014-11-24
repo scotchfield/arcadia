@@ -99,14 +99,14 @@ function nonce_tick() {
 }
 
 function nonce_verify( $nonce, $state = -1 ) {
-    global $character;
+    global $ag;
 
-    if ( FALSE == $character ) {
+    if ( FALSE == $ag->char ) {
         return FALSE;
     }
 
     $tick = nonce_tick();
-    $c_id = intval( $character[ 'id' ] );
+    $c_id = intval( $ag->char[ 'id' ] );
 
     if ( $nonce === substr( md5( $tick . $state . $c_id ), 0, 10 ) ) {
         return TRUE;
@@ -121,14 +121,14 @@ function nonce_verify( $nonce, $state = -1 ) {
 }
 
 function nonce_create( $state = -1 ) {
-    global $character;
+    global $ag;
 
-    if ( FALSE == $character ) {
+    if ( FALSE == $ag->char ) {
         return FALSE;
     }
 
     $tick = nonce_tick();
-    $c_id = intval( $character[ 'id' ] );
+    $c_id = intval( $ag->char[ 'id' ] );
 
     return substr( md5( $tick . $state . $c_id ), 0, 10 );
 }

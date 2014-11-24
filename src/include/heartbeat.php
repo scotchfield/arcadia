@@ -8,20 +8,20 @@ class ArcadiaHeartbeat extends ArcadiaComponent {
     }
 
     function add_heartbeat( $meta_value = array() ) {
-        global $character;
+        global $ag;
 
-        if ( ! isset( $character ) || FALSE == $character ) {
+        if ( FALSE == $ag->char ) {
             return FALSE;
         }
 
         db_execute( 'DELETE FROM character_meta ' .
             'WHERE character_id=? AND key_type=?',
-            array( $character[ 'id' ], $this->flag_character_meta ) );
+            array( $ag->char[ 'id' ], $this->flag_character_meta ) );
 
         return db_execute( 'INSERT INTO character_meta ' .
             '( character_id, key_type, meta_key, meta_value ) VALUES ' .
             '( ?, ?, ?, ? )',
-            array( $character[ 'id' ], $this->flag_character_meta,
+            array( $ag->char[ 'id' ], $this->flag_character_meta,
                    time(), json_encode( $meta_value, JSON_FORCE_OBJECT ) )
         );
     }

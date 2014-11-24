@@ -118,9 +118,9 @@ function add_character( $user_id, $name ) {
 }
 
 function user_create_character( $user_name = FALSE ) {
-    global $user;
+    global $ag;
 
-    if ( FALSE == $user ) {
+    if ( FALSE == $ag->user ) {
         return FALSE;
     }
 
@@ -135,7 +135,7 @@ function user_create_character( $user_name = FALSE ) {
 //todo: nonce
 //todo: max char count/user
 
-    $character_id = add_character( $user[ 'id' ], $user_name );
+    $character_id = add_character( $ag->user[ 'id' ], $user_name );
 
     do_state( 'create_character',
               $args = array( 'character_id' => $character_id ) );
@@ -144,9 +144,9 @@ function user_create_character( $user_name = FALSE ) {
 }
 
 function user_select_character( $id = FALSE ) {
-    global $user;
+    global $ag;
 
-    if ( FALSE == $user ) {
+    if ( FALSE == $ag->user ) {
         return FALSE;
     }
 
@@ -161,12 +161,12 @@ function user_select_character( $id = FALSE ) {
     $character = get_character_by_id( $id );
 
     if ( ( FALSE == $character ) ||
-         ( $character[ 'user_id' ] != $user[ 'id' ] ) ) {
+         ( $character[ 'user_id' ] != $ag->user[ 'id' ] ) ) {
         return FALSE;
     }
 
     $character[ 'meta' ] = get_character_meta( $character[ 'id' ] );
-    $GLOBALS[ 'character' ] = $character;
+    $ag->char = $character;
 
     $_SESSION[ 'c' ] = $character[ 'id' ];
 
@@ -218,7 +218,7 @@ function get_character_meta( $id, $type = FALSE ) {
 
 function add_character_meta( $character_id, $key_type,
                              $meta_key, $meta_value ) {
-    global $character;
+    global $ag;
 
     db_execute(
         'INSERT INTO character_meta ( ' .
@@ -226,32 +226,32 @@ function add_character_meta( $character_id, $key_type,
             'VALUES ( ?, ?, ?, ? )',
         array( $character_id, $key_type, $meta_key, $meta_value ) );
 
-    if ( ( isset( $character[ 'id' ] ) ) &&
-         ( $character[ 'id' ] == $character_id ) ) {
+    if ( ( isset( $ag->char[ 'id' ] ) ) &&
+         ( $ag->char[ 'id' ] == $character_id ) ) {
 
-	if ( ! isset( $character[ 'meta' ] ) ) {
-	    $character[ 'meta' ] = array();
+	if ( ! isset( $ag->char[ 'meta' ] ) ) {
+	    $ag->char[ 'meta' ] = array();
         }
-	if ( ! isset( $character[ 'meta' ][ $key_type ] ) ) {
-	    $character[ 'meta' ][ $key_type ] = array();
+	if ( ! isset( $ag->char[ 'meta' ][ $key_type ] ) ) {
+	    $ag->char[ 'meta' ][ $key_type ] = array();
 	}
 
-        $character[ 'meta' ][ $key_type ][ $meta_key ] = $meta_value;
+        $ag->char[ 'meta' ][ $key_type ][ $meta_key ] = $meta_value;
     }
 }
 
 function update_character_meta( $character_id, $key_type,
                                 $meta_key, $meta_value ) {
-    global $character;
+    global $ag;
 
     db_execute(
         'UPDATE character_meta SET meta_value=? WHERE
             character_id=? AND key_type=? AND meta_key=?',
         array( $meta_value, $character_id, $key_type, $meta_key ) );
 
-    if ( ( isset( $character[ 'meta' ] ) ) &&
-         ( isset( $character[ 'meta' ][ $key_type ] ) ) ) {
-        $character[ 'meta' ][ $key_type ][ $meta_key ] = $meta_value;
+    if ( ( isset( $ag->char[ 'meta' ] ) ) &&
+         ( isset( $ag->char[ 'meta' ][ $key_type ] ) ) ) {
+        $ag->char[ 'meta' ][ $key_type ][ $meta_key ] = $meta_value;
     }
 }
 
@@ -297,20 +297,20 @@ function ensure_character_meta_keygroup( $character_id, $key_type,
 }
 
 function character_meta( $key_type, $meta_key ) {
-    global $character;
+    global $ag;
 
-    if ( ! isset( $character[ 'meta' ] ) ) {
-        $character[ 'meta' ] = get_character_meta( $character[ 'id' ] );
+    if ( ! isset( $ag->char[ 'meta' ] ) ) {
+        $ag->char[ 'meta' ] = get_character_meta( $ag->char[ 'id' ] );
     }
 
-    if ( ( ! isset( $character[ 'meta' ][ $key_type ] ) ) &&
+    if ( ( ! isset( $ag->char[ 'meta' ][ $key_type ] ) ) &&
          ( defined( $key_type ) ) ) {
         $key_type = constant( $key_type );
     }
 
-    if ( isset( $character[ 'meta' ][ $key_type ] ) &&
-         isset( $character[ 'meta' ][ $key_type ][ $meta_key ] ) ) {
-        return $character[ 'meta' ][ $key_type ][ $meta_key ];
+    if ( isset( $ag->char[ 'meta' ][ $key_type ] ) &&
+         isset( $ag->char[ 'meta' ][ $key_type ][ $meta_key ] ) ) {
+        return $ag->char[ 'meta' ][ $key_type ][ $meta_key ];
     }
 
     return '';

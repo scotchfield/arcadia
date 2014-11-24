@@ -38,7 +38,9 @@ if ( isset( $_POST[ 'state' ] ) ) {
                 session_start();
             }
 
+            $GLOBALS[ 'ag' ]->user = $user;
             $_SESSION[ 'u' ] = $user[ 'id' ];
+
             header( 'Location: ' . GAME_URL );
             exit;
 

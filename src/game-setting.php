@@ -8,15 +8,15 @@ do_state( 'post_load' );
 $GLOBALS[ 'redirect_header' ] = GAME_URL;
 
 
-if ( FALSE == $user ) {
+if ( FALSE == $ag->user ) {
     include( GAME_CUSTOM_PATH . $custom_start_page );
     exit;
 }
 
-$GLOBALS[ 'character' ] = game_character_active();
+$GLOBALS[ 'ag' ]->char = game_character_active();
 
-if ( FALSE != $character ) {
-    $character[ 'meta' ] = get_character_meta( $character[ 'id' ] );
+if ( FALSE != $ag->char ) {
+    $ag->char[ 'meta' ] = get_character_meta( $ag->char[ 'id' ] );
 }
 
 

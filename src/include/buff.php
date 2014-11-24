@@ -32,15 +32,15 @@ class ArcadiaBuff extends ArcadiaComponent {
     }
 
     public function award_buff( $buff_id, $duration ) {
-        global $character;
+        global $ag;
 
-        if ( FALSE == $character ) {
+        if ( FALSE == $ag->char ) {
             return FALSE;
         }
 
-        ensure_character_meta( $character[ 'id' ], $this->flag_game_meta,
+        ensure_character_meta( $ag->char[ 'id' ], $this->flag_game_meta,
             $buff_id );
-        update_character_meta( $character[ 'id' ], $this->flag_game_meta,
+        update_character_meta( $ag->char[ 'id' ], $this->flag_game_meta,
             $buff_id, time() + $duration );
 
         do_state( 'award_buff',
@@ -50,22 +50,22 @@ class ArcadiaBuff extends ArcadiaComponent {
     }
 
     public function check_buff( $buff_id ) {
-        global $character;
+        global $ag;
 
-        if ( FALSE == $character ) {
+        if ( FALSE == $ag->char ) {
             return FALSE;
         }
 
-        if ( ! isset( $character[ 'meta' ][ $this->flag_character_meta ] ) ) {
+        if ( ! isset( $ag->char[ 'meta' ][ $this->flag_character_meta ] ) ) {
             return FALSE;
         }
 
-        if ( ! isset( $character[ 'meta' ][ $this->flag_character_meta
+        if ( ! isset( $ag->char[ 'meta' ][ $this->flag_character_meta
                           ][ $buff_id ] ) ) {
             return FALSE;
         }
 
-        $t = intval( $character[ 'meta' ][ $this->flag_character_meta
+        $t = intval( $ag->char[ 'meta' ][ $this->flag_character_meta
                          ][ $buff_id ] ) - time();
 
         if ( $t <= 0 ) {
@@ -76,9 +76,9 @@ class ArcadiaBuff extends ArcadiaComponent {
     }
 
     public function remove_buff( $buff_id ) {
-        global $character;
+        global $ag;
 
-        unset( $character[ 'meta' ][ $this->flag_character_meta ][ $buff_id ] );
+        unset( $ag->char[ 'meta' ][ $this->flag_character_meta ][ $buff_id ] );
 
         db_execute(
             'DELETE FROM character_meta WHERE key_type=? AND meta_key=?',
@@ -86,17 +86,17 @@ class ArcadiaBuff extends ArcadiaComponent {
     }
 
     public function update_buffs() {
-        global $character;
+        global $ag;
 
-        if ( FALSE == $character ) {
+        if ( FALSE == $ag->char ) {
             return;
         }
 
-        if ( ! isset( $character[ 'meta' ][ $this->flag_character_meta ] ) ) {
+        if ( ! isset( $ag->char[ 'meta' ][ $this->flag_character_meta ] ) ) {
             return;
         }
 
-        foreach ( $character[ 'meta' ][ $this->flag_character_meta ] as
+        foreach ( $ag->char[ 'meta' ][ $this->flag_character_meta ] as
                       $buff_id => $buff_expire ) {
             if ( intval( $buff_expire ) <= time() ) {
                 remove_buff( $buff_id );

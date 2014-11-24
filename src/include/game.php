@@ -8,6 +8,8 @@ class ArcadiaGame {
 
     private $logger = FALSE;
 
+    public $user = FALSE, $char = FALSE;
+
     public function get_state() {
         return $this->game_state;
     }
