@@ -19,8 +19,6 @@ require( GAME_PATH . 'include/quest.php' );
 require( GAME_PATH . 'include/user.php' );
 require( GAME_PATH . 'include/zone.php' );
 
-//require( GAME_PATH . 'game-dashboard.php' );
-
 
 if ( function_exists( 'session_status' ) ) {
     if ( session_status() == PHP_SESSION_NONE ) {
