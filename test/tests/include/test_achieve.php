@@ -30,7 +30,7 @@ class TestArcadiaAchieve extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaAchievement::__construct
      * @covers ArcadiaAchievement::get_flag_game_meta
      */
-    public function test_buff_get_flag_game_meta() {
+    public function test_achieve_get_flag_game_meta() {
         $component = new ArcadiaAchievement();
 
         $this->assertNotNull( $component->get_flag_game_meta() );
@@ -40,7 +40,7 @@ class TestArcadiaAchieve extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaAchievement::__construct
      * @covers ArcadiaAchievement::get_flag_character_meta
      */
-    public function test_buff_get_flag_character_meta() {
+    public function test_achieve_get_flag_character_meta() {
         $component = new ArcadiaAchievement();
 
         $this->assertNotNull( $component->get_flag_character_meta() );
