@@ -1,22 +1,23 @@
 <?php
 
-function zone_init() {
-    if ( ! defined( 'game_meta_type_zone' ) ) {
-        define( 'game_meta_type_zone', 203 );
+class ArcadiaZone extends ArcadiaComponent {
+
+    function __construct() {
+        $this->flag_game_meta = 203;
+        $this->flag_character_meta = 203;
     }
 
-    if ( ! defined( 'game_character_meta_type_zone' ) ) {
-        define( 'game_character_meta_type_zone', 203 );
+    public function get_zone( $id ) {
+        return db_fetch(
+            'SELECT * FROM game_meta WHERE key_type=? AND meta_key=?',
+            array( $this->flag_game_meta, $id ) );
     }
-}
 
-add_state( 'post_load', 'zone_init' );
+    public function get_all_zones() {
+        return db_fetch_all(
+            'SELECT * FROM game_meta WHERE key_type=?',
+            array( $this->flag_game_meta ),
+            $assoc = 'meta_key' );
+    }
 
-
-function get_zone( $id ) {
-    return get_game_meta( game_meta_type_zone, $id );
-}
-
-function get_zone_array( $id_array ) {
-    return get_game_meta_array( game_meta_type_zone, $id_array );
 }
