@@ -1,22 +1,23 @@
 <?php
 
-function quest_init() {
-    if ( ! defined( 'game_meta_type_quest' ) ) {
-        define( 'game_meta_type_quest', 204 );
+class ArcadiaQuest extends ArcadiaComponent {
+
+    function __construct() {
+        $this->flag_game_meta = 204;
+        $this->flag_character_meta = 204;
     }
 
-    if ( ! defined( 'game_character_meta_type_quest' ) ) {
-        define( 'game_character_meta_type_quest', 204 );
+    public function get_quest( $id ) {
+        return db_fetch(
+            'SELECT * FROM game_meta WHERE key_type=? AND meta_key=?',
+            array( $this->flag_game_meta, $id ) );
     }
-}
 
-add_state( 'post_load', 'quest_init' );
+    public function get_all_quests() {
+        return db_fetch_all(
+            'SELECT * FROM game_meta WHERE key_type=?',
+            array( $this->flag_game_meta ),
+            $assoc = 'meta_key' );
+    }
 
-
-function get_quest( $id ) {
-    return get_game_meta( game_meta_type_quest, $id );
-}
-
-function get_quest_array( $id_array ) {
-    return get_game_meta_array( game_meta_type_quest, $id_array );
 }
