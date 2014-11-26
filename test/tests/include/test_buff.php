@@ -18,6 +18,10 @@ class TestArcadiaBuff extends PHPUnit_Framework_TestCase {
     }
 
     public function tearDown() {
+        global $ag;
+
+        $ag->char = FALSE;
+
         db_execute( 'DELETE FROM character_meta', array() );
         db_execute( 'DELETE FROM game_meta', array() );
     }

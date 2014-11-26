@@ -182,7 +182,9 @@ class TestArcadiaCommon extends PHPUnit_Framework_TestCase {
 
         $meta_obj = explode_meta_nokey( $meta );
 
-        $this->assertEquals( array( 'a', array( 'b', 'c', 'd' ) ), $meta_obj[ 0 ] );
+        $this->assertEquals(
+            array( 'a', array( 'b', 'c', 'd' ) ),
+            $meta_obj[ 0 ] );
     }
 
     /**
@@ -192,6 +194,30 @@ class TestArcadiaCommon extends PHPUnit_Framework_TestCase {
         $nonce_tick = nonce_tick();
 
         $this->assertGreaterThan( 0, $nonce_tick );
+    }
+
+    /**
+     * @covers ::nonce_create
+     */
+    public function test_nonce_create_no_char() {
+        $nonce = nonce_create();
+
+        $this->assertFalse( $nonce );
+    }
+
+    /**
+     * @covers ::nonce_create
+     */
+    public function test_nonce_create_basic() {
+        global $ag;
+
+        $ag->char = array( 'id' => 1 );
+
+        $nonce = nonce_create();
+
+        $ag->char = FALSE;
+
+        $this->assertNotFalse( $nonce );
     }
 
     /**

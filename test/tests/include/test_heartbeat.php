@@ -19,6 +19,10 @@ class TestArcadiaHeartbeat extends PHPUnit_Framework_TestCase {
     }
 
     public function tearDown() {
+        global $ag;
+
+        $ag->char = FALSE;
+
         db_execute( 'DELETE FROM characters' );
     }
 
