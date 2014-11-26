@@ -197,6 +197,63 @@ class TestArcadiaCommon extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @covers ::nonce_verify
+     */
+    public function test_nonce_verify_no_char() {
+        $result = nonce_verify( '' );
+
+        $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ::nonce_verify
+     */
+    public function test_nonce_verify_char_invalid_nonce() {
+        global $ag;
+
+        $ag->char = array( 'id' => 1 );
+
+        $result = nonce_verify( '' );
+
+        $ag->char = FALSE;
+
+        $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ::nonce_verify
+     */
+    public function test_nonce_verify_char_valid_nonce() {
+        global $ag;
+
+        $ag->char = array( 'id' => 1 );
+
+        $nonce = nonce_create();
+        $result = nonce_verify( $nonce );
+
+        $ag->char = FALSE;
+
+        $this->assertTrue( $result );
+    }
+
+    /**
+     * @covers ::nonce_verify
+     */
+    public function test_nonce_verify_char_valid_nonce_in_past() {
+        global $ag;
+
+        $ag->char = array( 'id' => 1 );
+
+        $nonce = nonce_create( $state = -1,
+            $time = time() - game_nonce_life / 2 );
+        $result = nonce_verify( $nonce );
+
+        $ag->char = FALSE;
+
+        $this->assertTrue( $result );
+    }
+
+    /**
      * @covers ::nonce_create
      */
     public function test_nonce_create_no_char() {

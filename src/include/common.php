@@ -94,8 +94,11 @@ function explode_meta_nokey( $s ) {
     return $meta_obj;
 }
 
-function nonce_tick() {
-    return ceil( time() / ( game_nonce_life / 2 ) );
+function nonce_tick( $use_time = FALSE ) {
+    if ( FALSE == $use_time ) {
+        $use_time = time();
+    }
+    return ceil( $use_time / ( game_nonce_life / 2 ) );
 }
 
 function nonce_verify( $nonce, $state = -1 ) {
@@ -117,17 +120,17 @@ function nonce_verify( $nonce, $state = -1 ) {
         return TRUE;
     }
 
-    return false;
+    return FALSE;
 }
 
-function nonce_create( $state = -1 ) {
+function nonce_create( $state = -1, $time = FALSE ) {
     global $ag;
 
     if ( FALSE == $ag->char ) {
         return FALSE;
     }
 
-    $tick = nonce_tick();
+    $tick = nonce_tick( $use_time = $time );
     $c_id = intval( $ag->char[ 'id' ] );
 
     return substr( md5( $tick . $state . $c_id ), 0, 10 );
