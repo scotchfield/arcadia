@@ -29,9 +29,10 @@ if ( function_exists( 'session_status' ) ) {
     }
 }
 
-$GLOBALS[ 'ag' ] = new ArcadiaGame();
-$GLOBALS[ 'ag' ]->set_logger( new ArcadiaLog() );
-$GLOBALS[ 'ag' ]->user = game_user_logged_in();
+global $ag;
+$ag = new ArcadiaGame();
+$ag->set_logger( new ArcadiaLog() );
+$ag->user = game_user_logged_in();
 
 $page_map = array(
     'account' => 'account.php',
