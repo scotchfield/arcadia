@@ -49,3 +49,21 @@ function db_last_insert_id() {
 
     return $game_db->lastInsertId();
 }
+
+function db_begin_transaction() {
+    global $game_db;
+
+    $game_db->beginTransaction();
+}
+
+function db_commit() {
+    global $game_db;
+
+    $game_db->commit();
+}
+
+function db_rollback() {
+    global $game_db;
+
+    $game_db->rollBack();
+}
