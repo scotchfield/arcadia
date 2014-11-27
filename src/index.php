@@ -13,7 +13,6 @@ $ag->char = game_character_active();
 if ( FALSE != $ag->char ) {
     $ag->char[ 'meta' ] = get_character_meta( $ag->char[ 'id' ] );
 }
-debug_print( $ag->char );
 do_state( 'character_load' );
 
 if ( isset( $_GET[ 'state' ] ) ) {
