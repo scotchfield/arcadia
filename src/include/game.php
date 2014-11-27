@@ -10,6 +10,12 @@ class ArcadiaGame {
 
     public $user = FALSE, $char = FALSE;
 
+    public $meta;
+
+    public function __construct() {
+        $this->meta = new ArcadiaGameMeta();
+    }
+
     public function get_state() {
         return $this->game_state;
     }

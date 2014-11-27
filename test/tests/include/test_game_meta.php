@@ -24,29 +24,35 @@ class TestArcadiaGameMeta extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ::get_game_meta
+     * @covers ArcadiaGameMeta::get_game_meta
      */
     public function test_get_game_meta_simple() {
-        $result = get_game_meta( 1, 1 );
+        global $ag;
+
+        $result = $ag->meta->get_game_meta( 1, 1 );
 
         $this->assertNotFalse( $result );
         $this->assertEquals( 'test 1', $result[ 'meta_value' ] );
     }
 
     /**
-     * @covers ::get_game_meta
+     * @covers ArcadiaGameMeta::get_game_meta
      */
     public function test_get_game_meta_false() {
-        $result = get_game_meta( FALSE, FALSE );
+        global $ag;
+
+        $result = $ag->meta->get_game_meta( FALSE, FALSE );
 
         $this->assertFalse( $result );
     }
 
     /**
-     * @covers ::get_game_meta_by_key
+     * @covers ArcadiaGameMeta::get_game_meta_by_key
      */
     public function test_get_game_meta_by_key_simple() {
-        $result = get_game_meta_by_key( 1 );
+        global $ag;
+
+        $result = $ag->meta->get_game_meta_by_key( 1 );
 
         $this->assertNotFalse( $result );
         $this->assertCount( 1, $result );
@@ -54,20 +60,24 @@ class TestArcadiaGameMeta extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ::get_game_meta_array
+     * @covers ArcadiaGameMeta::get_game_meta_array
      */
     public function test_get_game_meta_array_simple() {
-        $result = get_game_meta_array( 1, array( 1 ) );
+        global $ag;
+
+        $result = $ag->meta->get_game_meta_array( 1, array( 1 ) );
 
         $this->assertNotFalse( $result );
         $this->assertEquals( 'test 1', $result[ 1 ][ 'meta_value' ] );
     }
 
     /**
-     * @covers ::get_game_meta_array
+     * @covers ArcadiaGameMeta::get_game_meta_array
      */
     public function test_get_game_meta_array() {
-        $result = get_game_meta_array( 2, array( 2, 3 ) );
+        global $ag;
+
+        $result = $ag->meta->get_game_meta_array( 2, array( 2, 3 ) );
 
         $this->assertNotFalse( $result );
         $this->assertEquals( 'test 2', $result[ 2 ][ 'meta_value' ] );
@@ -75,10 +85,12 @@ class TestArcadiaGameMeta extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ::get_character_game_meta
+     * @covers ArcadiaGameMeta::get_character_game_meta
      */
     public function test_get_character_game_meta_simple() {
-        $result = get_character_game_meta( 1, 1, 1 );
+        global $ag;
+
+        $result = $ag->meta->get_character_game_meta( 1, 1, 1 );
 
         $this->assertNotFalse( $result );
         $this->assertCount( 1, $result );
@@ -86,23 +98,27 @@ class TestArcadiaGameMeta extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ::get_game_meta_all
+     * @covers ArcadiaGameMeta::get_game_meta_all
      */
     public function test_get_game_meta_all_simple() {
-        $result = get_game_meta_all();
+        global $ag;
+
+        $result = $ag->meta->get_game_meta_all();
 
         $this->assertNotFalse( $result );
         $this->assertCount( 2, $result );
     }
 
     /**
-     * @covers ::update_game_meta
+     * @covers ArcadiaGameMeta::update_game_meta
      */
     public function test_update_game_meta_simple() {
-        $new_value = 'update test 1';
-        update_game_meta( 1, 1, $new_value );
+        global $ag;
 
-        $result = get_game_meta( 1, 1 );
+        $new_value = 'update test 1';
+        $ag->meta->update_game_meta( 1, 1, $new_value );
+
+        $result = $ag->meta->get_game_meta( 1, 1 );
 
         $this->assertNotFalse( $result );
         $this->assertEquals( $new_value, $result[ 'meta_value' ] );

@@ -8,11 +8,16 @@ class ArcadiaMail extends ArcadiaComponent {
     }
 
     public function get_mail( $id ) {
-        return get_game_meta( $this->flag_game_meta, $id );
+        global $ag;
+
+        return $ag->meta->get_game_meta( $this->flag_game_meta, $id );
     }
 
     public function get_mail_array( $id_array ) {
-        return get_game_meta_array( $this->flag_game_meta, $id_array );
+        global $ag;
+
+        return $ag->meta->get_game_meta_array(
+            $this->flag_game_meta, $id_array );
     }
 
 }
