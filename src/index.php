@@ -35,6 +35,8 @@ do_state( 'post_page_content' );
 
 do_state( 'game_footer' );
 
+do_state( 'arcadia_end' );
+
 $time_diff = microtime( $get_as_float = TRUE ) - $time_start;
 //debug_print( '<p>Page rendered in ' .
 //             round( $time_diff, $precision = 4 ) . 's</p>' );
