@@ -43,5 +43,6 @@ if ( isset( $setting_map[ $setting ] ) ) {
 
 do_state( 'post_setting_map' );
 
+do_state( 'arcadia_end' );
 
 header( 'Location: ' . $GLOBALS[ 'redirect_header' ] );
