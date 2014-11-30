@@ -14,6 +14,7 @@ require( GAME_PATH . 'include/heartbeat.php' );
 require( GAME_PATH . 'include/item.php' );
 require( GAME_PATH . 'include/log.php' );
 require( GAME_PATH . 'include/mail.php' );
+require( GAME_PATH . 'include/npc.php' );
 require( GAME_PATH . 'include/quest.php' );
 require( GAME_PATH . 'include/tracking.php' );
 require( GAME_PATH . 'include/user.php' );
