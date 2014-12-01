@@ -1,6 +1,6 @@
 <?php
 
-$custom_start_page = 'title.php';
+require( GAME_CUSTOM_PATH . 'title.php' );
 
 define( 'sample_meta_type_character', 1 );
 
@@ -8,17 +8,31 @@ define( 'SAMPLE_CHARACTER_CREDITS',   1 );
 define( 'SAMPLE_CHARACTER_TIP',       2 );
 
 
-function sample_login() {
-    global $character;
+function sample_default_state() {
+    global $ag;
 
-    ensure_character_meta( $character[ 'id' ], sample_meta_type_character,
+    if ( FALSE == $ag->user ) {
+        $ag->set_state( 'title' );
+    } else if ( FALSE == $ag->char ) {
+        $ag->set_state( 'select' );
+    } else {
+        $ag->set_state( 'zone' );
+    }
+}
+
+add_state( 'set_default_state', 'sample_default_state' );
+
+function sample_login() {
+    global $ag;
+
+    ensure_character_meta( $ag->char[ 'id' ], sample_meta_type_character,
                            SAMPLE_CHARACTER_CREDITS );
 }
 
-add_action( 'select_character', 'sample_login' );
+add_state( 'select_character', 'sample_login' );
 
 function sample_header() {
-    global $character;
+    global $ag;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,17 +52,17 @@ function sample_header() {
 <div class="container">
 
 <?php
-    if ( FALSE != $character ) {
+    if ( FALSE != $ag->char ) {
 ?>
   <div class="row">
-    <h1>Welcome, <?php echo( $character[ 'character_name' ] ); ?>.</h1>
+    <h1>Welcome, <?php echo( $ag->char[ 'character_name' ] ); ?>.</h1>
   </div>
 <?php
     }
 }
 
 function sample_footer() {
-    global $character;
+    global $ag;
 ?>
   <div class="row">
     <ul class="list-inline">
@@ -69,8 +83,8 @@ function sample_footer() {
 <?
 }
 
-add_action( 'game_header', 'sample_header' );
-add_action( 'game_footer', 'sample_footer' );
+add_state( 'game_header', 'sample_header' );
+add_state( 'game_footer', 'sample_footer' );
 
 function sample_validate_user( $args ) {
     if ( ! isset( $args[ 'user_id' ] ) ) {
@@ -80,26 +94,16 @@ function sample_validate_user( $args ) {
     set_user_max_characters( $args[ 'user_id' ], 1 );
 }
 
-add_action( 'validate_user', 'sample_validate_user' );
-
-function sample_select_check() {
-    global $character;
-
-    if ( FALSE == $character ) {
-        game_set_action( 'select' );
-    }
-}
-
-add_action( 'action_set', 'sample_select_check' );
+add_state( 'validate_user', 'sample_validate_user' );
 
 function sample_select_print() {
-    global $user;
+    global $ag;
 
-    if ( strcmp( 'select', game_get_action() ) ) {
+    if ( strcmp( 'select', $ag->get_state() ) ) {
        return;
     }
 
-    $char_obj = get_characters_for_user( $user[ 'id' ] );
+    $char_obj = get_characters_for_user( $ag->user[ 'id' ] );
 ?>
 <div class="row">
   <div class="col-md-3">
@@ -108,7 +112,7 @@ function sample_select_print() {
   <div class="col-md-6">
 
 <h1 class="text-center">Welcome back,
-<?php echo( $user[ 'user_name' ] ); ?>.</h1>
+<?php echo( $ag->user[ 'user_name' ] ); ?>.</h1>
 
 <h2 class="text-center">Select a character:</h2>
 
@@ -124,7 +128,7 @@ function sample_select_print() {
         }
     }
 
-    if ( count( $char_obj ) < $user[ 'max_characters' ] ) {
+    if ( count( $char_obj ) < $ag->user[ 'max_characters' ] ) {
 ?>
 <h1 class="text-center">Create a character</h1>
 <form name="char_form" id="char_form" method="get" action="game-setting.php">
@@ -146,12 +150,12 @@ function sample_select_print() {
 <?php
 }
 
-add_action( 'do_page_content', 'sample_select_print' );
+add_state( 'do_page_content', 'sample_select_print' );
 
 function sample_tip_print() {
-    global $character;
+    global $ag;
 
-    if ( FALSE == $character ) {
+    if ( FALSE == $ag->char ) {
         return;
     }
 
@@ -159,15 +163,17 @@ function sample_tip_print() {
 
     if ( 0 < strlen( $tip ) ) {
         echo( $tip );
-        update_character_meta( $character[ 'id' ], sample_meta_type_character,
+        update_character_meta( $ag->char[ 'id' ], sample_meta_type_character,
             SAMPLE_CHARACTER_TIP, '' );
     }
 }
 
-add_action_priority( 'do_page_content', 'sample_tip_print' );
+add_state_priority( 'do_page_content', 'sample_tip_print' );
 
 function sample_about() {
-    if ( strcmp( 'about', game_get_action() ) ) {
+    global $ag;
+
+    if ( strcmp( 'about', $ag->get_state() ) ) {
        return;
     }
 
@@ -175,7 +181,9 @@ function sample_about() {
 }
 
 function sample_contact() {
-    if ( strcmp( 'contact', game_get_action() ) ) {
+    global $ag;
+
+    if ( strcmp( 'contact', $ag->get_state() ) ) {
        return;
     }
 
@@ -183,5 +191,5 @@ function sample_contact() {
           'https://github.com/scotchfield/arcadia</a></h1>' );
 }
 
-add_action( 'do_page_content', 'sample_about' );
-add_action( 'do_page_content', 'sample_contact' );
+add_state( 'do_page_content', 'sample_about' );
+add_state( 'do_page_content', 'sample_contact' );

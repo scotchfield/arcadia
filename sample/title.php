@@ -1,4 +1,13 @@
-<!DOCTYPE html>
+<?php
+
+function sample_title_content() {
+    global $ag;
+
+    if ( strcmp( 'title', $ag->get_state() ) ) {
+        return;
+    }
+
+?><!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -116,3 +125,7 @@ if ( isset( $_GET[ 'notify' ] ) ) {
 
 </body>
 </html>
+<?
+}
+
+add_state( 'do_page_content', 'sample_title_content' );
