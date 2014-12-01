@@ -3,6 +3,15 @@
 class TestArcadiaGame extends PHPUnit_Framework_TestCase {
 
     /**
+     * @covers ArcadiaGame::__construct
+     */
+    public function test_game_new() {
+        $component = new ArcadiaGame();
+
+        $this->assertNotNull( $component );
+    }
+
+    /**
      * @covers ArcadiaGame::get_state
      * @covers ArcadiaGame::set_state
      */
@@ -42,6 +51,31 @@ class TestArcadiaGame extends PHPUnit_Framework_TestCase {
         $game = new ArcadiaGame();
 
         $this->assertFalse( $game->get_state_arg( 'test_not_set' ) );
+    }
+
+    /**
+     * @covers ArcadiaGame::set_component
+     * @covers ArcadiaGame::get_component
+     * @covers ArcadiaGame::c
+     */
+    public function test_game_set_get_component() {
+        $game = new ArcadiaGame();
+
+        $component = array( 1 => 2 );
+
+        $game->set_component( 'test', $component );
+
+        $this->assertEquals( $component, $game->get_component( 'test' ) );
+        $this->assertEquals( $component, $game->c( 'test' ) );
+    }
+
+    /**
+     * @covers ArcadiaGame::get_component
+     */
+    public function test_game_get_component_does_not_exist() {
+        $game = new ArcadiaGame();
+
+        $this->assertFalse( $game->get_component( 'test' ) );
     }
 
 }
