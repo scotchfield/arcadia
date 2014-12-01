@@ -2,9 +2,9 @@
 
 class ArcadiaCron extends ArcadiaComponent {
 
-    function __construct() {
-        $this->flag_game_meta = 1000;
-        $this->flag_character_meta = 1000;
+    function __construct( $key_type = 1000 ) {
+        $this->flag_game_meta = $key_type;
+        $this->flag_character_meta = $key_type;
     }
 
     public function get_crons() {

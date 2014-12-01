@@ -2,9 +2,9 @@
 
 class ArcadiaQuest extends ArcadiaComponent {
 
-    function __construct() {
-        $this->flag_game_meta = 204;
-        $this->flag_character_meta = 204;
+    function __construct( $key_type = 204 ) {
+        $this->flag_game_meta = $key_type;
+        $this->flag_character_meta = $key_type;
     }
 
     public function get_quest( $id ) {

@@ -2,9 +2,9 @@
 
 class ArcadiaMail extends ArcadiaComponent {
 
-    function __construct() {
-        $this->flag_game_meta = 205;
-        $this->flag_character_meta = 205;
+    function __construct( $key_type = 205 ) {
+        $this->flag_game_meta = $key_type;
+        $this->flag_character_meta = $key_type;
     }
 
     public function get_mail( $id ) {

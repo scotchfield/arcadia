@@ -2,9 +2,9 @@
 
 class ArcadiaHeartbeat extends ArcadiaComponent {
 
-    function __construct() {
-        $this->flag_game_meta = 206;
-        $this->flag_character_meta = 206;
+    function __construct( $key_type = 206 ) {
+        $this->flag_game_meta = $key_type;
+        $this->flag_character_meta = $key_type;
     }
 
     function add_heartbeat( $meta_value = array() ) {

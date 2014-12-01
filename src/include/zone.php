@@ -2,9 +2,9 @@
 
 class ArcadiaZone extends ArcadiaComponent {
 
-    function __construct() {
-        $this->flag_game_meta = 203;
-        $this->flag_character_meta = 203;
+    function __construct( $key_type = 203 ) {
+        $this->flag_game_meta = $key_type;
+        $this->flag_character_meta = $key_type;
     }
 
     public function get_zone( $id ) {

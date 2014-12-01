@@ -2,9 +2,9 @@
 
 class ArcadiaBuff extends ArcadiaComponent {
 
-    function __construct() {
-        $this->flag_game_meta = 202;
-        $this->flag_character_meta = 202;
+    function __construct( $key_type = 202 ) {
+        $this->flag_game_meta = $key_type;
+        $this->flag_character_meta = $key_type;
     }
 
     public function get_buff( $id ) {

@@ -2,9 +2,9 @@
 
 class ArcadiaAchievement extends ArcadiaComponent {
 
-    function __construct() {
-        $this->flag_game_meta = 200;
-        $this->flag_character_meta = 200;
+    function __construct( $key_type = 200 ) {
+        $this->flag_game_meta = $key_type;
+        $this->flag_character_meta = $key_type;
     }
 
     public function get_achievement( $id ) {

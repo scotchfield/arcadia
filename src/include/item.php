@@ -2,9 +2,9 @@
 
 class ArcadiaItem extends ArcadiaComponent {
 
-    function __construct() {
-        $this->flag_game_meta = 201;
-        $this->flag_character_meta = 201;
+    function __construct( $key_type = 201 ) {
+        $this->flag_game_meta = $key_type;
+        $this->flag_character_meta = $key_type;
     }
 
     function get_item( $id ) {
