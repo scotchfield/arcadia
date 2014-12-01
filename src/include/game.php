@@ -59,4 +59,16 @@ class ArcadiaGame {
             $this->logger->log_add( $log_type, $char_id, $meta_value );
         }
     }
+
+    public function char_meta( $key_type, $meta_key, $default ) {
+        if ( ! $this->char ) {
+            return $default;
+        }
+
+        if ( ! isset( $this->char[ 'meta' ][ $key_type ][ $meta_key ] ) ) {
+            return $default;
+        }
+
+        return $this->char[ 'meta' ][ $key_type ][ $meta_key ];
+    }
 }
