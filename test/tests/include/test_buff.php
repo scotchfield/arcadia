@@ -203,7 +203,92 @@ class TestArcadiaBuff extends PHPUnit_Framework_TestCase {
         $this->assertGreaterThan( 0, $result );
     }
 
+    /**
+     * @covers ArcadiaBuff::remove_buff
+     */
+    public function test_remove_buff_nonexistant() {
+        global $ag;
 
+        $component = new ArcadiaBuff();
 
+        $component->remove_buff( -1 );
+
+        $this->assertFalse( isset( $ag->char[ 'meta' ][
+            $component->get_flag_character_meta() ][ -1 ] ) );
+    }
+
+    /**
+     * @covers ArcadiaBuff::remove_buff
+     */
+    public function test_remove_buff_existant() {
+        global $ag;
+
+        $component = new ArcadiaBuff();
+
+        $component->award_buff( 2, 300 );
+        $component->remove_buff( 2 );
+
+        $this->assertFalse( isset( $ag->char[ 'meta' ][
+            $component->get_flag_character_meta() ][ -1 ] ) );
+    }
+
+    /**
+     * @covers ArcadiaBuff::update_buffs
+     */
+    public function test_update_buffs_no_char() {
+        global $ag;
+
+        $ag->char = FALSE;
+
+        $component = new ArcadiaBuff();
+
+        $result = $component->update_buffs();
+
+        $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ArcadiaBuff::update_buffs
+     */
+    public function test_update_buffs_no_buff_key() {
+        global $ag;
+
+        $ag->char = array( 'id' => 1 );
+
+        $component = new ArcadiaBuff();
+
+        $result = $component->update_buffs();
+
+        $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ArcadiaBuff::update_buffs
+     */
+    public function test_update_buffs_normal() {
+        global $ag;
+
+        $component = new ArcadiaBuff();
+
+        $result = $component->update_buffs();
+
+        $this->assertTrue( $result );
+    }
+
+    /**
+     * @covers ArcadiaBuff::update_buffs
+     */
+    public function test_update_buffs_expire_old() {
+        global $ag;
+
+        $component = new ArcadiaBuff();
+
+        $ag->char[ 'meta' ][ $component->get_flag_character_meta() ][ 2 ] = 1;
+
+        $component->update_buffs();
+
+        $this->assertFalse( isset( $ag->char[ 'meta' ][
+            $component->get_flag_character_meta() ][ 2 ] ) );
+    }
 
 }

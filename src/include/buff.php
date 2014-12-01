@@ -89,21 +89,23 @@ class ArcadiaBuff extends ArcadiaComponent {
         global $ag;
 
         if ( FALSE == $ag->char ) {
-            return;
+            return FALSE;
         }
 
         if ( ! isset( $ag->char[ 'meta' ][ $this->flag_character_meta ] ) ) {
-            return;
+            return FALSE;
         }
 
         foreach ( $ag->char[ 'meta' ][ $this->flag_character_meta ] as
                       $buff_id => $buff_expire ) {
             if ( intval( $buff_expire ) <= time() ) {
-                remove_buff( $buff_id );
+                $this->remove_buff( $buff_id );
             }
         }
 
         do_state( 'apply_buffs' );
+
+        return TRUE;
     }
 
 }
