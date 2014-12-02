@@ -126,68 +126,6 @@ class TestArcadiaCommon extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ::explode_meta
-     */
-    public function test_explode_meta_empty() {
-        $meta = '';
-
-        $meta_obj = explode_meta( $meta );
-
-        $this->assertEmpty( $meta_obj );
-    }
-
-    /**
-     * @covers ::explode_meta
-     */
-    public function test_explode_meta_single() {
-        $meta = 'a=b';
-
-        $meta_obj = explode_meta( $meta );
-
-        $this->assertArrayHasKey( 'a', $meta_obj );
-        $this->assertEquals( 'b', $meta_obj[ 'a' ] );
-    }
-
-    /**
-     * @covers ::explode_meta
-     */
-    public function test_explode_meta_double() {
-        $meta = 'a=b;c=d';
-
-        $meta_obj = explode_meta( $meta );
-
-        $this->assertArrayHasKey( 'a', $meta_obj );
-        $this->assertEquals( 'b', $meta_obj[ 'a' ] );
-
-        $this->assertArrayHasKey( 'c', $meta_obj );
-        $this->assertEquals( 'd', $meta_obj[ 'c' ] );
-    }
-
-    /**
-     * @covers ::explode_meta_nokey
-     */
-    public function test_explode_meta_nokey_empty() {
-        $meta = '';
-
-        $meta_obj = explode_meta_nokey( $meta );
-
-        $this->assertEmpty( $meta_obj );
-    }
-
-    /**
-     * @covers ::explode_meta_nokey
-     */
-    public function test_explode_meta_nokey_single() {
-        $meta = 'a=b,c,d';
-
-        $meta_obj = explode_meta_nokey( $meta );
-
-        $this->assertEquals(
-            array( 'a', array( 'b', 'c', 'd' ) ),
-            $meta_obj[ 0 ] );
-    }
-
-    /**
      * @covers ::nonce_tick
      */
     public function test_nonce_tick_gt_zero() {

@@ -66,34 +66,6 @@ function random_string( $length ) {
     return $st;
 }
 
-function explode_meta( $s ) {
-    if ( 0 == strlen( $s ) ) {
-        return array();
-    }
-
-    $meta_obj = array();
-    $s_obj = explode( ';', $s );
-    foreach ( $s_obj as $x ) {
-        $x = explode( '=', $x );
-        $meta_obj[ $x[ 0 ] ] = $x[ 1 ];
-    }
-    return $meta_obj;
-}
-
-function explode_meta_nokey( $s ) {
-    if ( 0 == strlen( $s ) ) {
-        return array();
-    }
-
-    $meta_obj = array();
-    $s_obj = explode( ';', $s );
-    foreach ( $s_obj as $x ) {
-        $x = explode( '=', $x );
-        $meta_obj[] = array( $x[ 0 ], explode( ',', $x[ 1 ] ) );
-    }
-    return $meta_obj;
-}
-
 function nonce_tick( $use_time = FALSE ) {
     if ( FALSE == $use_time ) {
         $use_time = time();
