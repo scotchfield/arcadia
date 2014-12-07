@@ -36,6 +36,10 @@ class ArcadiaGame {
         $this->game_state_args[ $k ] = $v;
     }
 
+    public function clear_state_args() {
+        $this->game_state_args = array();
+    }
+
     public function set_component( $component_id, $component ) {
         $this->components[ $component_id ] = $component;
     }

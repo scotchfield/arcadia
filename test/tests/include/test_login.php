@@ -16,6 +16,10 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
     }
 
     public function tearDown() {
+        global $ag;
+
+        $ag->clear_state_args();
+
         db_execute( 'DELETE FROM USERS' );
     }
 
@@ -88,5 +92,137 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
 
        $this->assertTrue( $result );
     }
+
+    /**
+     * @covers ArcadiaLogin::content_register
+     */
+    public function test_login_content_register_no_state() {
+        global $ag;
+
+        $component = new ArcadiaLogin();
+
+        $result = $component->content_register();
+
+        $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ArcadiaLogin::content_register
+     */
+    public function test_login_content_register_no_user() {
+       global $ag;
+
+       $component = new ArcadiaLogin();
+
+       $ag->set_state( 'register' );
+
+       $result = $component->content_register();
+
+       $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ArcadiaLogin::content_register
+     */
+    public function test_login_content_register_no_password() {
+       global $ag;
+
+       $component = new ArcadiaLogin();
+
+       $ag->set_state( 'register' );
+       $ag->set_state_arg( 'user', $this->username );
+
+       $result = $component->content_register();
+
+       $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ArcadiaLogin::content_register
+     */
+    public function test_login_content_register_no_email() {
+       global $ag;
+
+       $component = new ArcadiaLogin();
+
+       $ag->set_state( 'register' );
+       $ag->set_state_arg( 'user', $this->username );
+       $ag->set_state_arg( 'pass', $this->password );
+
+       $result = $component->content_register();
+
+       $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ArcadiaLogin::content_register
+     */
+    public function test_login_content_register_user_exists() {
+       global $ag;
+
+       $component = new ArcadiaLogin();
+
+       $ag->set_state( 'register' );
+       $ag->set_state_arg( 'user', $this->username );
+       $ag->set_state_arg( 'pass', $this->password );
+       $ag->set_state_arg( 'email', $this->email );
+
+       $result = $component->content_register();
+
+       $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ArcadiaLogin::content_register
+     */
+    public function test_login_content_register_email_exists() {
+       global $ag;
+
+       $component = new ArcadiaLogin();
+
+       $ag->set_state( 'register' );
+       $ag->set_state_arg( 'user', 'test_user_new' );
+       $ag->set_state_arg( 'pass', 'test_password_new' );
+       $ag->set_state_arg( 'email', $this->email );
+
+       $result = $component->content_register();
+
+       $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ArcadiaLogin::content_register
+     */
+    public function test_login_content_register_success() {
+       global $ag;
+
+       $component = new ArcadiaLogin();
+
+       $ag->set_state( 'register' );
+       $ag->set_state_arg( 'user', 'test_user_new' );
+       $ag->set_state_arg( 'pass', 'test_password_new' );
+       $ag->set_state_arg( 'email', 'test_email_new' );
+
+       $result = $component->content_register(
+           array( 'send_email' => FALSE ) );
+
+       $this->assertTrue( $result );
+    }
+
+    /**
+     * @covers ArcadiaLogin::content_activate
+     */
+    public function test_login_content_activate_no_state() {
+        global $ag;
+
+        $component = new ArcadiaLogin();
+
+        $result = $component->content_activate();
+
+        $this->assertFalse( $result );
+    }
+
+
+
 
 }
