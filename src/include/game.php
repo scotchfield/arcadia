@@ -7,6 +7,7 @@ class ArcadiaGame {
     private $components = array();
 
     private $logger = FALSE;
+    private $redirect_header = FALSE;
 
     public $user = FALSE, $char = FALSE;
 
@@ -70,5 +71,13 @@ class ArcadiaGame {
         }
 
         return $this->char[ 'meta' ][ $key_type ][ $meta_key ];
+    }
+
+    public function set_redirect_header( $location ) {
+        $this->redirect_header = $location;
+    }
+
+    public function redirect_header() {
+        return $this->redirect_header;
     }
 }
