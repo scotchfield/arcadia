@@ -157,4 +157,19 @@ class ArcadiaLogin extends ArcadiaComponent {
         return FALSE;
     }
 
+    public function content_logout( $args = FALSE ) {
+        global $ag;
+
+        if ( strcmp( 'logout', $ag->get_state() ) ) {
+            return FALSE;
+        }
+
+        $ag->set_redirect_header( GAME_URL );
+
+        $_SESSION = array();
+        session_destroy();
+
+        return TRUE;
+    }
+
 }
