@@ -14,6 +14,7 @@ class ArcadiaLogin extends ArcadiaComponent {
     const NOTIFY_VALIDATE_SUCCESS = 102;
 
     function __construct() {
+// TODO THIS IS A GAME-SETTING OPERATION, NOT INDEX
         add_state( 'do_page_content', array( $this, 'content_login' ) );
         add_state( 'do_page_content', array( $this, 'content_register' ) );
         add_state( 'do_page_content', array( $this, 'content_activate' ) );
@@ -42,16 +43,10 @@ class ArcadiaLogin extends ArcadiaComponent {
             return FALSE;
         }
 
-        if ( session_status() == PHP_SESSION_NONE ) {
-            session_start();
-        }
-
         $ag->user = $user;
         $_SESSION[ 'u' ] = $user[ 'id' ];
 
         $ag->set_redirect_header( GAME_URL );
-
-//TODO THIS IS A GAME-SETTING OPERATION, NOT INDEX
 
         return TRUE;
     }
@@ -124,18 +119,27 @@ class ArcadiaLogin extends ArcadiaComponent {
             return FALSE;
         }
 
-        if ( ! isset( $_GET[ 'user' ] ) ) {
-            header( 'Location: ' . GAME_URL );
-            exit;
+        if ( ! $ag->get_state_arg( 'user' ) ) {
+            $ag->set_redirect_header( GAME_URL );
+
+            return FALSE;
         }
 
-        $user = get_user_by_id( $_GET[ 'user' ] );
+        if ( ! $ag->get_state_arg( 'activate' ) ) {
+            $ag->set_redirect_header( GAME_URL );
 
-        if ( ! strcmp( $_GET[ 'activate' ], $user[ 'activation' ] ) ) {
+            return FALSE;
+        }
+
+        $user = get_user_by_id( $ag->get_state_arg( 'user' ) );
+
+        if ( ! strcmp( $ag->get_state_arg( 'activate' ),
+                       $user[ 'activation' ] ) ) {
             if ( is_user_active( $user ) ) {
-                header( 'Location: ' . GAME_URL . '?notify=' .
-                        GAME_LOGIN_NOTIFY_ALREADY_VALIDATED );
-                exit;
+                $ag->set_redirect_header( GAME_URL . '?notify=' .
+                    self::NOTIFY_ALREADY_VALIDATED );
+
+                return FALSE;
             } else {
                 set_user_status( $user[ 'id' ],
                     set_bit( $user[ 'status' ], game_user_status_active ) );
@@ -143,11 +147,14 @@ class ArcadiaLogin extends ArcadiaComponent {
                 do_state( 'validate_user',
                     $args = array( 'user_id' => $user[ 'id' ] ) );
 
-                header( 'Location: ' . GAME_URL . '?notify=' .
-                        GAME_LOGIN_NOTIFY_VALIDATE_SUCCESS );
-                exit;
+                $ag->set_redirect_header( GAME_URL . '?notify='     .
+                    self::NOTIFY_VALIDATE_SUCCESS );
+
+                return TRUE;
             }
         }
+
+        return FALSE;
     }
 
 }

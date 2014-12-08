@@ -222,7 +222,95 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
         $this->assertFalse( $result );
     }
 
+    /**
+     * @covers ArcadiaLogin::content_activate
+     */
+    public function test_login_content_activate_no_user() {
+       global $ag;
 
+       $component = new ArcadiaLogin();
+
+       $ag->set_state( 'activate' );
+
+       $result = $component->content_activate();
+
+       $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ArcadiaLogin::content_activate
+     */
+    public function test_login_content_activate_user_with_no_activate() {
+       global $ag;
+
+       $component = new ArcadiaLogin();
+
+       $ag->set_state( 'activate' );
+       $ag->set_state_arg( 'user', $this->username );
+
+       $result = $component->content_activate();
+
+       $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ArcadiaLogin::content_activate
+     */
+    public function test_login_content_activate_user_with_valid_activate() {
+       global $ag;
+
+       $user = get_user_by_name( $this->username );
+
+       $component = new ArcadiaLogin();
+
+       $ag->set_state( 'activate' );
+       $ag->set_state_arg( 'user', $user[ 'id' ] );
+       $ag->set_state_arg( 'activate', $user[ 'activation' ] );
+
+       $result = $component->content_activate();
+
+       $this->assertTrue( $result );
+    }
+
+    /**
+     * @covers ArcadiaLogin::content_activate
+     */
+    public function test_login_content_activate_user_already_active() {
+       global $ag;
+
+       $user = get_user_by_name( $this->username );
+       set_user_status( $user[ 'id' ],
+           set_bit( $user[ 'status' ], game_user_status_active ) );
+
+       $component = new ArcadiaLogin();
+
+       $ag->set_state( 'activate' );
+       $ag->set_state_arg( 'user', $user[ 'id' ] );
+       $ag->set_state_arg( 'activate', $user[ 'activation' ] );
+
+       $result = $component->content_activate();
+
+       $this->assertFalse( $result );
+    }
+
+    /**
+     * @covers ArcadiaLogin::content_activate
+     */
+    public function test_login_content_activate_invalid_activate() {
+       global $ag;
+
+       $user = get_user_by_name( $this->username );
+
+       $component = new ArcadiaLogin();
+
+       $ag->set_state( 'activate' );
+       $ag->set_state_arg( 'user', $user[ 'id' ] );
+       $ag->set_state_arg( 'activate', 'invalid_activate' );
+
+       $result = $component->content_activate();
+
+       $this->assertFalse( $result );
+    }
 
 
 }
