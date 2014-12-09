@@ -11,6 +11,7 @@ require( GAME_PATH . 'include/common.php' );
 require( GAME_PATH . 'include/cron.php' );
 require( GAME_PATH . 'include/db.php' );
 require( GAME_PATH . 'include/heartbeat.php' );
+require( GAME_PATH . 'include/inventory.php' );
 require( GAME_PATH . 'include/item.php' );
 require( GAME_PATH . 'include/log.php' );
 require( GAME_PATH . 'include/login.php' );
@@ -46,10 +47,6 @@ $setting_map = array(
     'password' => 'user_change_password',
     'select_character' => 'user_select_character',
     'change_character' => 'user_clear_character',
-    'quest_accept' => 'character_quest_accept',
-    'quest_complete' => 'character_quest_complete',
-    'buy_item' => 'character_buy_item',
-    'sell_item' => 'character_sell_item',
 );
 
 $custom_setting_map = array();
