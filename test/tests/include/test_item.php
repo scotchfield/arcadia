@@ -5,7 +5,7 @@ class TestArcadiaItem extends PHPUnit_Framework_TestCase {
     public function setUp() {
         $component = new ArcadiaItem();
 
-        do_state( 'post_load' );
+        do_action( 'post_load' );
 
         db_execute(
             'INSERT INTO game_meta ( key_type, meta_key, meta_value ) ' .

@@ -109,7 +109,7 @@ if ( isset( $_POST[ 'state' ] ) ) {
             set_user_status( $user[ 'id' ],
                 set_bit( $user[ 'status' ], game_user_status_active ) );
 
-            do_state( 'validate_user',
+            do_action( 'validate_user',
                 $args = array( 'user_id' => $user[ 'id' ] ) );
 
             header( 'Location: ' . GAME_URL . '?notify=' .

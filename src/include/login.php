@@ -15,9 +15,9 @@ class ArcadiaLogin extends ArcadiaComponent {
 
     function __construct() {
 // TODO THIS IS A GAME-SETTING OPERATION, NOT INDEX
-        add_state( 'do_page_content', array( $this, 'content_login' ) );
+/*        add_state( 'do_page_content', array( $this, 'content_login' ) );
         add_state( 'do_page_content', array( $this, 'content_register' ) );
-        add_state( 'do_page_content', array( $this, 'content_activate' ) );
+        add_state( 'do_page_content', array( $this, 'content_activate' ) );*/
     }
 
     public function content_login( $args = FALSE ) {
@@ -144,7 +144,7 @@ class ArcadiaLogin extends ArcadiaComponent {
                 set_user_status( $user[ 'id' ],
                     set_bit( $user[ 'status' ], game_user_status_active ) );
 
-                do_state( 'validate_user',
+                do_action( 'validate_user',
                     $args = array( 'user_id' => $user[ 'id' ] ) );
 
                 $ag->set_redirect_header( GAME_URL . '?notify='     .

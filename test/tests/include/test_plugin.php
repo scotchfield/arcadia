@@ -7,11 +7,11 @@ class TestArcadiaPlugin extends PHPUnit_Framework_TestCase {
     public function setUp() {
         $this->result = FALSE;
 
-        add_state( 'test_state', array( $this, 'state_function' ) );
+        add_state( 'test_state', FALSE, array( $this, 'state_function' ) );
     }
 
     public function tearDown() {
-        remove_state( 'test_state', array( $this, 'state_function' ) );
+        remove_state( 'test_state', FALSE, array( $this, 'state_function' ) );
     }
 
     public function state_function() {
@@ -19,25 +19,25 @@ class TestArcadiaPlugin extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ::do_state
+     * @covers ::do_action
      */
-    public function test_do_state_none() {
-        $this->assertNull( do_state( '' ) );
+    public function test_do_action_none() {
+        $this->assertNull( do_action( '' ) );
     }
 
     /**
-     * @covers ::do_state
+     * @covers ::do_action
      */
-    public function test_do_state_test_state() {
-        $this->assertNull( do_state( 'test_state' ) );
+    public function test_do_action_test_state() {
+        $this->assertNull( do_action( 'test_state' ) );
         $this->assertTrue( $this->result );
     }
 
     /**
-     * @covers ::do_state
+     * @covers ::do_action
      */
-    public function test_do_state_test_state_args() {
-        $this->assertNull( do_state( 'test_state', array( TRUE ) ) );
+    public function test_do_action_test_state_args() {
+        $this->assertNull( do_action( 'test_state', array( TRUE ) ) );
         $this->assertTrue( $this->result );
     }
 
@@ -48,7 +48,7 @@ class TestArcadiaPlugin extends PHPUnit_Framework_TestCase {
         $test_id = 'test_id';
         $test_function = 'test_function';
 
-        add_state( $test_id, $test_function );
+        add_state( $test_id, FALSE, $test_function );
 
         $this->assertTrue( state_exists( $test_id ) );
     }
@@ -60,7 +60,7 @@ class TestArcadiaPlugin extends PHPUnit_Framework_TestCase {
         $test_id = 'test_id';
         $test_function = 'test_function';
 
-        add_state_priority( $test_id, $test_function );
+        add_state_priority( $test_id, FALSE, $test_function );
 
         $this->assertTrue( state_exists( $test_id ) );
     }
@@ -69,7 +69,7 @@ class TestArcadiaPlugin extends PHPUnit_Framework_TestCase {
      * @covers ::remove_state
      */
     public function test_remove_state_simple() {
-        remove_state( 'test_state', array( $this, 'state_function' ) );
+        remove_state( 'test_state', FALSE, array( $this, 'state_function' ) );
 
         $this->assertFalse( state_exists( 'test_state' ) );
     }
