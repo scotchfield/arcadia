@@ -19,7 +19,7 @@ if ( isset( $_GET[ 'state' ] ) ) {
     $ag->set_state( $_GET[ 'state' ] );
 }
 foreach( $_GET as $k => $v ) {
-    $ag->set_state_arg( $k, $v );
+    $ag->set_arg( $k, $v );
 }
 do_action( 'state_set' );
 

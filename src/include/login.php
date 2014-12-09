@@ -27,7 +27,7 @@ class ArcadiaLogin extends ArcadiaComponent {
             return FALSE;
         }
 
-        $user = get_user_by_name( $ag->get_state_arg( 'user' ) );
+        $user = get_user_by_name( $ag->get_arg( 'user' ) );
         if ( FALSE == $user ) {
             $ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_BAD_USERPASS );
@@ -35,7 +35,7 @@ class ArcadiaLogin extends ArcadiaComponent {
             return FALSE;
         }
 
-        if ( ! password_verify( $ag->get_state_arg( 'pass' ),
+        if ( ! password_verify( $ag->get_arg( 'pass' ),
                                 $user[ 'user_pass' ] ) ) {
             $ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_BAD_USERPASS );
@@ -58,28 +58,28 @@ class ArcadiaLogin extends ArcadiaComponent {
             return FALSE;
         }
 
-        if ( ! $ag->get_state_arg( 'user' ) ) {
+        if ( ! $ag->get_arg( 'user' ) ) {
             $ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_NO_USERNAME );
 
             return FALSE;
         }
 
-        if ( ! $ag->get_state_arg( 'pass' ) ) {
+        if ( ! $ag->get_arg( 'pass' ) ) {
             $ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_NO_PASSWORD );
 
             return FALSE;
         }
 
-        if ( ! $ag->get_state_arg( 'email' ) ) {
+        if ( ! $ag->get_arg( 'email' ) ) {
             $ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_NO_EMAIL );
 
             return FALSE;
         }
 
-        $user = get_user_by_name( $ag->get_state_arg( 'user' ) );
+        $user = get_user_by_name( $ag->get_arg( 'user' ) );
         if ( FALSE != $user ) {
             $ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_USERNAME_EXISTS );
@@ -87,7 +87,7 @@ class ArcadiaLogin extends ArcadiaComponent {
             return FALSE;
         }
 
-        $user = get_user_by_email( $ag->get_state_arg( 'email' ) );
+        $user = get_user_by_email( $ag->get_arg( 'email' ) );
         if ( FALSE != $user ) {
             $ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_EMAIL_EXISTS );
@@ -96,15 +96,15 @@ class ArcadiaLogin extends ArcadiaComponent {
         }
 
         $pass = password_hash(
-            $ag->get_state_arg( 'pass' ), PASSWORD_DEFAULT );
+            $ag->get_arg( 'pass' ), PASSWORD_DEFAULT );
 
         $args_send_email = TRUE;
         if ( isset( $args[ 'send_email' ] ) ) {
             $args_send_email = $args[ 'send_email' ];
         }
 
-        add_user( $ag->get_state_arg( 'user' ), $pass,
-            $ag->get_state_arg( 'email' ), $send_email = $args_send_email );
+        add_user( $ag->get_arg( 'user' ), $pass,
+            $ag->get_arg( 'email' ), $send_email = $args_send_email );
 
         $ag->set_redirect_header( GAME_URL . '?notify=' .
             self::NOTIFY_VALIDATE_NEEDED );
@@ -119,21 +119,21 @@ class ArcadiaLogin extends ArcadiaComponent {
             return FALSE;
         }
 
-        if ( ! $ag->get_state_arg( 'user' ) ) {
+        if ( ! $ag->get_arg( 'user' ) ) {
             $ag->set_redirect_header( GAME_URL );
 
             return FALSE;
         }
 
-        if ( ! $ag->get_state_arg( 'activate' ) ) {
+        if ( ! $ag->get_arg( 'activate' ) ) {
             $ag->set_redirect_header( GAME_URL );
 
             return FALSE;
         }
 
-        $user = get_user_by_id( $ag->get_state_arg( 'user' ) );
+        $user = get_user_by_id( $ag->get_arg( 'user' ) );
 
-        if ( ! strcmp( $ag->get_state_arg( 'activate' ),
+        if ( ! strcmp( $ag->get_arg( 'activate' ),
                        $user[ 'activation' ] ) ) {
             if ( is_user_active( $user ) ) {
                 $ag->set_redirect_header( GAME_URL . '?notify=' .

@@ -36,7 +36,7 @@ class TestArcadiaPlugin extends PHPUnit_Framework_TestCase {
     /**
      * @covers ::do_action
      */
-    public function test_do_action_test_state_args() {
+    public function test_do_action_test_args() {
         $this->assertNull( do_action( 'test_state', array( TRUE ) ) );
         $this->assertTrue( $this->result );
     }

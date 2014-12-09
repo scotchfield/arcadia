@@ -18,7 +18,7 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
     public function tearDown() {
         global $ag;
 
-        $ag->clear_state_args();
+        $ag->clear_args();
 
         db_execute( 'DELETE FROM USERS' );
     }
@@ -69,7 +69,7 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
        $component = new ArcadiaLogin();
 
        $ag->set_state( 'login' );
-       $ag->set_state_arg( 'user', $this->username );
+       $ag->set_arg( 'user', $this->username );
 
        $result = $component->content_login();
 
@@ -85,8 +85,8 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
        $component = new ArcadiaLogin();
 
        $ag->set_state( 'login' );
-       $ag->set_state_arg( 'user', $this->username );
-       $ag->set_state_arg( 'pass', $this->password );
+       $ag->set_arg( 'user', $this->username );
+       $ag->set_arg( 'pass', $this->password );
 
        $result = $component->content_login();
 
@@ -130,7 +130,7 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
        $component = new ArcadiaLogin();
 
        $ag->set_state( 'register' );
-       $ag->set_state_arg( 'user', $this->username );
+       $ag->set_arg( 'user', $this->username );
 
        $result = $component->content_register();
 
@@ -146,8 +146,8 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
        $component = new ArcadiaLogin();
 
        $ag->set_state( 'register' );
-       $ag->set_state_arg( 'user', $this->username );
-       $ag->set_state_arg( 'pass', $this->password );
+       $ag->set_arg( 'user', $this->username );
+       $ag->set_arg( 'pass', $this->password );
 
        $result = $component->content_register();
 
@@ -163,9 +163,9 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
        $component = new ArcadiaLogin();
 
        $ag->set_state( 'register' );
-       $ag->set_state_arg( 'user', $this->username );
-       $ag->set_state_arg( 'pass', $this->password );
-       $ag->set_state_arg( 'email', $this->email );
+       $ag->set_arg( 'user', $this->username );
+       $ag->set_arg( 'pass', $this->password );
+       $ag->set_arg( 'email', $this->email );
 
        $result = $component->content_register();
 
@@ -181,9 +181,9 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
        $component = new ArcadiaLogin();
 
        $ag->set_state( 'register' );
-       $ag->set_state_arg( 'user', 'test_user_new' );
-       $ag->set_state_arg( 'pass', 'test_password_new' );
-       $ag->set_state_arg( 'email', $this->email );
+       $ag->set_arg( 'user', 'test_user_new' );
+       $ag->set_arg( 'pass', 'test_password_new' );
+       $ag->set_arg( 'email', $this->email );
 
        $result = $component->content_register();
 
@@ -199,9 +199,9 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
        $component = new ArcadiaLogin();
 
        $ag->set_state( 'register' );
-       $ag->set_state_arg( 'user', 'test_user_new' );
-       $ag->set_state_arg( 'pass', 'test_password_new' );
-       $ag->set_state_arg( 'email', 'test_email_new' );
+       $ag->set_arg( 'user', 'test_user_new' );
+       $ag->set_arg( 'pass', 'test_password_new' );
+       $ag->set_arg( 'email', 'test_email_new' );
 
        $result = $component->content_register(
            array( 'send_email' => FALSE ) );
@@ -246,7 +246,7 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
        $component = new ArcadiaLogin();
 
        $ag->set_state( 'activate' );
-       $ag->set_state_arg( 'user', $this->username );
+       $ag->set_arg( 'user', $this->username );
 
        $result = $component->content_activate();
 
@@ -264,8 +264,8 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
        $component = new ArcadiaLogin();
 
        $ag->set_state( 'activate' );
-       $ag->set_state_arg( 'user', $user[ 'id' ] );
-       $ag->set_state_arg( 'activate', $user[ 'activation' ] );
+       $ag->set_arg( 'user', $user[ 'id' ] );
+       $ag->set_arg( 'activate', $user[ 'activation' ] );
 
        $result = $component->content_activate();
 
@@ -285,8 +285,8 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
        $component = new ArcadiaLogin();
 
        $ag->set_state( 'activate' );
-       $ag->set_state_arg( 'user', $user[ 'id' ] );
-       $ag->set_state_arg( 'activate', $user[ 'activation' ] );
+       $ag->set_arg( 'user', $user[ 'id' ] );
+       $ag->set_arg( 'activate', $user[ 'activation' ] );
 
        $result = $component->content_activate();
 
@@ -304,8 +304,8 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
        $component = new ArcadiaLogin();
 
        $ag->set_state( 'activate' );
-       $ag->set_state_arg( 'user', $user[ 'id' ] );
-       $ag->set_state_arg( 'activate', 'invalid_activate' );
+       $ag->set_arg( 'user', $user[ 'id' ] );
+       $ag->set_arg( 'activate', 'invalid_activate' );
 
        $result = $component->content_activate();
 

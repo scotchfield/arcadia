@@ -30,27 +30,27 @@ class TestArcadiaGame extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ArcadiaGame::get_state_arg
-     * @covers ArcadiaGame::set_state_arg
+     * @covers ArcadiaGame::get_arg
+     * @covers ArcadiaGame::set_arg
      */
-    public function test_game_set_and_get_state_arg() {
+    public function test_game_set_and_get_arg() {
         $game = new ArcadiaGame();
 
         $arg_k = 'test_k';
         $arg_v = 'test_v';
 
-        $game->set_state_arg( $arg_k, $arg_v );
+        $game->set_arg( $arg_k, $arg_v );
 
-        $this->assertEquals( $arg_v, $game->get_state_arg( $arg_k ) );
+        $this->assertEquals( $arg_v, $game->get_arg( $arg_k ) );
     }
 
     /**
-     * @covers ArcadiaGame::get_state_arg
+     * @covers ArcadiaGame::get_arg
      */
-    public function test_game_get_state_arg_not_set() {
+    public function test_game_get_arg_not_set() {
         $game = new ArcadiaGame();
 
-        $this->assertFalse( $game->get_state_arg( 'test_not_set' ) );
+        $this->assertFalse( $game->get_arg( 'test_not_set' ) );
     }
 
     /**
