@@ -8,17 +8,16 @@ if ( ! isset( $game_states ) ) {
 
 
 function do_action( $action_id, $args = array() ) {
-    global $game_states;
+    global $ag, $game_states;
 
     foreach ( $game_states as $state ) {
         if ( $state[ 0 ] != $action_id ) {
             continue;
         }
 
-        if ( $state[ 1 ] ) {
+        if ( $state[ 1 ] && ( $state[ 1 ] != $ag->get_state() ) ) {
             continue;
         }
-        // todo: if $state[ 1 ] == $ag->get_args( 'state' ) or FALSE
 
         if ( 0 == count( $args ) ) {
             $arg_obj = array( $state[ 3 ] );
