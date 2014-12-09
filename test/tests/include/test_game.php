@@ -54,6 +54,21 @@ class TestArcadiaGame extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @covers ArcadiaGame::set_arg
+     * @covers ArcadiaGame::clear_args
+     */
+    public function test_game_clear_args() {
+        $game = new ArcadiaGame();
+
+        $test_value = 'test_k';
+
+        $game->set_arg( $test_value, $test_value );
+        $game->clear_args();
+
+        $this->assertFalse( $game->get_arg( $test_value ) );
+    }
+
+    /**
      * @covers ArcadiaGame::set_component
      * @covers ArcadiaGame::get_component
      * @covers ArcadiaGame::c
