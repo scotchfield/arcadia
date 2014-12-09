@@ -20,6 +20,18 @@ class ArcadiaItem extends ArcadiaComponent {
             'meta_key' );
     }
 
+    function get_item_list( $item_ids ) {
+        $place_holders = implode(
+            ',', array_fill( 0, count( $item_ids ), '?' ) );
+        $args = array_merge( array( $this->flag_game_meta ), $item_ids );
+
+        return db_fetch_all(
+            'SELECT * FROM game_meta WHERE key_type=? AND ' .
+                'meta_key IN (' . $place_holders . ')',
+            $args,
+            $key_assoc = 'meta_key' );
+    }
+
     function get_items( $character_id ) {
         return db_fetch_all(
             'SELECT * FROM game_meta AS a, character_meta AS c ' .
