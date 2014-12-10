@@ -1,23 +1,19 @@
 <?php
 
+global $ag;
+
 require( dirname( __FILE__ ) . '/game-config.php' );
 require( GAME_PATH . 'game-load.php' );
 
 do_action( 'post_load' );
 
-$GLOBALS[ 'redirect_header' ] = GAME_URL;
-
-
-if ( FALSE == $ag->user ) {
-    include( GAME_CUSTOM_PATH . $custom_start_page );
-    exit;
-}
-
-$GLOBALS[ 'ag' ]->char = game_character_active();
-
+$ag->char = game_character_active();
 if ( FALSE != $ag->char ) {
     $ag->char[ 'meta' ] = get_character_meta( $ag->char[ 'id' ] );
 }
+do_action( 'character_load' );
+
+$GLOBALS[ 'redirect_header' ] = GAME_URL;
 
 
 if ( ! isset( $_GET[ 'setting' ] ) ) {
@@ -28,6 +24,8 @@ if ( ! isset( $_GET[ 'setting' ] ) ) {
 $setting = $_GET[ 'setting' ];
 $args = array();
 foreach ( $_GET as $k => $v ) {
+    // todo: this setting_map below with global and args has to go..
+    $GLOBALS[ 'ag' ]->set_arg( $k, $v );
     $args[ $k ] = $v;
 }
 
