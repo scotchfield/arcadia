@@ -8,28 +8,32 @@ class ArcadiaTracking extends ArcadiaComponent {
     }
 
     public function get_tracking( $character_id, $tracking_id ) {
-        return db_fetch(
+        global $ag;
+
+        return $ag->c( 'db' )->db_fetch(
             'SELECT * FROM character_meta WHERE character_id=? ' .
                 'AND key_type=? AND meta_key=?',
             array( $character_id, $this->flag_character_meta, $tracking_id ) );
     }
 
     public function set_tracking( $character_id, $tracking_id, $value ) {
-        db_begin_transaction();
+        global $ag;
 
-        db_execute(
+        $ag->c( 'db' )->db_begin_transaction();
+
+        $ag->c( 'db' )->db_execute(
             'DELETE FROM character_meta ' .
                 'WHERE character_id=? AND key_type=? AND meta_key=?',
             array( $character_id, $this->flag_character_meta, $tracking_id ) );
 
-        $result = db_execute(
+        $result = $ag->c( 'db' )->db_execute(
             'INSERT INTO character_meta ' .
                 '( character_id, key_type, meta_key, meta_value ) ' .
                 'VALUES ( ?, ?, ?, ? )',
             array( $character_id, $this->flag_character_meta,
                    $tracking_id, $value ) );
 
-        db_commit();
+        $ag->c( 'db' )->db_commit();
 
         return $result;
     }

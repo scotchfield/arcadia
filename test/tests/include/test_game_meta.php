@@ -3,15 +3,17 @@
 class TestArcadiaGameMeta extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
+        global $ag;
+
         do_action( 'post_load' );
 
-        db_execute(
+        $ag->c( 'db' )->db_execute(
             'INSERT INTO character_meta ' .
                 '( character_id, key_type, meta_key, meta_value ) ' .
                 'VALUES ( 1, 1, 1, "test 1 1" ), ( 1, 2, 2, "test 1 2" ), ' .
                 '( 2, 1, 1, "test 2 1" ), ( 2, 2, 2, "test 2 2" )'
         );
-        db_execute(
+        $ag->c( 'db' )->db_execute(
             'INSERT INTO game_meta ( key_type, meta_key, meta_value ) ' .
                 'VALUES ( 1, 1, "test 1" ), ( 2, 2, "test 2" ), ' .
                 '( 2, 3, "test 2 3" )'
@@ -19,8 +21,10 @@ class TestArcadiaGameMeta extends PHPUnit_Framework_TestCase {
     }
 
     public function tearDown() {
-        db_execute( 'DELETE FROM character_meta', array() );
-        db_execute( 'DELETE FROM game_meta', array() );
+        global $ag;
+
+        $ag->c( 'db' )->db_execute( 'DELETE FROM character_meta', array() );
+        $ag->c( 'db' )->db_execute( 'DELETE FROM game_meta', array() );
     }
 
     /**

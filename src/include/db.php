@@ -1,69 +1,65 @@
 <?php
 
-try {
-    $GLOBALS[ 'game_db' ] = new PDO(
-        'mysql:host=' . DB_ADDRESS . ';dbname=' . DB_NAME . ';charset=utf8',
-        DB_USER, DB_PASSWORD );
-} catch ( PDOException $e ) {
-    echo( "Warning: Database not found!\n" );
-    die();
-}
+class ArcadiaDb extends ArcadiaComponent {
 
-function db_fetch( $query, $args = array() ) {
-    global $game_db;
+    private $db = FALSE;
 
-    $stmt = $game_db->prepare( $query );
-    $stmt->execute( $args );
-    $obj = $stmt->fetch( PDO::FETCH_ASSOC );
-
-    return $obj;
-}
-
-function db_fetch_all( $query, $args = array(), $key_assoc = FALSE ) {
-    global $game_db;
-
-    $stmt = $game_db->prepare( $query );
-    $stmt->execute( $args );
-    $obj = $stmt->fetchAll( PDO::FETCH_ASSOC );
-
-    if ( FALSE != $key_assoc ) {
-        $assoc_obj = array();
-        foreach ( $obj as $o ) {
-            $assoc_obj[ $o[ $key_assoc ] ] = $o;
+    public function __construct() {
+        try {
+            $this->db = new PDO(
+                'mysql:host=' . DB_ADDRESS . ';dbname=' . DB_NAME .
+                    ';charset=utf8',
+                DB_USER, DB_PASSWORD );
+        } catch ( PDOException $e ) {
+            echo( "Warning: Database not found!\n" );
+            die();
         }
-        $obj = $assoc_obj;
     }
 
-    return $obj;
-}
+    public function db_fetch( $query, $args = array() ) {
+        $stmt = $this->db->prepare( $query );
+        $stmt->execute( $args );
+        $obj = $stmt->fetch( PDO::FETCH_ASSOC );
 
-function db_execute( $query, $args = array() ) {
-    global $game_db;
+        return $obj;
+    }
 
-    $stmt = $game_db->prepare( $query );
-    return $stmt->execute( $args );
-}
+    public function db_fetch_all( $query, $args = array(),
+                                  $key_assoc = FALSE ) {
+        $stmt = $this->db->prepare( $query );
+        $stmt->execute( $args );
+        $obj = $stmt->fetchAll( PDO::FETCH_ASSOC );
 
-function db_last_insert_id() {
-    global $game_db;
+        if ( FALSE != $key_assoc ) {
+            $assoc_obj = array();
+            foreach ( $obj as $o ) {
+                $assoc_obj[ $o[ $key_assoc ] ] = $o;
+            }
+            $obj = $assoc_obj;
+        }
 
-    return $game_db->lastInsertId();
-}
+        return $obj;
+    }
 
-function db_begin_transaction() {
-    global $game_db;
+    public function db_execute( $query, $args = array() ) {
+        $stmt = $this->db->prepare( $query );
+        return $stmt->execute( $args );
+    }
 
-    $game_db->beginTransaction();
-}
+    public function db_last_insert_id() {
+        return $this->db->lastInsertId();
+    }
 
-function db_commit() {
-    global $game_db;
+    public function db_begin_transaction() {
+        $this->db->beginTransaction();
+    }
 
-    $game_db->commit();
-}
+    public function db_commit() {
+        $this->db->commit();
+    }
 
-function db_rollback() {
-    global $game_db;
+    public function db_rollback() {
+        $this->db->rollBack();
+    }
 
-    $game_db->rollBack();
 }

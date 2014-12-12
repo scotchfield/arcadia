@@ -11,12 +11,12 @@ class TestArcadiaBuff extends PHPUnit_Framework_TestCase {
 
         do_action( 'post_load' );
 
-        db_execute(
+        $ag->c( 'db' )->db_execute(
             'INSERT INTO game_meta ( key_type, meta_key, meta_value ) ' .
                 'VALUES ( ?, 1, "test" )',
             array( $component->get_flag_game_meta() ) );
 
-        db_execute(
+        $ag->c( 'db' )->db_execute(
             'INSERT INTO character_meta ' .
                 '( character_id, key_type, meta_key, meta_value ) ' .
                 'VALUES ( 1, ?, 1, 12345 )',
@@ -30,8 +30,8 @@ class TestArcadiaBuff extends PHPUnit_Framework_TestCase {
 
         $ag->char = FALSE;
 
-        db_execute( 'DELETE FROM character_meta', array() );
-        db_execute( 'DELETE FROM game_meta', array() );
+        $ag->c( 'db' )->db_execute( 'DELETE FROM character_meta', array() );
+        $ag->c( 'db' )->db_execute( 'DELETE FROM game_meta', array() );
     }
 
     /**

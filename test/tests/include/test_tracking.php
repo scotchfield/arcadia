@@ -11,7 +11,7 @@ class TestArcadiaTracking extends PHPUnit_Framework_TestCase {
 
         do_action( 'post_load' );
 
-        db_execute(
+        $ag->c( 'db' )->db_execute(
             'INSERT INTO character_meta ' .
                 '( character_id, key_type, meta_key, meta_value ) ' .
                 'VALUES ( 1, ?, 1, "test" )',
@@ -23,8 +23,8 @@ class TestArcadiaTracking extends PHPUnit_Framework_TestCase {
 
         $ag->char = FALSE;
 
-        db_execute( 'DELETE FROM character_meta', array() );
-        db_execute( 'DELETE FROM game_meta', array() );
+        $ag->c( 'db' )->db_execute( 'DELETE FROM character_meta', array() );
+        $ag->c( 'db' )->db_execute( 'DELETE FROM game_meta', array() );
     }
 
     /**

@@ -10,17 +10,21 @@
 class ArcadiaGameMeta {
 
     function get_game_meta( $key_type, $meta_key ) {
-        return db_fetch(
+        global $ag;
+
+        return $ag->c( 'db' )->db_fetch(
             'SELECT * FROM game_meta WHERE key_type=? AND meta_key=?',
             array( $key_type, $meta_key ) );
     }
 
     function get_game_meta_array( $key_type, $meta_key_array ) {
+        global $ag;
+
         $place_holders = implode(
             ',', array_fill( 0, count( $meta_key_array ), '?' ) );
         $args = array_merge( array( $key_type ), $meta_key_array );
 
-        return db_fetch_all(
+        return $ag->c( 'db' )->db_fetch_all(
             'SELECT * FROM game_meta WHERE key_type=? AND meta_key IN (' .
                 $place_holders . ')',
             $args,
@@ -29,7 +33,9 @@ class ArcadiaGameMeta {
     }
 
     function get_game_meta_by_key( $key_type ) {
-        return db_fetch_all(
+        global $ag;
+
+        return $ag->c( 'db' )->db_fetch_all(
             'SELECT * FROM game_meta WHERE key_type=?',
             array( $key_type ),
             $key_assoc = 'meta_key' );
@@ -37,7 +43,9 @@ class ArcadiaGameMeta {
 
     function get_character_game_meta( $character_id, $game_meta_key,
                                       $character_meta_key ) {
-        return db_fetch_all(
+        global $ag;
+
+        return $ag->c( 'db' )->db_fetch_all(
             'SELECT g.meta_key AS id, g.meta_value AS meta_value, ' .
                 'c.meta_value AS timestamp ' .
                 'FROM game_meta AS g, character_meta AS c ' .
@@ -50,7 +58,10 @@ class ArcadiaGameMeta {
     }
 
     function get_game_meta_all() {
-        $meta_obj = db_fetch_all( 'SELECT * FROM game_meta', array() );
+        global $ag;
+
+        $meta_obj = $ag->c( 'db' )->db_fetch_all(
+            'SELECT * FROM game_meta', array() );
 
         $obj = array();
         foreach ( $meta_obj as $meta ) {
@@ -65,7 +76,9 @@ class ArcadiaGameMeta {
     }
 
     function update_game_meta( $key_type, $meta_key, $meta_value ) {
-        db_execute(
+        global $ag;
+
+        $ag->c( 'db' )->db_execute(
             'UPDATE game_meta SET meta_value=? ' .
                 'WHERE key_type=? AND meta_key=?',
             array( $meta_value, $key_type, $meta_key ) );

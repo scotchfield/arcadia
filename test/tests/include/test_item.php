@@ -3,19 +3,23 @@
 class TestArcadiaItem extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
+        global $ag;
+
         $component = new ArcadiaItem();
 
         do_action( 'post_load' );
 
-        db_execute(
+        $ag->c( 'db' )->db_execute(
             'INSERT INTO game_meta ( key_type, meta_key, meta_value ) ' .
                 'VALUES ( ?, 1, "test" )',
             array( $component->get_flag_game_meta() ) );
     }
 
     public function tearDown() {
-        db_execute( 'DELETE FROM character_meta', array() );
-        db_execute( 'DELETE FROM game_meta', array() );
+        global $ag;
+
+        $ag->c( 'db' )->db_execute( 'DELETE FROM character_meta', array() );
+        $ag->c( 'db' )->db_execute( 'DELETE FROM game_meta', array() );
     }
 
     /**

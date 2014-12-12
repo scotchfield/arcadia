@@ -14,11 +14,11 @@ class ArcadiaHeartbeat extends ArcadiaComponent {
             return FALSE;
         }
 
-        db_execute( 'DELETE FROM character_meta ' .
+        $ag->c( 'db' )->db_execute( 'DELETE FROM character_meta ' .
             'WHERE character_id=? AND key_type=?',
             array( $ag->char[ 'id' ], $this->flag_character_meta ) );
 
-        return db_execute( 'INSERT INTO character_meta ' .
+        return $ag->c( 'db' )->db_execute( 'INSERT INTO character_meta ' .
             '( character_id, key_type, meta_key, meta_value ) VALUES ' .
             '( ?, ?, ?, ? )',
             array( $ag->char[ 'id' ], $this->flag_character_meta,
@@ -27,16 +27,20 @@ class ArcadiaHeartbeat extends ArcadiaComponent {
     }
 
     function get_all_heartbeats() {
-        return db_fetch_all(
+        global $ag;
+
+        return $ag->c( 'db' )->db_fetch_all(
             'SELECT * FROM character_meta WHERE key_type=?',
             array( $this->flag_character_meta )
         );
     }
 
     function get_heartbeat_characters( $time_delta ) {
+        global $ag;
+
         $time_value = time() - $time_delta;
 
-        return db_fetch_all(
+        return $ag->c( 'db' )->db_fetch_all(
             'SELECT c.id, c.character_name, m.meta_key, m.meta_value ' .
                 'FROM characters AS c, character_meta AS m ' .
                 'WHERE c.id=m.character_id AND meta_key >= ? ' .

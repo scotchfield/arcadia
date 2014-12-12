@@ -4,15 +4,24 @@ define( 'game_user_status_dev', 0 );
 define( 'game_user_status_active', 1 );
 
 function get_user_by_name( $name ) {
-    return db_fetch( 'SELECT * FROM users WHERE user_name=?', array( $name ) );
+    global $ag;
+
+    return $ag->c( 'db' )->db_fetch(
+        'SELECT * FROM users WHERE user_name=?', array( $name ) );
 }
 
 function get_user_by_id( $id ) {
-    return db_fetch( 'SELECT * FROM users WHERE id=?', array( $id ) );
+    global $ag;
+
+    return $ag->c( 'db' )->db_fetch(
+        'SELECT * FROM users WHERE id=?', array( $id ) );
 }
 
 function get_user_by_email( $email ) {
-    return db_fetch( 'SELECT * FROM users WHERE email=?', array( $email ) );
+    global $ag;
+
+    return $ag->c( 'db' )->db_fetch(
+        'SELECT * FROM users WHERE email=?', array( $email ) );
 }
 
 function game_user_logged_in() {
@@ -36,13 +45,13 @@ function add_user( $name, $pass, $email, $send_email = TRUE ) {
 
     $activate = $ag->c( 'common' )->random_string( 10 );
 
-    db_execute(
+    $ag->c( 'db' )->db_execute(
         'INSERT INTO users ( user_name, user_pass, email, registered, ' .
             'activation, status ) VALUES ( ?, ?, ?, ?, ?, ? )',
         array( $name, $pass, $email, date( 'Y-m-d H:i:s' ),
             $activate, 0 ) );
 
-    $user_id = db_last_insert_id();
+    $user_id = $ag->c( 'db' )->db_last_insert_id();
 
     $text = 'Dear ' . $name . ",\n\nWelcome to " . GAME_NAME . ".\n\n" .
         "To complete your registration, please visit this URL:\n" .
@@ -60,13 +69,17 @@ function add_user( $name, $pass, $email, $send_email = TRUE ) {
 }
 
 function set_user_status( $user_id, $status ) {
-    db_execute(
+    global $ag;
+
+    $ag->c( 'db' )->db_execute(
         'UPDATE users SET status=? WHERE id=?',
         array( $status, $user_id ) );
 }
 
 function set_user_max_characters( $user_id, $max_characters ) {
-    db_execute(
+    global $ag;
+
+    $ag->c( 'db' )->db_execute(
         'UPDATE users SET max_characters=? WHERE id=?',
         array( $max_characters, $user_id ) );
 }
@@ -102,27 +115,36 @@ function is_user_active( $user ) {
 }
 
 function get_characters_for_user( $user_id ) {
-    return db_fetch_all(
+    global $ag;
+
+    return $ag->c( 'db' )->db_fetch_all(
         'SELECT * FROM characters WHERE user_id=?',
         array( $user_id ), $key_assoc = 'id' );
 }
 
 function get_character_by_name( $name ) {
-    return db_fetch(
+    global $ag;
+
+    return $ag->c( 'db' )->db_fetch(
         'SELECT * FROM characters WHERE character_name=?',
         array( $name ) );
 }
 
 function get_character_by_id( $id ) {
-    return db_fetch( 'SELECT * FROM characters WHERE id=?', array( $id ) );
+    global $ag;
+
+    return $ag->c( 'db' )->db_fetch(
+        'SELECT * FROM characters WHERE id=?', array( $id ) );
 }
 
 function add_character( $user_id, $name ) {
-    db_execute(
+    global $ag;
+
+    $ag->c( 'db' )->db_execute(
         'INSERT INTO characters ( user_id, character_name ) VALUES ( ?, ? )',
             array( $user_id, $name ) );
 
-    return db_last_insert_id();
+    return $ag->c( 'db' )->db_last_insert_id();
 }
 
 function user_create_character( $user_name = FALSE ) {
@@ -196,8 +218,10 @@ function game_character_active() {
 }
 
 function get_character_meta( $id, $type = FALSE ) {
+    global $ag;
+
     if ( FALSE == $type ) {
-        $meta_obj = db_fetch_all(
+        $meta_obj = $ag->c( 'db' )->db_fetch_all(
             'SELECT * FROM character_meta WHERE character_id=?',
             array( $id ) );
 
@@ -211,7 +235,7 @@ function get_character_meta( $id, $type = FALSE ) {
                     $meta[ 'meta_value' ];
         }
     } else {
-        $meta_obj = db_fetch_all(
+        $meta_obj = $ag->c( 'db' )->db_fetch_all(
             'SELECT * FROM character_meta WHERE character_id=? AND key_type=?',
             array( $id, $type ) );
 
@@ -228,7 +252,7 @@ function add_character_meta( $character_id, $key_type,
                              $meta_key, $meta_value ) {
     global $ag;
 
-    db_execute(
+    $ag->c( 'db' )->db_execute(
         'INSERT INTO character_meta ( ' .
             'character_id, key_type, meta_key, meta_value ) ' .
             'VALUES ( ?, ?, ?, ? )',
@@ -252,7 +276,7 @@ function update_character_meta( $character_id, $key_type,
                                 $meta_key, $meta_value ) {
     global $ag;
 
-    db_execute(
+    $ag->c( 'db' )->db_execute(
         'UPDATE character_meta SET meta_value=? WHERE
             character_id=? AND key_type=? AND meta_key=?',
         array( $meta_value, $character_id, $key_type, $meta_key ) );
@@ -264,13 +288,17 @@ function update_character_meta( $character_id, $key_type,
 }
 
 function clear_all_character_meta( $character_id ) {
-    db_execute(
+    global $ag;
+
+    $ag->c( 'db' )->db_execute(
         'DELETE FROM character_meta WHERE character_id=?',
         array( $character_id ) );
 }
 
 function ensure_character_meta( $character_id, $key_type, $meta_key ) {
-    $obj = db_fetch( 'SELECT * FROM character_meta WHERE ' .
+    global $ag;
+
+    $obj = $ag->c( 'db' )->db_fetch( 'SELECT * FROM character_meta WHERE ' .
         'character_id=? AND key_type=? AND meta_key=?',
         array( $character_id, $key_type, $meta_key ) );
     if ( FALSE == $obj ) {
@@ -280,12 +308,14 @@ function ensure_character_meta( $character_id, $key_type, $meta_key ) {
 
 function ensure_character_meta_keygroup( $character_id, $key_type,
                                          $default_value, $meta_key_obj ) {
+    global $ag;
+
     $place_holders = implode(
         ',', array_fill( 0, count( $meta_key_obj ), '?' ) );
     $args = array_merge(
         array( $character_id, $key_type ), $meta_key_obj );
 
-    $obj = db_fetch_all(
+    $obj = $ag->c( 'db' )->db_fetch_all(
         'SELECT * FROM character_meta WHERE character_id=? AND ' .
             'key_type=? AND meta_key IN (' . $place_holders . ')',
         $args,

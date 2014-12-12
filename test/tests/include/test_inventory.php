@@ -3,11 +3,13 @@
 class TestArcadiaInventory extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
+        global $ag;
+
         $component = new ArcadiaInventory();
 
         do_action( 'post_load' );
 
-        db_execute(
+        $ag->c( 'db' )->db_execute(
             'INSERT INTO character_meta ' .
                 '( character_id, key_type, meta_key, meta_value ) ' .
                 'VALUES ( 1, ?, 0, "test" )',
@@ -15,7 +17,9 @@ class TestArcadiaInventory extends PHPUnit_Framework_TestCase {
     }
 
     public function tearDown() {
-        db_execute( 'DELETE FROM character_meta', array() );
+        global $ag;
+
+        $ag->c( 'db' )->db_execute( 'DELETE FROM character_meta', array() );
     }
 
     /**
@@ -47,9 +51,11 @@ class TestArcadiaInventory extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaInventory::get_inventory
      */
     public function test_inventory_get_inventory_empty() {
+        global $ag;
+
         $component = new ArcadiaInventory();
 
-        db_execute( 'DELETE FROM character_meta', array() );
+        $ag->c( 'db' )->db_execute( 'DELETE FROM character_meta', array() );
 
         $result = $component->get_inventory( 1 );
 
