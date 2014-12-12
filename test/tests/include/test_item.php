@@ -11,8 +11,6 @@ class TestArcadiaItem extends PHPUnit_Framework_TestCase {
             'INSERT INTO game_meta ( key_type, meta_key, meta_value ) ' .
                 'VALUES ( ?, 1, "test" )',
             array( $component->get_flag_game_meta() ) );
-
-        $GLOBALS[ 'character' ] = array( 'id' => 1 );
     }
 
     public function tearDown() {
