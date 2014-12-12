@@ -13,8 +13,7 @@ if ( FALSE != $ag->char ) {
 }
 do_action( 'character_load' );
 
-$GLOBALS[ 'redirect_header' ] = GAME_URL;
-
+$ag->set_redirect_header( GAME_URL );
 
 if ( ! isset( $_GET[ 'setting' ] ) ) {
     header( 'Location: ' . GAME_URL );
@@ -43,4 +42,4 @@ do_action( 'post_setting_map' );
 
 do_action( 'arcadia_end' );
 
-header( 'Location: ' . $GLOBALS[ 'redirect_header' ] );
+header( 'Location: ' . $ag->redirect_header() );
