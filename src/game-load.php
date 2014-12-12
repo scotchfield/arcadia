@@ -35,6 +35,7 @@ if ( function_exists( 'session_status' ) ) {
 
 global $ag;
 $ag = new ArcadiaGame();
+$ag->set_component( 'common', new ArcadiaCommon() );
 $ag->set_logger( new ArcadiaLog() );
 $ag->user = game_user_logged_in();
 

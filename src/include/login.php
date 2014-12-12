@@ -142,7 +142,8 @@ class ArcadiaLogin extends ArcadiaComponent {
                 return FALSE;
             } else {
                 set_user_status( $user[ 'id' ],
-                    set_bit( $user[ 'status' ], game_user_status_active ) );
+                    $ag->c( 'common' )->set_bit(
+                        $user[ 'status' ], game_user_status_active ) );
 
                 do_action( 'validate_user',
                     $args = array( 'user_id' => $user[ 'id' ] ) );

@@ -280,7 +280,8 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
 
        $user = get_user_by_name( $this->username );
        set_user_status( $user[ 'id' ],
-           set_bit( $user[ 'status' ], game_user_status_active ) );
+           $ag->c( 'common' )->set_bit( $user[ 'status' ],
+                                        game_user_status_active ) );
 
        $component = new ArcadiaLogin();
 

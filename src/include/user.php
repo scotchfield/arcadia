@@ -24,6 +24,8 @@ function game_user_logged_in() {
 }
 
 function add_user( $name, $pass, $email, $send_email = TRUE ) {
+    global $ag;
+
     $name = strip_tags( $name );
 
     if ( FALSE != get_user_by_name( $name ) ) {
@@ -32,7 +34,7 @@ function add_user( $name, $pass, $email, $send_email = TRUE ) {
         return FALSE;
     }
 
-    $activate = random_string( 10 );
+    $activate = $ag->c( 'common' )->random_string( 10 );
 
     db_execute(
         'INSERT INTO users ( user_name, user_pass, email, registered, ' .
@@ -70,11 +72,14 @@ function set_user_max_characters( $user_id, $max_characters ) {
 }
 
 function is_user_dev( $user ) {
+    global $ag;
+
     if ( ! isset( $user[ 'status' ] ) ) {
         return FALSE;
     }
 
-    if ( get_bit( $user[ 'status' ], game_user_status_dev ) ) {
+    if ( $ag->c( 'common' )->get_bit( $user[ 'status' ],
+                                      game_user_status_dev ) ) {
         return TRUE;
     }
 
@@ -82,11 +87,14 @@ function is_user_dev( $user ) {
 }
 
 function is_user_active( $user ) {
+    global $ag;
+
     if ( ! isset( $user[ 'status' ] ) ) {
         return FALSE;
     }
 
-    if ( get_bit( $user[ 'status' ], game_user_status_active ) ) {
+    if ( $ag->c( 'common' )->get_bit( $user[ 'status' ],
+                                      game_user_status_active ) ) {
         return TRUE;
     }
 
