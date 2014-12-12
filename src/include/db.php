@@ -51,15 +51,15 @@ class ArcadiaDb extends ArcadiaComponent {
     }
 
     public function db_begin_transaction() {
-        $this->db->beginTransaction();
+        return $this->db->beginTransaction();
     }
 
     public function db_commit() {
-        $this->db->commit();
+        return $this->db->commit();
     }
 
     public function db_rollback() {
-        $this->db->rollBack();
+        return $this->db->rollBack();
     }
 
 }
