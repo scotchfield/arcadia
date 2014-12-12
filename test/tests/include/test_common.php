@@ -392,4 +392,47 @@ class TestArcadiaCommon extends PHPUnit_Framework_TestCase {
         $this->assertEquals( '1 day', $component->time_round( 60 * 60 * 24 ) );
     }
 
+    /**
+     * @covers ArcadiaCommon::time_expand
+     */
+    public function test_time_expand_zero() {
+        $component = new ArcadiaCommon();
+
+        $this->assertEquals( $component->time_expand( 0 ), '' );
+    }
+
+    /**
+     * @covers ArcadiaCommon::time_expand
+     */
+    public function test_time_expand_full() {
+        $component = new ArcadiaCommon();
+
+        $this->assertEquals( $component->time_expand( 1209599 ),
+            '1 week, 6 days, 23 hours, 59 minutes, 59 seconds' );
+    }
+
+    /**
+     * @covers ArcadiaCommon::time_expand
+     */
+    public function test_time_expand_negative() {
+        $component = new ArcadiaCommon();
+
+        $this->assertEquals( $component->time_expand( -1 ), '' );
+    }
+
+    /**
+     * @covers ArcadiaCommon::rand_float
+     */
+    public function test_rand_float_in_range() {
+        $component = new ArcadiaCommon();
+
+        $rand_min = 0;
+        $rand_max = 100;
+
+        $result = $component->rand_float( $rand_min, $rand_max );
+
+        $this->assertGreaterThanOrEqual( $rand_min, $result );
+        $this->assertLessThanOrEqual( $rand_max, $result );
+    }
+
 }
