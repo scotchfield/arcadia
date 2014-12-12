@@ -9,21 +9,6 @@ define( 'SECONDS_DAY',     60 * 60 * 24 );
 define( 'SECONDS_HOUR',    60 * 60 );
 define( 'SECONDS_MINUTE',  60 );
 
-function debug_print( $x ) {
-    if ( is_array( $x ) ) {
-        echo '<p>';
-        print_r( $x );
-        echo '</p>';
-    } else {
-        echo '<p>' . $x . '</p>';
-    }
-}
-
-function debug_time() {
-    list( $usec, $sec ) = explode( ' ', microtime() );
-    return ( ( float ) $usec + ( float ) $sec );
-}
-
 function get_array_if_set( $array, $key, $default ) {
     if ( isset( $array[ $key ] ) ) {
         return $array[ $key ];

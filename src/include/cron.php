@@ -18,7 +18,6 @@ class ArcadiaCron extends ArcadiaComponent {
         $cron_obj = $this->get_crons();
 
         foreach ( $cron_obj as $cron ) {
-            // debug_print( $cron );
         }
 
         // todo: process crons, return FALSE if something goes wrong

@@ -84,4 +84,20 @@ class ArcadiaGame {
     public function redirect_header() {
         return $this->redirect_header;
     }
+
+    public function debug_print( $x ) {
+        if ( is_array( $x ) ) {
+            echo '<p>';
+            print_r( $x );
+            echo '</p>';
+        } else {
+            echo '<p>' . $x . '</p>';
+        }
+    }
+
+    public function debug_time() {
+        list( $usec, $sec ) = explode( ' ', microtime() );
+        return ( ( float ) $usec + ( float ) $sec );
+    }
+
 }
