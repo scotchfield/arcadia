@@ -48,14 +48,10 @@ $page_map = array(
     'account' => 'account.php',
 );
 
-$setting_map = array(
-    'new_character' => 'user_create_character',
-    'password' => 'user_change_password',
-    'select_character' => 'user_select_character',
-    'change_character' => 'user_clear_character',
-);
-
-$custom_setting_map = array();
+add_state( 'do_setting', 'new_character', 'user_create_character' );
+add_state( 'do_setting', 'password', 'user_change_password' );
+add_state( 'do_setting', 'select_character', 'user_select_character' );
+add_state( 'do_setting', 'change_character', 'user_clear_character' );
 
 if ( defined( 'GAME_CUSTOM_PATH' ) ) {
     require( GAME_CUSTOM_PATH . 'custom-core.php' );
