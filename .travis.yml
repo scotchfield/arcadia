@@ -1,6 +1,6 @@
 before_script:
   - cd test
-  - mysql -e 'DROP DATABASE game_test; CREATE DATABASE game_test; USE game_test; source ../db/arcadia.sql;' -uroot
+  - mysql -e 'DROP DATABASE IF EXISTS game_test; CREATE DATABASE game_test; USE game_test; source ../db/arcadia.sql;' -uroot
 language: php
 php:
   - 5.5
