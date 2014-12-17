@@ -1,0 +1,9 @@
+before_script:
+  - cd test
+  - mysql -e 'DROP DATABASE game_test; CREATE DATABASE game_test; USE game_test; source ../db/arcadia.sql;' -uroot
+language: php
+php:
+  - 5.5
+  - 5.4
+  - hhvm
+script: phpunit --configuration phpunit_travis.xml.dist
