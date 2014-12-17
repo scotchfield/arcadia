@@ -18,7 +18,7 @@ define( 'GAME_LOGIN_NOTIFY_VALIDATE_SUCCESS',  102 );
 if ( isset( $_POST[ 'state' ] ) ) {
     switch ( $_POST[ 'state' ] ) {
         case 'login':
-            $user = get_user_by_name( $_POST[ 'user' ] );
+            $user = $ag->c( 'user' )->get_user_by_name( $_POST[ 'user' ] );
             if ( FALSE == $user ) {
                 // User doesn't exist.
                 header( 'Location: ' . GAME_URL . '?notify=' .
@@ -66,7 +66,7 @@ if ( isset( $_POST[ 'state' ] ) ) {
                 exit;
             }
 
-            $user = get_user_by_name( $_POST[ 'user' ] );
+            $user = $ag->c( 'user' )->get_user_by_name( $_POST[ 'user' ] );
             if ( FALSE != $user ) {
                 // User name exists.
                 header( 'Location: ' . GAME_URL . '?notify=' .
@@ -74,7 +74,7 @@ if ( isset( $_POST[ 'state' ] ) ) {
                 exit;
             }
 
-            $user = get_user_by_email( $_POST[ 'email' ] );
+            $user = $ag->c( 'user' )->get_user_by_email( $_POST[ 'email' ] );
             if ( FALSE != $user ) {
                 // User email exists.
                 header( 'Location: ' . GAME_URL . '?notify=' .
@@ -83,7 +83,8 @@ if ( isset( $_POST[ 'state' ] ) ) {
             }
 
             $pass = password_hash( $_POST[ 'pass' ], PASSWORD_DEFAULT );
-            add_user( $_POST[ 'user' ], $pass, $_POST[ 'email' ] );
+            $ag->c( 'user' )->add_user(
+                $_POST[ 'user' ], $pass, $_POST[ 'email' ] );
 
             header( 'Location: ' . GAME_URL . '?notify=' .
                     GAME_LOGIN_NOTIFY_VALIDATE_NEEDED );
@@ -98,18 +99,19 @@ if ( isset( $_POST[ 'state' ] ) ) {
         exit;
     }
 
-    $user = get_user_by_id( $_GET[ 'user' ] );
+    $user = $ag->c( 'user' )->get_user_by_id( $_GET[ 'user' ] );
 
     if ( ! strcmp( $_GET[ 'activate' ], $user[ 'activation' ] ) ) {
-        if ( is_user_active( $user ) ) {
+        if ( $ag->c( 'user' )->is_user_active( $user ) ) {
             header( 'Location: ' . GAME_URL . '?notify=' .
                     GAME_LOGIN_NOTIFY_ALREADY_VALIDATED );
             exit;
         } else {
-            set_user_status( $user[ 'id' ],
-                set_bit( $user[ 'status' ], game_user_status_active ) );
+            $ag->c( 'user' )->set_user_status( $user[ 'id' ],
+                $ag->c( 'common' )->set_bit(
+                    $user[ 'status' ], ArcadiaUser::USER_STATUS_ACTIVE ) );
 
-            do_action( 'validate_user',
+            $ag->do_action( 'validate_user',
                 $args = array( 'user_id' => $user[ 'id' ] ) );
 
             header( 'Location: ' . GAME_URL . '?notify=' .
