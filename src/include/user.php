@@ -9,6 +9,15 @@ class ArcadiaUser extends ArcadiaComponent {
 
     public function __construct( $ag ) {
         $this->ag = $ag;
+
+        $ag->add_state( 'do_setting', 'new_character',
+            array( $this, 'user_create_character' ) );
+        $ag->add_state( 'do_setting', 'password',
+            array( $this, 'user_change_password' ) );
+        $ag->add_state( 'do_setting', 'select_character',
+            array( $this, 'user_select_character' ) );
+        $ag->add_state( 'do_setting', 'change_character',
+            array( $this, 'user_clear_character' ) );
     }
 
     function get_user_by_name( $name ) {

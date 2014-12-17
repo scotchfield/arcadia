@@ -44,11 +44,6 @@ $ag->set_component( 'user', new ArcadiaUser( $ag ) );
 
 $ag->user = $ag->c( 'user' )->game_user_logged_in();
 
-$ag->add_state( 'do_setting', 'new_character', 'user_create_character' );
-$ag->add_state( 'do_setting', 'password', 'user_change_password' );
-$ag->add_state( 'do_setting', 'select_character', 'user_select_character' );
-$ag->add_state( 'do_setting', 'change_character', 'user_clear_character' );
-
 if ( defined( 'GAME_CUSTOM_PATH' ) ) {
     require( GAME_CUSTOM_PATH . 'custom-core.php' );
 }
