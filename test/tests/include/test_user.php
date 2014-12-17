@@ -28,6 +28,8 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
 
         $ag->c( 'db' )->db_execute( 'DELETE FROM characters' );
         $ag->c( 'db' )->db_execute( 'DELETE FROM users' );
+
+        unset( $_SESSION[ 'u' ] );
     }
 
     /**
