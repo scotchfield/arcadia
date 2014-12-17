@@ -284,7 +284,9 @@ class TestArcadiaGame extends PHPUnit_Framework_TestCase {
     public function test_debug_print_array() {
         $game = new ArcadiaGame();
 
+        ob_start();
         $this->assertNull( $game->debug_print( array( 'test' ) ) );
+        ob_end_clean();
     }
 
     /**
@@ -293,7 +295,9 @@ class TestArcadiaGame extends PHPUnit_Framework_TestCase {
     public function test_debug_print_string() {
         $game = new ArcadiaGame();
 
+        ob_start();
         $this->assertNull( $game->debug_print( 'test' ) );
+        ob_end_clean();
     }
 
     /**
