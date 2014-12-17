@@ -35,12 +35,12 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
     /**
      * @covers ::get_user_by_name
      */
-    public function test_get_user_by_name_simple() {
+/*    public function test_get_user_by_name_simple() {
         $user = get_user_by_name( 'name' );
 
         $this->assertNotFalse( $user );
         $this->assertEquals( 'name', $user[ 'user_name' ] );
-    }
+    }*/
 
     /**
      * @covers ::get_user_by_name
