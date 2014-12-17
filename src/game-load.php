@@ -40,12 +40,9 @@ $ag = new ArcadiaGame();
 $ag->set_component( 'common', new ArcadiaCommon() );
 $ag->set_component( 'db',
     new ArcadiaDb( DB_ADDRESS, DB_NAME, DB_USER, DB_PASSWORD ) );
+$ag->set_component( 'user', new ArcadiaUser( $ag ) );
 
-$ag->user = game_user_logged_in();
-
-$page_map = array(
-    'account' => 'account.php',
-);
+$ag->user = $ag->c( 'user' )->game_user_logged_in();
 
 $ag->add_state( 'do_setting', 'new_character', 'user_create_character' );
 $ag->add_state( 'do_setting', 'password', 'user_change_password' );

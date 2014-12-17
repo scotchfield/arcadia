@@ -27,7 +27,7 @@ class ArcadiaLogin extends ArcadiaComponent {
             return FALSE;
         }
 
-        $user = get_user_by_name( $ag->get_arg( 'user' ) );
+        $user = $ag->c( 'user' )->get_user_by_name( $ag->get_arg( 'user' ) );
         if ( FALSE == $user ) {
             $ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_BAD_USERPASS );
@@ -79,7 +79,7 @@ class ArcadiaLogin extends ArcadiaComponent {
             return FALSE;
         }
 
-        $user = get_user_by_name( $ag->get_arg( 'user' ) );
+        $user = $ag->c( 'user' )->get_user_by_name( $ag->get_arg( 'user' ) );
         if ( FALSE != $user ) {
             $ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_USERNAME_EXISTS );
@@ -87,7 +87,7 @@ class ArcadiaLogin extends ArcadiaComponent {
             return FALSE;
         }
 
-        $user = get_user_by_email( $ag->get_arg( 'email' ) );
+        $user = $ag->c( 'user' )->get_user_by_email( $ag->get_arg( 'email' ) );
         if ( FALSE != $user ) {
             $ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_EMAIL_EXISTS );
@@ -103,7 +103,7 @@ class ArcadiaLogin extends ArcadiaComponent {
             $args_send_email = $args[ 'send_email' ];
         }
 
-        add_user( $ag->get_arg( 'user' ), $pass,
+        $ag->c( 'user' )->add_user( $ag->get_arg( 'user' ), $pass,
             $ag->get_arg( 'email' ), $send_email = $args_send_email );
 
         $ag->set_redirect_header( GAME_URL . '?notify=' .
@@ -131,19 +131,19 @@ class ArcadiaLogin extends ArcadiaComponent {
             return FALSE;
         }
 
-        $user = get_user_by_id( $ag->get_arg( 'user' ) );
+        $user = $ag->c( 'user' )->get_user_by_id( $ag->get_arg( 'user' ) );
 
         if ( ! strcmp( $ag->get_arg( 'activate' ),
                        $user[ 'activation' ] ) ) {
-            if ( is_user_active( $user ) ) {
+            if ( $ag->c( 'user' )->is_user_active( $user ) ) {
                 $ag->set_redirect_header( GAME_URL . '?notify=' .
                     self::NOTIFY_ALREADY_VALIDATED );
 
                 return FALSE;
             } else {
-                set_user_status( $user[ 'id' ],
+                $ag->c( 'user' )->set_user_status( $user[ 'id' ],
                     $ag->c( 'common' )->set_bit(
-                        $user[ 'status' ], game_user_status_active ) );
+                        $user[ 'status' ], ArcadiaUser::USER_STATUS_ACTIVE ) );
 
                 $ag->do_action( 'validate_user',
                     $args = array( 'user_id' => $user[ 'id' ] ) );

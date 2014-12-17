@@ -55,7 +55,8 @@ class ArcadiaAchievement extends ArcadiaComponent {
             return FALSE;
         }
 
-        add_character_meta( $this->ag->char[ 'id' ], $this->flag_game_meta,
+        $this->ag->c( 'user' )->add_character_meta(
+            $this->ag->char[ 'id' ], $this->flag_game_meta,
             $achievement_id, time() );
 
         $this->ag->do_action( 'award_achievement',

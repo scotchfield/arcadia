@@ -59,8 +59,8 @@ class ArcadiaItem extends ArcadiaComponent {
             return FALSE;
         }
 
-        add_character_meta( $ag->char[ 'id' ], $this->flag_game_meta,
-            $meta_key, $meta_value );
+        $ag->c( 'user' )->add_character_meta(
+            $ag->char[ 'id' ], $this->flag_game_meta, $meta_key, $meta_value );
 
         $ag->do_action( 'award_item',
                    array( 'item_id' => $meta_key ) );

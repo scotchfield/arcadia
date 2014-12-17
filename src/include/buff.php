@@ -30,7 +30,8 @@ class ArcadiaBuff extends ArcadiaComponent {
         return $ag->c( 'db' )->db_fetch_all(
             'SELECT * FROM game_meta AS a, character_meta AS c ' .
                 'WHERE a.key_type=? AND c.key_type=? AND ' .
-                'a.meta_key=c.meta_key AND c.character_id=? ORDER BY a.meta_key',
+                'a.meta_key=c.meta_key AND c.character_id=? ' .
+                'ORDER BY a.meta_key',
             array( $this->flag_game_meta, $this->flag_character_meta,
                    $character_id ),
             'meta_key'
@@ -44,9 +45,10 @@ class ArcadiaBuff extends ArcadiaComponent {
             return FALSE;
         }
 
-        ensure_character_meta( $ag->char[ 'id' ], $this->flag_game_meta,
-            $buff_id );
-        update_character_meta( $ag->char[ 'id' ], $this->flag_game_meta,
+        $ag->c( 'user' )->ensure_character_meta(
+            $ag->char[ 'id' ], $this->flag_game_meta, $buff_id );
+        $ag->c( 'user' )->update_character_meta(
+            $ag->char[ 'id' ], $this->flag_game_meta,
             $buff_id, time() + $duration );
 
         $ag->do_action( 'award_buff',

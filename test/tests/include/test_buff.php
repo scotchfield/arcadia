@@ -22,7 +22,8 @@ class TestArcadiaBuff extends PHPUnit_Framework_TestCase {
                 'VALUES ( 1, ?, 1, 12345 )',
             array( $component->get_flag_game_meta() ) );
 
-        $ag->char[ 'meta' ] = get_character_meta( $ag->char[ 'id' ] );
+        $ag->char[ 'meta' ] = $ag->c( 'user' )->get_character_meta(
+            $ag->char[ 'id' ] );
     }
 
     public function tearDown() {

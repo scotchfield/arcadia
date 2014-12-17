@@ -9,9 +9,10 @@ require( GAME_PATH . 'game-load.php' );
 
 $ag->do_action( 'post_load' );
 
-$ag->char = game_character_active();
+$ag->char = $ag->c( 'user' )->game_character_active();
 if ( FALSE != $ag->char ) {
-    $ag->char[ 'meta' ] = get_character_meta( $ag->char[ 'id' ] );
+    $ag->char[ 'meta' ] = $ag->c( 'user' )->get_character_meta(
+        $ag->char[ 'id' ] );
 }
 $ag->do_action( 'character_load' );
 

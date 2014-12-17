@@ -3,11 +3,13 @@
 class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
+        global $ag;
+
         $this->username = 'test_user';
         $this->password = 'test_pass';
         $this->email = 'test@test.com';
 
-        add_user(
+        $ag->c( 'user' )->add_user(
             $this->username,
             password_hash( $this->password, PASSWORD_DEFAULT ),
             $this->email,
@@ -259,7 +261,7 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
     public function test_login_content_activate_user_with_valid_activate() {
        global $ag;
 
-       $user = get_user_by_name( $this->username );
+       $user = $ag->c( 'user' )->get_user_by_name( $this->username );
 
        $component = new ArcadiaLogin();
 
@@ -278,10 +280,10 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
     public function test_login_content_activate_user_already_active() {
        global $ag;
 
-       $user = get_user_by_name( $this->username );
-       set_user_status( $user[ 'id' ],
+       $user = $ag->c( 'user' )->get_user_by_name( $this->username );
+       $ag->c( 'user' )->set_user_status( $user[ 'id' ],
            $ag->c( 'common' )->set_bit( $user[ 'status' ],
-                                        game_user_status_active ) );
+                                        ArcadiaUser::USER_STATUS_ACTIVE ) );
 
        $component = new ArcadiaLogin();
 
@@ -300,7 +302,7 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
     public function test_login_content_activate_invalid_activate() {
        global $ag;
 
-       $user = get_user_by_name( $this->username );
+       $user = $ag->c( 'user' )->get_user_by_name( $this->username );
 
        $component = new ArcadiaLogin();
 
