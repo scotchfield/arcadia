@@ -4,6 +4,4 @@ before_script:
 language: php
 php:
   - 5.5
-  - 5.4
-  - hhvm
 script: phpunit --configuration phpunit_travis.xml.dist
