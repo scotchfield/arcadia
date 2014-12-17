@@ -7,9 +7,9 @@ class TestArcadiaAchieve extends PHPUnit_Framework_TestCase {
 
         $ag->char = array( 'id' => 1 );
 
-        $component = new ArcadiaAchievement();
+        $component = new ArcadiaAchievement( $ag );
 
-        do_action( 'post_load' );
+        $ag->do_action( 'post_load' );
 
         $ag->c( 'db' )->db_execute(
             'INSERT INTO game_meta ( key_type, meta_key, meta_value ) ' .
@@ -31,7 +31,7 @@ class TestArcadiaAchieve extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaAchievement::get_flag_game_meta
      */
     public function test_achieve_get_flag_game_meta() {
-        $component = new ArcadiaAchievement();
+        $component = new ArcadiaAchievement( $ag_obj = new ArcadiaGame() );
 
         $this->assertNotNull( $component->get_flag_game_meta() );
     }
@@ -41,9 +41,31 @@ class TestArcadiaAchieve extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaAchievement::get_flag_character_meta
      */
     public function test_achieve_get_flag_character_meta() {
-        $component = new ArcadiaAchievement();
+        $component = new ArcadiaAchievement( $ag_obj = new ArcadiaGame() );
 
         $this->assertNotNull( $component->get_flag_character_meta() );
+    }
+
+    /**
+     * @covers ArcadiaAchievement::__construct
+     */
+    public function test_achieve_construct_use_global_ag() {
+        global $ag;
+
+        $component = new ArcadiaAchievement();
+
+        $this->assertEquals( $ag, $component->ag );
+    }
+
+    /**
+     * @covers ArcadiaAchievement::__construct
+     */
+    public function test_achieve_construct_use_local_ag() {
+        $ag_new = new ArcadiaGame();
+
+        $component = new ArcadiaAchievement( $ag_ref = $ag_new );
+
+        $this->assertEquals( $ag_new, $component->ag );
     }
 
     /**

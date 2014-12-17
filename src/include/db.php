@@ -4,15 +4,15 @@ class ArcadiaDb extends ArcadiaComponent {
 
     private $db = FALSE;
 
-    public function __construct() {
+    public function __construct( $addr, $name, $user, $pass ) {
         try {
             $this->db = new PDO(
-                'mysql:host=' . DB_ADDRESS . ';dbname=' . DB_NAME .
+                'mysql:host=' . $addr . ';dbname=' . $name .
                     ';charset=utf8',
-                DB_USER, DB_PASSWORD );
+                $user, $pass );
         } catch ( PDOException $e ) {
             echo( "Warning: Database not found!\n" );
-            die();
+            return FALSE;
         }
     }
 

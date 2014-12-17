@@ -1,11 +1,11 @@
 <?php
 
+/*
 global $game_states;
 
 if ( ! isset( $game_states ) ) {
     $game_states = array();
 }
-
 
 function do_action( $action_id, $args = array() ) {
     global $ag, $game_states;
@@ -66,3 +66,4 @@ function state_exists( $state_id ) {
 
     return FALSE;
 }
+*/

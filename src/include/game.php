@@ -2,6 +2,7 @@
 
 class ArcadiaGame {
     private $game_state = '';
+    private $game_states = array();
     private $game_args = array();
 
     private $components = array();
@@ -55,19 +56,59 @@ class ArcadiaGame {
         return $this->get_component( $component_id );
     }
 
-    public function set_logger( $logger ) {
-        $this->logger = $logger;
+    public function do_action( $action_id, $args = array() ) {
+        foreach ( $this->game_states as $state ) {
+            if ( $state[ 0 ] != $action_id ) {
+                continue;
+            }
+
+            if ( $state[ 1 ] && ( $state[ 1 ] != $this->get_state() ) ) {
+                continue;
+            }
+
+            if ( 0 == count( $args ) ) {
+                $arg_obj = array( $state[ 3 ] );
+            } else {
+                $arg_obj = array( array_merge( $state[ 3 ], $args ) );
+            }
+
+            call_user_func_array( $state[ 2 ], $arg_obj );
+        }
     }
 
-    public function log_add( $log_type, $char_id, $meta_value ) {
-        if ( FALSE != $this->logger ) {
-            $this->logger->log_add( $log_type, $char_id, $meta_value );
+    public function add_state( $state_id, $action_id, $function, $args = array() ) {
+        $this->game_states[] = array( $state_id, $action_id, $function, $args );
+    }
+
+    public function add_state_priority( $state_id, $action_id, $function,
+                                        $args = array() ) {
+        array_unshift( $this->game_states,
+                       array( $state_id, $action_id, $function, $args ) );
+    }
+
+    public function remove_state( $state_id, $action_id, $function ) {
+        foreach ( $this->game_states as $k => $state ) {
+            if ( ( $state[ 0 ] == $state_id ) &&
+                 ( $state[ 1 ] == $action_id ) &&
+                 ( $state[ 2 ] == $function ) ) {
+                unset( $this->game_states[ $k ] );
+            }
         }
+    }
+
+    public function state_exists( $state_id ) {
+        foreach ( $this->game_states as $state ) {
+            if ( $state_id == $state[ 0 ] ) {
+                return TRUE;
+            }
+        }
+
+        return FALSE;
     }
 
     public function char_meta( $key_type, $meta_key, $default ) {
         if ( ! $this->char ) {
-            return $default;
+            return FALSE;
         }
 
         if ( ! isset( $this->char[ 'meta' ][ $key_type ][ $meta_key ] ) ) {

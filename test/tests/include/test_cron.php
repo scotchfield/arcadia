@@ -7,7 +7,7 @@ class TestArcadiaCron extends PHPUnit_Framework_TestCase {
 
         $component = new ArcadiaCron();
 
-        do_action( 'post_load' );
+        $ag->do_action( 'post_load' );
 
         $ag->c( 'db' )->db_execute(
             'INSERT INTO game_meta ( key_type, meta_key, meta_value ) ' .

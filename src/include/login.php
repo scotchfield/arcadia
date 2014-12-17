@@ -145,7 +145,7 @@ class ArcadiaLogin extends ArcadiaComponent {
                     $ag->c( 'common' )->set_bit(
                         $user[ 'status' ], game_user_status_active ) );
 
-                do_action( 'validate_user',
+                $ag->do_action( 'validate_user',
                     $args = array( 'user_id' => $user[ 'id' ] ) );
 
                 $ag->set_redirect_header( GAME_URL . '?notify='     .

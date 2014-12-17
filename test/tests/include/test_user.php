@@ -5,12 +5,14 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
     public function setUp() {
         global $ag;
 
-        do_action( 'post_load' );
+        $ag->do_action( 'post_load' );
 
         $ag->c( 'db' )->db_execute(
             'INSERT INTO users ' .
-                '( id, user_name, user_pass, email, registered, activation, status, max_characters ) ' .
-                'VALUES ( 1, "name", "pass", "email", "2014-01-01 01:00:00", "abc", 0, 1 )'
+                '( id, user_name, user_pass, email, registered, ' .
+                    'activation, status, max_characters ) ' .
+                'VALUES ( 1, "name", "pass", "email", ' .
+                    '"2014-01-01 01:00:00", "abc", 0, 1 )'
         );
         
         $ag->c( 'db' )->db_execute(

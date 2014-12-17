@@ -38,9 +38,8 @@ global $ag;
 $ag = new ArcadiaGame();
 
 $ag->set_component( 'common', new ArcadiaCommon() );
-$ag->set_component( 'db', new ArcadiaDb() );
-
-$ag->set_logger( new ArcadiaLog() );
+$ag->set_component( 'db',
+    new ArcadiaDb( DB_ADDRESS, DB_NAME, DB_USER, DB_PASSWORD ) );
 
 $ag->user = game_user_logged_in();
 
@@ -48,10 +47,10 @@ $page_map = array(
     'account' => 'account.php',
 );
 
-add_state( 'do_setting', 'new_character', 'user_create_character' );
-add_state( 'do_setting', 'password', 'user_change_password' );
-add_state( 'do_setting', 'select_character', 'user_select_character' );
-add_state( 'do_setting', 'change_character', 'user_clear_character' );
+$ag->add_state( 'do_setting', 'new_character', 'user_create_character' );
+$ag->add_state( 'do_setting', 'password', 'user_change_password' );
+$ag->add_state( 'do_setting', 'select_character', 'user_select_character' );
+$ag->add_state( 'do_setting', 'change_character', 'user_clear_character' );
 
 if ( defined( 'GAME_CUSTOM_PATH' ) ) {
     require( GAME_CUSTOM_PATH . 'custom-core.php' );

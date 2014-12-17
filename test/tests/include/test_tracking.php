@@ -9,7 +9,7 @@ class TestArcadiaTracking extends PHPUnit_Framework_TestCase {
 
         $component = new ArcadiaTracking();
 
-        do_action( 'post_load' );
+        $ag->do_action( 'post_load' );
 
         $ag->c( 'db' )->db_execute(
             'INSERT INTO character_meta ' .

@@ -56,14 +56,16 @@ class ArcadiaItem extends ArcadiaComponent {
         global $ag;
 
         if ( FALSE == $ag->char ) {
-            return;
+            return FALSE;
         }
 
         add_character_meta( $ag->char[ 'id' ], $this->flag_game_meta,
             $meta_key, $meta_value );
 
-        do_action( 'award_item',
+        $ag->do_action( 'award_item',
                    array( 'item_id' => $meta_key ) );
+
+        return TRUE;
     }
 
 }
