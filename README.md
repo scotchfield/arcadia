@@ -1,7 +1,7 @@
 Arcadia: a browser-based game engine
 ===
 
-![Build status](https://api.travis-ci.org/scotchfield/arcadia.svg?branch=master)
+[![Build status](https://api.travis-ci.org/scotchfield/arcadia.svg?branch=master)](https://travis-ci.org/scotchfield/arcadia)
 
 Arcadia is an object-oriented event-driven browser-based unit-tested
 good ol' game engine. Arcadia exists to simplify the process of
