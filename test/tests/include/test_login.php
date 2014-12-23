@@ -22,7 +22,7 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
 
         $ag->clear_args();
 
-        $ag->c( 'db' )->db_execute( 'DELETE FROM USERS' );
+        $ag->c( 'db' )->execute( 'DELETE FROM USERS' );
     }
 
     /**

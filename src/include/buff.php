@@ -10,7 +10,7 @@ class ArcadiaBuff extends ArcadiaComponent {
     public function get_buff( $id ) {
         global $ag;
 
-        return $ag->c( 'db' )->db_fetch(
+        return $ag->c( 'db' )->fetch(
             'SELECT * FROM game_meta WHERE key_type=? AND meta_key=?',
             array( $this->flag_game_meta, $id ) );
     }
@@ -18,7 +18,7 @@ class ArcadiaBuff extends ArcadiaComponent {
     public function get_all_buffs() {
         global $ag;
 
-        return $ag->c( 'db' )->db_fetch_all(
+        return $ag->c( 'db' )->fetch_all(
             'SELECT * FROM game_meta WHERE key_type=? ORDER BY meta_key',
             array( $this->flag_game_meta ),
             'meta_key' );
@@ -27,7 +27,7 @@ class ArcadiaBuff extends ArcadiaComponent {
     public function get_buffs( $character_id ) {
         global $ag;
 
-        return $ag->c( 'db' )->db_fetch_all(
+        return $ag->c( 'db' )->fetch_all(
             'SELECT * FROM game_meta AS a, character_meta AS c ' .
                 'WHERE a.key_type=? AND c.key_type=? AND ' .
                 'a.meta_key=c.meta_key AND c.character_id=? ' .
@@ -88,7 +88,7 @@ class ArcadiaBuff extends ArcadiaComponent {
 
         unset( $ag->char[ 'meta' ][ $this->flag_character_meta ][ $buff_id ] );
 
-        $ag->c( 'db' )->db_execute(
+        $ag->c( 'db' )->execute(
             'DELETE FROM character_meta WHERE key_type=? AND meta_key=?',
             array( $this->flag_character_meta, $buff_id ) );
     }

@@ -10,7 +10,7 @@ class ArcadiaCron extends ArcadiaComponent {
     public function get_crons() {
         global $ag;
 
-        return $ag->c( 'db' )->db_fetch_all(
+        return $ag->c( 'db' )->fetch_all(
             'SELECT * FROM game_meta WHERE key_type=?',
             array( $this->flag_game_meta ),
             'meta_key' );

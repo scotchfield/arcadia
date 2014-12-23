@@ -9,11 +9,11 @@ class TestArcadiaHeartbeat extends PHPUnit_Framework_TestCase {
 
         $component = new ArcadiaHeartbeat();
 
-        $ag->c( 'db' )->db_execute( 'INSERT INTO characters ' .
+        $ag->c( 'db' )->execute( 'INSERT INTO characters ' .
             '( id, user_id, character_name ) VALUES ' .
             '( 1, 1, \'test\' )' );
 
-        $ag->c( 'db' )->db_execute(
+        $ag->c( 'db' )->execute(
             'DELETE FROM character_meta WHERE character_id=1 ' .
                 'AND key_type=?',
             array( $component->get_flag_character_meta() ) );
@@ -24,7 +24,7 @@ class TestArcadiaHeartbeat extends PHPUnit_Framework_TestCase {
 
         $ag->char = FALSE;
 
-        $ag->c( 'db' )->db_execute( 'DELETE FROM characters' );
+        $ag->c( 'db' )->execute( 'DELETE FROM characters' );
     }
 
     /**

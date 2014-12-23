@@ -9,7 +9,7 @@ class TestArcadiaCron extends PHPUnit_Framework_TestCase {
 
         $ag->do_action( 'post_load' );
 
-        $ag->c( 'db' )->db_execute(
+        $ag->c( 'db' )->execute(
             'INSERT INTO game_meta ( key_type, meta_key, meta_value ) ' .
                 'VALUES ( ?, 1, "test" )',
             array( $component->get_flag_game_meta() ) );
@@ -18,7 +18,7 @@ class TestArcadiaCron extends PHPUnit_Framework_TestCase {
     public function tearDown() {
         global $ag;
 
-        $ag->c( 'db' )->db_execute( 'DELETE FROM game_meta', array() );
+        $ag->c( 'db' )->execute( 'DELETE FROM game_meta', array() );
     }
 
     /**

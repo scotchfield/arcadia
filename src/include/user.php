@@ -21,17 +21,17 @@ class ArcadiaUser extends ArcadiaComponent {
     }
 
     function get_user_by_name( $name ) {
-        return $this->ag->c( 'db' )->db_fetch(
+        return $this->ag->c( 'db' )->fetch(
             'SELECT * FROM users WHERE user_name=?', array( $name ) );
     }
 
     function get_user_by_id( $id ) {
-        return $this->ag->c( 'db' )->db_fetch(
+        return $this->ag->c( 'db' )->fetch(
             'SELECT * FROM users WHERE id=?', array( $id ) );
     }
 
     function get_user_by_email( $email ) {
-        return $this->ag->c( 'db' )->db_fetch(
+        return $this->ag->c( 'db' )->fetch(
             'SELECT * FROM users WHERE email=?', array( $email ) );
     }
 
@@ -54,13 +54,13 @@ class ArcadiaUser extends ArcadiaComponent {
 
         $activate = $this->ag->c( 'common' )->random_string( 10 );
 
-        $this->ag->c( 'db' )->db_execute(
+        $this->ag->c( 'db' )->execute(
             'INSERT INTO users ( user_name, user_pass, email, registered, ' .
                 'activation, status ) VALUES ( ?, ?, ?, ?, ?, ? )',
             array( $name, $pass, $email, date( 'Y-m-d H:i:s' ),
                 $activate, 0 ) );
 
-        $user_id = $this->ag->c( 'db' )->db_last_insert_id();
+        $user_id = $this->ag->c( 'db' )->last_insert_id();
 
         $text = 'Dear ' . $name . ",\n\nWelcome to " . GAME_NAME . ".\n\n" .
             "To complete your registration, please visit this URL:\n" .
@@ -78,13 +78,13 @@ class ArcadiaUser extends ArcadiaComponent {
     }
 
     function set_user_status( $user_id, $status ) {
-        $this->ag->c( 'db' )->db_execute(
+        $this->ag->c( 'db' )->execute(
             'UPDATE users SET status=? WHERE id=?',
             array( $status, $user_id ) );
     }
 
     function set_user_max_characters( $user_id, $max_characters ) {
-        $this->ag->c( 'db' )->db_execute(
+        $this->ag->c( 'db' )->execute(
             'UPDATE users SET max_characters=? WHERE id=?',
             array( $max_characters, $user_id ) );
     }
@@ -116,29 +116,29 @@ class ArcadiaUser extends ArcadiaComponent {
     }
 
     function get_characters_for_user( $user_id ) {
-        return $this->ag->c( 'db' )->db_fetch_all(
+        return $this->ag->c( 'db' )->fetch_all(
             'SELECT * FROM characters WHERE user_id=?',
             array( $user_id ), $key_assoc = 'id' );
     }
 
     function get_character_by_name( $name ) {
-        return $this->ag->c( 'db' )->db_fetch(
+        return $this->ag->c( 'db' )->fetch(
             'SELECT * FROM characters WHERE character_name=?',
             array( $name ) );
     }
 
     function get_character_by_id( $id ) {
-        return $this->ag->c( 'db' )->db_fetch(
+        return $this->ag->c( 'db' )->fetch(
             'SELECT * FROM characters WHERE id=?', array( $id ) );
     }
 
     function add_character( $user_id, $name ) {
-        $this->ag->c( 'db' )->db_execute(
+        $this->ag->c( 'db' )->execute(
             'INSERT INTO characters ( user_id, character_name ) ' .
                 'VALUES ( ?, ? )',
             array( $user_id, $name ) );
 
-        return $this->ag->c( 'db' )->db_last_insert_id();
+        return $this->ag->c( 'db' )->last_insert_id();
     }
 
     function user_create_character( $user_name = FALSE ) {
@@ -210,7 +210,7 @@ class ArcadiaUser extends ArcadiaComponent {
 
     function get_character_meta( $id, $type = FALSE ) {
         if ( FALSE == $type ) {
-            $meta_obj = $this->ag->c( 'db' )->db_fetch_all(
+            $meta_obj = $this->ag->c( 'db' )->fetch_all(
                 'SELECT * FROM character_meta WHERE character_id=?',
                 array( $id ) );
 
@@ -224,7 +224,7 @@ class ArcadiaUser extends ArcadiaComponent {
                         $meta[ 'meta_value' ];
             }
         } else {
-            $meta_obj = $this->ag->c( 'db' )->db_fetch_all(
+            $meta_obj = $this->ag->c( 'db' )->fetch_all(
                 'SELECT * FROM character_meta ' .
                     'WHERE character_id=? AND key_type=?',
                 array( $id, $type ) );
@@ -240,7 +240,7 @@ class ArcadiaUser extends ArcadiaComponent {
 
     function add_character_meta( $character_id, $key_type,
                                  $meta_key, $meta_value ) {
-        $this->ag->c( 'db' )->db_execute(
+        $this->ag->c( 'db' )->execute(
             'INSERT INTO character_meta ( ' .
                 'character_id, key_type, meta_key, meta_value ) ' .
                 'VALUES ( ?, ?, ?, ? )',
@@ -262,7 +262,7 @@ class ArcadiaUser extends ArcadiaComponent {
 
     function update_character_meta( $character_id, $key_type,
                                     $meta_key, $meta_value ) {
-        $this->ag->c( 'db' )->db_execute(
+        $this->ag->c( 'db' )->execute(
             'UPDATE character_meta SET meta_value=? WHERE
                 character_id=? AND key_type=? AND meta_key=?',
             array( $meta_value, $character_id, $key_type, $meta_key ) );
@@ -274,13 +274,13 @@ class ArcadiaUser extends ArcadiaComponent {
     }
 
     function clear_all_character_meta( $character_id ) {
-        $this->ag->c( 'db' )->db_execute(
+        $this->ag->c( 'db' )->execute(
             'DELETE FROM character_meta WHERE character_id=?',
             array( $character_id ) );
     }
 
     function ensure_character_meta( $character_id, $key_type, $meta_key ) {
-        $obj = $this->ag->c( 'db' )->db_fetch(
+        $obj = $this->ag->c( 'db' )->fetch(
             'SELECT * FROM character_meta WHERE ' .
                 'character_id=? AND key_type=? AND meta_key=?',
             array( $character_id, $key_type, $meta_key ) );
@@ -297,7 +297,7 @@ class ArcadiaUser extends ArcadiaComponent {
         $args = array_merge(
             array( $character_id, $key_type ), $meta_key_obj );
 
-        $obj = $this->ag->c( 'db' )->db_fetch_all(
+        $obj = $this->ag->c( 'db' )->fetch_all(
             'SELECT * FROM character_meta WHERE character_id=? AND ' .
                 'key_type=? AND meta_key IN (' . $place_holders . ')',
             $args,

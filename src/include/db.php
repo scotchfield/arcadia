@@ -16,7 +16,7 @@ class ArcadiaDb extends ArcadiaComponent {
         }
     }
 
-    public function db_fetch( $query, $args = array() ) {
+    public function fetch( $query, $args = array() ) {
         $stmt = $this->db->prepare( $query );
         $stmt->execute( $args );
         $obj = $stmt->fetch( PDO::FETCH_ASSOC );
@@ -24,7 +24,7 @@ class ArcadiaDb extends ArcadiaComponent {
         return $obj;
     }
 
-    public function db_fetch_all( $query, $args = array(),
+    public function fetch_all( $query, $args = array(),
                                   $key_assoc = FALSE ) {
         $stmt = $this->db->prepare( $query );
         $stmt->execute( $args );
@@ -41,24 +41,24 @@ class ArcadiaDb extends ArcadiaComponent {
         return $obj;
     }
 
-    public function db_execute( $query, $args = array() ) {
+    public function execute( $query, $args = array() ) {
         $stmt = $this->db->prepare( $query );
         return $stmt->execute( $args );
     }
 
-    public function db_last_insert_id() {
+    public function last_insert_id() {
         return $this->db->lastInsertId();
     }
 
-    public function db_begin_transaction() {
+    public function begin_transaction() {
         return $this->db->beginTransaction();
     }
 
-    public function db_commit() {
+    public function commit() {
         return $this->db->commit();
     }
 
-    public function db_rollback() {
+    public function rollback() {
         return $this->db->rollBack();
     }
 

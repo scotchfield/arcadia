@@ -7,7 +7,7 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
 
         $ag->do_action( 'post_load' );
 
-        $ag->c( 'db' )->db_execute(
+        $ag->c( 'db' )->execute(
             'INSERT INTO users ' .
                 '( id, user_name, user_pass, email, registered, ' .
                     'activation, status, max_characters ) ' .
@@ -15,7 +15,7 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
                     '"2014-01-01 01:00:00", "abc", 0, 1 )'
         );
         
-        $ag->c( 'db' )->db_execute(
+        $ag->c( 'db' )->execute(
             'INSERT INTO characters ( id, user_id, character_name ) ' .
                 'VALUES ( 1, 1, "character_name" )'
         );
@@ -26,8 +26,8 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
 
         $ag->user = FALSE;
 
-        $ag->c( 'db' )->db_execute( 'DELETE FROM characters' );
-        $ag->c( 'db' )->db_execute( 'DELETE FROM users' );
+        $ag->c( 'db' )->execute( 'DELETE FROM characters' );
+        $ag->c( 'db' )->execute( 'DELETE FROM users' );
 
         unset( $_SESSION[ 'u' ] );
     }

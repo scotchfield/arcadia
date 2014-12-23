@@ -5,7 +5,7 @@ class TestArcadiaLog extends PHPUnit_Framework_TestCase {
     public function setUp() {
         global $ag;
 
-        $ag->c( 'db' )->db_execute( 'DELETE FROM logs' );
+        $ag->c( 'db' )->execute( 'DELETE FROM logs' );
     }
 
     /**
@@ -40,7 +40,7 @@ class TestArcadiaLog extends PHPUnit_Framework_TestCase {
         $result = $component->log_add( 1, 2, 3 );
         $this->assertTrue( $result );
 
-        $result = $ag->c( 'db' )->db_fetch_all( 'SELECT * FROM logs' );
+        $result = $ag->c( 'db' )->fetch_all( 'SELECT * FROM logs' );
         $this->assertCount( 1, $result );
     }
 

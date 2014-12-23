@@ -12,7 +12,7 @@ class ArcadiaGameMeta {
     function get_game_meta( $key_type, $meta_key ) {
         global $ag;
 
-        return $ag->c( 'db' )->db_fetch(
+        return $ag->c( 'db' )->fetch(
             'SELECT * FROM game_meta WHERE key_type=? AND meta_key=?',
             array( $key_type, $meta_key ) );
     }
@@ -24,7 +24,7 @@ class ArcadiaGameMeta {
             ',', array_fill( 0, count( $meta_key_array ), '?' ) );
         $args = array_merge( array( $key_type ), $meta_key_array );
 
-        return $ag->c( 'db' )->db_fetch_all(
+        return $ag->c( 'db' )->fetch_all(
             'SELECT * FROM game_meta WHERE key_type=? AND meta_key IN (' .
                 $place_holders . ')',
             $args,
@@ -35,7 +35,7 @@ class ArcadiaGameMeta {
     function get_game_meta_by_key( $key_type ) {
         global $ag;
 
-        return $ag->c( 'db' )->db_fetch_all(
+        return $ag->c( 'db' )->fetch_all(
             'SELECT * FROM game_meta WHERE key_type=?',
             array( $key_type ),
             $key_assoc = 'meta_key' );
@@ -45,7 +45,7 @@ class ArcadiaGameMeta {
                                       $character_meta_key ) {
         global $ag;
 
-        return $ag->c( 'db' )->db_fetch_all(
+        return $ag->c( 'db' )->fetch_all(
             'SELECT g.meta_key AS id, g.meta_value AS meta_value, ' .
                 'c.meta_value AS timestamp ' .
                 'FROM game_meta AS g, character_meta AS c ' .
@@ -60,7 +60,7 @@ class ArcadiaGameMeta {
     function get_game_meta_all() {
         global $ag;
 
-        $meta_obj = $ag->c( 'db' )->db_fetch_all(
+        $meta_obj = $ag->c( 'db' )->fetch_all(
             'SELECT * FROM game_meta', array() );
 
         $obj = array();
@@ -78,7 +78,7 @@ class ArcadiaGameMeta {
     function update_game_meta( $key_type, $meta_key, $meta_value ) {
         global $ag;
 
-        $ag->c( 'db' )->db_execute(
+        $ag->c( 'db' )->execute(
             'UPDATE game_meta SET meta_value=? ' .
                 'WHERE key_type=? AND meta_key=?',
             array( $meta_value, $key_type, $meta_key ) );

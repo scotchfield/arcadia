@@ -5,13 +5,13 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
     public function setUp() {
         global $ag;
 
-        $ag->c( 'db' )->db_execute(
+        $ag->c( 'db' )->execute(
             'INSERT INTO game_meta ' .
                 '( key_type, meta_key, meta_value ) VALUES ' .
                 '( 0, 1, "test 1" ), ( 0, 2, "test 2" )',
             array() );
 
-        $ag->c( 'db' )->db_execute( 'DELETE FROM characters' );
+        $ag->c( 'db' )->execute( 'DELETE FROM characters' );
 
         $this->db_addr = DB_ADDRESS;
         $this->db_name = DB_NAME;
@@ -22,8 +22,8 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
     public function tearDown() {
         global $ag;
 
-        $ag->c( 'db' )->db_execute( 'DELETE FROM characters' );
-        $ag->c( 'db' )->db_execute( 'DELETE FROM game_meta' );
+        $ag->c( 'db' )->execute( 'DELETE FROM characters' );
+        $ag->c( 'db' )->execute( 'DELETE FROM game_meta' );
     }
 
     /**
@@ -52,7 +52,7 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
-        $obj = $component->db_fetch(
+        $obj = $component->fetch(
             'SELECT * FROM game_meta WHERE meta_key=1' );
 
         $this->assertNotFalse( $obj );
@@ -67,7 +67,7 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
-        $obj = $component->db_fetch(
+        $obj = $component->fetch(
             'SELECT * FROM game_meta WHERE meta_key=-1' );
 
         $this->assertFalse( $obj );
@@ -80,7 +80,7 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
-        $obj = $component->db_fetch_all( 'SELECT * FROM game_meta' );
+        $obj = $component->fetch_all( 'SELECT * FROM game_meta' );
 
         $this->assertNotFalse( $obj );
         $this->assertCount( 2, $obj );
@@ -93,7 +93,7 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
-        $obj = $component->db_fetch_all( 'SELECT * FROM game_meta',
+        $obj = $component->fetch_all( 'SELECT * FROM game_meta',
             $args = array(), $key_assoc = 'meta_key' );
 
         $this->assertNotFalse( $obj );
@@ -109,7 +109,7 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
-        $obj = $component->db_fetch_all(
+        $obj = $component->fetch_all(
             'SELECT * FROM game_meta WHERE meta_key=-1' );
 
         $this->assertEmpty( $obj );
@@ -122,13 +122,13 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
-        $result = $component->db_execute( 'INSERT INTO game_meta ' .
+        $result = $component->execute( 'INSERT INTO game_meta ' .
                 '( key_type, meta_key, meta_value ) ' .
                 'VALUES ( 0, 3, "test 3" )' );
 
         $this->assertTrue( $result );
 
-        $obj = $component->db_fetch_all( 'SELECT * FROM game_meta' );
+        $obj = $component->fetch_all( 'SELECT * FROM game_meta' );
 
         $this->assertCount( 3, $obj );
     }
@@ -140,7 +140,7 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
-        $result = $component->db_execute( 'INSERT INTO invalid_table ' .
+        $result = $component->execute( 'INSERT INTO invalid_table ' .
                 '( key_type, meta_key, meta_value ) ' .
                 'VALUES ( 0, 3, "test 3" )' );
 
@@ -154,15 +154,15 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
-        $component->db_execute( 'INSERT INTO characters ' .
+        $component->execute( 'INSERT INTO characters ' .
             '( user_id, character_name ) VALUES ( \'test\', \'test\' )' );
 
-        $id_start = $component->db_last_insert_id();
+        $id_start = $component->last_insert_id();
 
-        $component->db_execute( 'INSERT INTO characters ' .
+        $component->execute( 'INSERT INTO characters ' .
             '( user_id, character_name ) VALUES ( \'test\', \'test\' )' );
 
-        $this->assertEquals( $component->db_last_insert_id(),
+        $this->assertEquals( $component->last_insert_id(),
                              $id_start + 1 );
     }
 
@@ -174,14 +174,14 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
-        $this->assertTrue( $component->db_begin_transaction() );
+        $this->assertTrue( $component->begin_transaction() );
 
-        $component->db_execute( 'INSERT INTO characters ' .
+        $component->execute( 'INSERT INTO characters ' .
             '( user_id, character_name ) VALUES ( \'test\', \'test\' )' );
 
-        $this->assertTrue( $component->db_commit() );
+        $this->assertTrue( $component->commit() );
 
-        $result = $component->db_fetch_all( 'SELECT * FROM characters' );
+        $result = $component->fetch_all( 'SELECT * FROM characters' );
 
         $this->assertCount( 1, $result );
     }
@@ -194,14 +194,14 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
-        $this->assertTrue( $component->db_begin_transaction() );
+        $this->assertTrue( $component->begin_transaction() );
 
-        $component->db_execute( 'INSERT INTO characters ' .
+        $component->execute( 'INSERT INTO characters ' .
             '( user_id, character_name ) VALUES ( \'test\', \'test\' )' );
 
-        $this->assertTrue( $component->db_rollback() );
+        $this->assertTrue( $component->rollback() );
 
-        $result = $component->db_fetch_all( 'SELECT * FROM characters' );
+        $result = $component->fetch_all( 'SELECT * FROM characters' );
 
         $this->assertCount( 0, $result );
     }
