@@ -46,9 +46,9 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
     }*/ // TODO: make sure we handle this failure
 
     /**
-     * @covers ArcadiaDb::db_fetch
+     * @covers ArcadiaDb::fetch
      */
-    public function test_db_fetch() {
+    public function test_fetch() {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
@@ -61,9 +61,9 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ArcadiaDb::db_fetch
+     * @covers ArcadiaDb::fetch
      */
-    public function test_db_fetch_not_found() {
+    public function test_fetch_not_found() {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
@@ -74,9 +74,9 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ArcadiaDb::db_fetch_all
+     * @covers ArcadiaDb::fetch_all
      */
-    public function test_db_fetch_all() {
+    public function test_fetch_all() {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
@@ -87,9 +87,9 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ArcadiaDb::db_fetch_all
+     * @covers ArcadiaDb::fetch_all
      */
-    public function test_db_fetch_all_key_assoc() {
+    public function test_fetch_all_key_assoc() {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
@@ -103,9 +103,9 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ArcadiaDb::db_fetch_all
+     * @covers ArcadiaDb::fetch_all
      */
-    public function test_db_fetch_all_not_found() {
+    public function test_fetch_all_not_found() {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
@@ -116,9 +116,9 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ArcadiaDb::db_execute
+     * @covers ArcadiaDb::execute
      */
-    public function test_db_execute_insert() {
+    public function test_execute_insert() {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
@@ -134,9 +134,9 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ArcadiaDb::db_execute
+     * @covers ArcadiaDb::execute
      */
-    public function test_db_execute_invalid() {
+    public function test_execute_invalid() {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
@@ -148,9 +148,9 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ArcadiaDb::db_last_insert_id
+     * @covers ArcadiaDb::last_insert_id
      */
-    public function test_db_last_insert_id() {
+    public function test_last_insert_id() {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
@@ -167,10 +167,10 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ArcadiaDb::db_begin_transaction
-     * @covers ArcadiaDb::db_commit
+     * @covers ArcadiaDb::begin_transaction
+     * @covers ArcadiaDb::commit
      */
-    public function test_db_simple_transaction() {
+    public function test_simple_transaction() {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
@@ -187,10 +187,10 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ArcadiaDb::db_begin_transaction
-     * @covers ArcadiaDb::db_rollback
+     * @covers ArcadiaDb::begin_transaction
+     * @covers ArcadiaDb::rollback
      */
-    public function test_db_simple_rollback() {
+    public function test_simple_rollback() {
         $component = new ArcadiaDb(
             $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
 
