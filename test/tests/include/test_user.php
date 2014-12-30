@@ -26,6 +26,7 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
     public function tearDown() {
         global $ag;
 
+        $ag->char = FALSE;
         $ag->user = FALSE;
 
         $ag->c( 'db' )->execute( 'DELETE FROM characters' );
@@ -511,6 +512,56 @@ class TestArcadiaUser extends PHPUnit_Framework_TestCase {
         $this->assertEquals( array(), $result );
     }
 
+    /**
+     * @covers ArcadiaUser::get_character_meta
+     */
+    public function test_get_character_meta_simple_meta() {
+        $this->ag->c( 'db' )->execute( 'INSERT INTO character_meta ' .
+            '( character_id, key_type, meta_key, meta_value ) ' .
+            'VALUES ( 1, 2, 3, "test" )' );
+
+        $result = $this->ag->c( 'user' )->get_character_meta( 1 );
+
+        $this->assertEquals( array( 2 => array( 3 => 'test' ) ), $result );
+    }
+
+    /**
+     * @covers ArcadiaUser::get_character_meta
+     */
+    public function test_get_character_meta_simple_meta_type() {
+        $this->ag->c( 'db' )->execute( 'INSERT INTO character_meta ' .
+            '( character_id, key_type, meta_key, meta_value ) ' .
+            'VALUES ( 1, 2, 3, "test" )' );
+
+        $result = $this->ag->c( 'user' )->get_character_meta( 1, $type = 2 );
+
+        $this->assertEquals( array( 3 => 'test' ), $result );
+    }
+
+    /**
+     * @covers ArcadiaUser::add_character_meta
+     */
+    public function test_add_character_meta() {
+        $this->ag->c( 'user' )->add_character_meta( 1, 2, 3, "test" );
+
+        $result = $this->ag->c( 'user' )->get_character_meta( 1, $type = 2 );
+
+        $this->assertEquals( array( 3 => 'test' ), $result );
+    }
+
+    /**
+     * @covers ArcadiaUser::add_character_meta
+     */
+    public function test_add_character_meta_char_set() {
+        $this->ag->char = array( 'id' => 1 );
+
+        $this->ag->c( 'user' )->add_character_meta( 1, 2, 3, "test" );
+
+        $this->ag->c( 'user' )->get_character_meta( 1, $type = 2 );
+
+        $this->assertEquals( array( 3 => 'test' ),
+            $this->ag->char[ 'meta' ][ 2 ] );
+    }
 
 
 }
