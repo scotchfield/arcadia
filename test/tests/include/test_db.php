@@ -17,10 +17,15 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
         $this->db_name = DB_NAME;
         $this->db_user = DB_USER;
         $this->db_pass = DB_PASSWORD;
+
+        $this->component = new ArcadiaDb(
+            $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
     }
 
     public function tearDown() {
         global $ag;
+
+        unset( $this->component );
 
         $ag->c( 'db' )->execute( 'DELETE FROM characters' );
         $ag->c( 'db' )->execute( 'DELETE FROM game_meta' );
@@ -30,10 +35,7 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaDb::__construct
      */
     public function test_db_constructor() {
-        $component = new ArcadiaDb(
-            $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
-
-        $this->assertNotNull( $component );
+        $this->assertNotNull( $this->component );
     }
 
     /**
@@ -49,10 +51,7 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaDb::fetch
      */
     public function test_fetch() {
-        $component = new ArcadiaDb(
-            $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
-
-        $obj = $component->fetch(
+        $obj = $this->component->fetch(
             'SELECT * FROM game_meta WHERE meta_key=1' );
 
         $this->assertNotFalse( $obj );
@@ -64,10 +63,7 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaDb::fetch
      */
     public function test_fetch_not_found() {
-        $component = new ArcadiaDb(
-            $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
-
-        $obj = $component->fetch(
+        $obj = $this->component->fetch(
             'SELECT * FROM game_meta WHERE meta_key=-1' );
 
         $this->assertFalse( $obj );
@@ -77,10 +73,7 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaDb::fetch_all
      */
     public function test_fetch_all() {
-        $component = new ArcadiaDb(
-            $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
-
-        $obj = $component->fetch_all( 'SELECT * FROM game_meta' );
+        $obj = $this->component->fetch_all( 'SELECT * FROM game_meta' );
 
         $this->assertNotFalse( $obj );
         $this->assertCount( 2, $obj );
@@ -90,10 +83,7 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaDb::fetch_all
      */
     public function test_fetch_all_key_assoc() {
-        $component = new ArcadiaDb(
-            $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
-
-        $obj = $component->fetch_all( 'SELECT * FROM game_meta',
+        $obj = $this->component->fetch_all( 'SELECT * FROM game_meta',
             $args = array(), $key_assoc = 'meta_key' );
 
         $this->assertNotFalse( $obj );
@@ -106,10 +96,7 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaDb::fetch_all
      */
     public function test_fetch_all_not_found() {
-        $component = new ArcadiaDb(
-            $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
-
-        $obj = $component->fetch_all(
+        $obj = $this->component->fetch_all(
             'SELECT * FROM game_meta WHERE meta_key=-1' );
 
         $this->assertEmpty( $obj );
@@ -119,16 +106,13 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaDb::execute
      */
     public function test_execute_insert() {
-        $component = new ArcadiaDb(
-            $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
-
-        $result = $component->execute( 'INSERT INTO game_meta ' .
+        $result = $this->component->execute( 'INSERT INTO game_meta ' .
                 '( key_type, meta_key, meta_value ) ' .
                 'VALUES ( 0, 3, "test 3" )' );
 
         $this->assertTrue( $result );
 
-        $obj = $component->fetch_all( 'SELECT * FROM game_meta' );
+        $obj = $this->component->fetch_all( 'SELECT * FROM game_meta' );
 
         $this->assertCount( 3, $obj );
     }
@@ -137,10 +121,7 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaDb::execute
      */
     public function test_execute_invalid() {
-        $component = new ArcadiaDb(
-            $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
-
-        $result = $component->execute( 'INSERT INTO invalid_table ' .
+        $result = $this->component->execute( 'INSERT INTO invalid_table ' .
                 '( key_type, meta_key, meta_value ) ' .
                 'VALUES ( 0, 3, "test 3" )' );
 
@@ -151,18 +132,15 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaDb::last_insert_id
      */
     public function test_last_insert_id() {
-        $component = new ArcadiaDb(
-            $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
-
-        $component->execute( 'INSERT INTO characters ' .
+        $this->component->execute( 'INSERT INTO characters ' .
             '( user_id, character_name ) VALUES ( \'test\', \'test\' )' );
 
-        $id_start = $component->last_insert_id();
+        $id_start = $this->component->last_insert_id();
 
-        $component->execute( 'INSERT INTO characters ' .
+        $this->component->execute( 'INSERT INTO characters ' .
             '( user_id, character_name ) VALUES ( \'test\', \'test\' )' );
 
-        $this->assertEquals( $component->last_insert_id(),
+        $this->assertEquals( $this->component->last_insert_id(),
                              $id_start + 1 );
     }
 
@@ -171,17 +149,14 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaDb::commit
      */
     public function test_simple_transaction() {
-        $component = new ArcadiaDb(
-            $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
+        $this->assertTrue( $this->component->begin_transaction() );
 
-        $this->assertTrue( $component->begin_transaction() );
-
-        $component->execute( 'INSERT INTO characters ' .
+        $this->component->execute( 'INSERT INTO characters ' .
             '( user_id, character_name ) VALUES ( \'test\', \'test\' )' );
 
-        $this->assertTrue( $component->commit() );
+        $this->assertTrue( $this->component->commit() );
 
-        $result = $component->fetch_all( 'SELECT * FROM characters' );
+        $result = $this->component->fetch_all( 'SELECT * FROM characters' );
 
         $this->assertCount( 1, $result );
     }
@@ -191,17 +166,14 @@ class TestArcadiaDb extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaDb::rollback
      */
     public function test_simple_rollback() {
-        $component = new ArcadiaDb(
-            $this->db_addr, $this->db_name, $this->db_user, $this->db_pass );
+        $this->assertTrue( $this->component->begin_transaction() );
 
-        $this->assertTrue( $component->begin_transaction() );
-
-        $component->execute( 'INSERT INTO characters ' .
+        $this->component->execute( 'INSERT INTO characters ' .
             '( user_id, character_name ) VALUES ( \'test\', \'test\' )' );
 
-        $this->assertTrue( $component->rollback() );
+        $this->assertTrue( $this->component->rollback() );
 
-        $result = $component->fetch_all( 'SELECT * FROM characters' );
+        $result = $this->component->fetch_all( 'SELECT * FROM characters' );
 
         $this->assertCount( 0, $result );
     }
