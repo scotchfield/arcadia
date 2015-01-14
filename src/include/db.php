@@ -12,7 +12,6 @@ class ArcadiaDb extends ArcadiaComponent {
                 $user, $pass );
         } catch ( PDOException $e ) {
             echo( "Warning: Database not found!\n" );
-            return FALSE;
         }
     }
 
