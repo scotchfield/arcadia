@@ -336,11 +336,11 @@ class ArcadiaUser extends ArcadiaComponent {
     }
 
     function character_meta_int( $key_type, $meta_key ) {
-        return intval( character_meta( $key_type, $meta_key ) );
+        return intval( $this->character_meta( $key_type, $meta_key ) );
     }
 
     function character_meta_float( $key_type, $meta_key ) {
-        return floatval( character_meta( $key_type, $meta_key ) );
+        return floatval( $this->character_meta( $key_type, $meta_key ) );
     }
 
 }
