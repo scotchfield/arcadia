@@ -15,7 +15,7 @@ class ArcadiaGame {
     public $meta;
 
     public function __construct() {
-        $this->meta = new ArcadiaGameMeta();
+        $this->meta = new ArcadiaGameMeta( $this );
     }
 
     public function get_state() {

@@ -9,22 +9,30 @@
 
 class ArcadiaGameMeta {
 
-    function get_game_meta( $key_type, $meta_key ) {
-        global $ag;
+    public $ag;
 
-        return $ag->c( 'db' )->fetch(
+    function __construct( $ag_obj = FALSE ) {
+        if ( $ag_obj ) {
+            $this->ag = $ag_obj;
+        } else {
+            global $ag;
+
+            $this->ag = $ag;
+        }
+    }
+
+    function get_game_meta( $key_type, $meta_key ) {
+        return $this->ag->c( 'db' )->fetch(
             'SELECT * FROM game_meta WHERE key_type=? AND meta_key=?',
             array( $key_type, $meta_key ) );
     }
 
     function get_game_meta_array( $key_type, $meta_key_array ) {
-        global $ag;
-
         $place_holders = implode(
             ',', array_fill( 0, count( $meta_key_array ), '?' ) );
         $args = array_merge( array( $key_type ), $meta_key_array );
 
-        return $ag->c( 'db' )->fetch_all(
+        return $this->ag->c( 'db' )->fetch_all(
             'SELECT * FROM game_meta WHERE key_type=? AND meta_key IN (' .
                 $place_holders . ')',
             $args,
@@ -33,9 +41,7 @@ class ArcadiaGameMeta {
     }
 
     function get_game_meta_by_key( $key_type ) {
-        global $ag;
-
-        return $ag->c( 'db' )->fetch_all(
+        return $this->ag->c( 'db' )->fetch_all(
             'SELECT * FROM game_meta WHERE key_type=?',
             array( $key_type ),
             $key_assoc = 'meta_key' );
@@ -43,9 +49,7 @@ class ArcadiaGameMeta {
 
     function get_character_game_meta( $character_id, $game_meta_key,
                                       $character_meta_key ) {
-        global $ag;
-
-        return $ag->c( 'db' )->fetch_all(
+        return $this->ag->c( 'db' )->fetch_all(
             'SELECT g.meta_key AS id, g.meta_value AS meta_value, ' .
                 'c.meta_value AS timestamp ' .
                 'FROM game_meta AS g, character_meta AS c ' .
@@ -58,9 +62,7 @@ class ArcadiaGameMeta {
     }
 
     function get_game_meta_all() {
-        global $ag;
-
-        $meta_obj = $ag->c( 'db' )->fetch_all(
+        $meta_obj = $this->ag->c( 'db' )->fetch_all(
             'SELECT * FROM game_meta', array() );
 
         $obj = array();
@@ -76,9 +78,7 @@ class ArcadiaGameMeta {
     }
 
     function update_game_meta( $key_type, $meta_key, $meta_value ) {
-        global $ag;
-
-        $ag->c( 'db' )->execute(
+        $this->ag->c( 'db' )->execute(
             'UPDATE game_meta SET meta_value=? ' .
                 'WHERE key_type=? AND meta_key=?',
             array( $meta_value, $key_type, $meta_key ) );

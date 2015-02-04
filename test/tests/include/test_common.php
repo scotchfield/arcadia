@@ -15,7 +15,9 @@ class TestArcadiaCommon extends PHPUnit_Framework_TestCase {
      * @covers ArcadiaCommon::__construct
      */
     public function test_common_constructor_nonce_life_set() {
-        $component = new ArcadiaCommon( $nonce_life = 30 );
+        global $ag;
+
+        $component = new ArcadiaCommon( $ag_obj = $ag, $nonce_life = 30 );
 
         $this->assertEquals( 30, $component->game_nonce_life );
     }

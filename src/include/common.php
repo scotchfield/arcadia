@@ -2,9 +2,18 @@
 
 class ArcadiaCommon extends ArcadiaComponent {
 
+    public $ag;
     public $game_nonce_life = 60;
 
-    public function __construct( $nonce_life = FALSE ) {
+    public function __construct( $ag_obj = FALSE, $nonce_life = FALSE ) {
+        if ( $ag_obj ) {
+            $this->ag = $ag_obj;
+        } else {
+            global $ag;
+
+            $this->ag = $ag;
+        }
+
         if ( $nonce_life ) {
             $this->game_nonce_life = $nonce_life;
         }
@@ -61,14 +70,12 @@ class ArcadiaCommon extends ArcadiaComponent {
     }
 
     public function nonce_verify( $nonce, $state = -1 ) {
-        global $ag;
-
-        if ( FALSE == $ag->char ) {
+        if ( FALSE == $this->ag->char ) {
             return FALSE;
         }
 
         $tick = $this->nonce_tick();
-        $c_id = intval( $ag->char[ 'id' ] );
+        $c_id = intval( $this->ag->char[ 'id' ] );
 
         if ( $nonce === substr( md5( $tick . $state . $c_id ), 0, 10 ) ) {
             return TRUE;
@@ -83,14 +90,12 @@ class ArcadiaCommon extends ArcadiaComponent {
     }
 
     public function nonce_create( $state = -1, $time = FALSE ) {
-        global $ag;
-
-        if ( FALSE == $ag->char ) {
+        if ( FALSE == $this->ag->char ) {
             return FALSE;
         }
 
         $tick = $this->nonce_tick( $use_time = $time );
-        $c_id = intval( $ag->char[ 'id' ] );
+        $c_id = intval( $this->ag->char[ 'id' ] );
 
         return substr( md5( $tick . $state . $c_id ), 0, 10 );
     }
