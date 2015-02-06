@@ -40,7 +40,7 @@ class TestArcadiaLogin extends PHPUnit_Framework_TestCase {
     public function test_login_content_login_no_state() {
         global $ag;
 
-        $component = new ArcadiaLogin();
+        $component = new ArcadiaLogin( $ag_obj = new ArcadiaGame() );
 
         $result = $component->content_login();
 

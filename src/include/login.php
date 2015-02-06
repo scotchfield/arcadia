@@ -13,142 +13,151 @@ class ArcadiaLogin extends ArcadiaComponent {
     const NOTIFY_ALREADY_VALIDATED = 101;
     const NOTIFY_VALIDATE_SUCCESS = 102;
 
-    function __construct() {
+    public $ag;
+
+    function __construct( $ag_obj = FALSE ) {
 // TODO THIS IS A GAME-SETTING OPERATION, NOT INDEX
 /*        add_state( 'do_page_content', array( $this, 'content_login' ) );
+
         add_state( 'do_page_content', array( $this, 'content_register' ) );
         add_state( 'do_page_content', array( $this, 'content_activate' ) );*/
+
+        if ( $ag_obj ) {
+            $this->ag = $ag_obj;
+        } else {
+            global $ag;
+
+            $this->ag = $ag;
+        }
     }
 
     public function content_login( $args = FALSE ) {
-        global $ag;
-
-        if ( strcmp( 'login', $ag->get_state() ) ) {
+        if ( strcmp( 'login', $this->ag->get_state() ) ) {
             return FALSE;
         }
 
-        $user = $ag->c( 'user' )->get_user_by_name( $ag->get_arg( 'user' ) );
+        $user = $this->ag->c( 'user' )->get_user_by_name(
+            $this->ag->get_arg( 'user' ) );
         if ( FALSE == $user ) {
-            $ag->set_redirect_header( GAME_URL . '?notify=' .
+            $this->ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_BAD_USERPASS );
 
             return FALSE;
         }
 
-        if ( ! password_verify( $ag->get_arg( 'pass' ),
+        if ( ! password_verify( $this->ag->get_arg( 'pass' ),
                                 $user[ 'user_pass' ] ) ) {
-            $ag->set_redirect_header( GAME_URL . '?notify=' .
+            $this->ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_BAD_USERPASS );
 
             return FALSE;
         }
 
-        $ag->user = $user;
+        $this->ag->user = $user;
         $_SESSION[ 'u' ] = $user[ 'id' ];
 
-        $ag->set_redirect_header( GAME_URL );
+        $this->ag->set_redirect_header( GAME_URL );
 
         return TRUE;
     }
 
     public function content_register( $args = FALSE ) {
-        global $ag;
-
-        if ( strcmp( 'register', $ag->get_state() ) ) {
+        if ( strcmp( 'register', $this->ag->get_state() ) ) {
             return FALSE;
         }
 
-        if ( ! $ag->get_arg( 'user' ) ) {
-            $ag->set_redirect_header( GAME_URL . '?notify=' .
+        if ( ! $this->ag->get_arg( 'user' ) ) {
+            $this->ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_NO_USERNAME );
 
             return FALSE;
         }
 
-        if ( ! $ag->get_arg( 'pass' ) ) {
-            $ag->set_redirect_header( GAME_URL . '?notify=' .
+        if ( ! $this->ag->get_arg( 'pass' ) ) {
+            $this->ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_NO_PASSWORD );
 
             return FALSE;
         }
 
-        if ( ! $ag->get_arg( 'email' ) ) {
-            $ag->set_redirect_header( GAME_URL . '?notify=' .
+        if ( ! $this->ag->get_arg( 'email' ) ) {
+            $this->ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_NO_EMAIL );
 
             return FALSE;
         }
 
-        $user = $ag->c( 'user' )->get_user_by_name( $ag->get_arg( 'user' ) );
+        $user = $this->ag->c( 'user' )->get_user_by_name(
+            $this->ag->get_arg( 'user' ) );
         if ( FALSE != $user ) {
-            $ag->set_redirect_header( GAME_URL . '?notify=' .
+            $this->ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_USERNAME_EXISTS );
 
             return FALSE;
         }
 
-        $user = $ag->c( 'user' )->get_user_by_email( $ag->get_arg( 'email' ) );
+        $user = $this->ag->c( 'user' )->get_user_by_email(
+            $this->ag->get_arg( 'email' ) );
         if ( FALSE != $user ) {
-            $ag->set_redirect_header( GAME_URL . '?notify=' .
+            $this->ag->set_redirect_header( GAME_URL . '?notify=' .
                 self::NOTIFY_EMAIL_EXISTS );
 
             return FALSE;
         }
 
         $pass = password_hash(
-            $ag->get_arg( 'pass' ), PASSWORD_DEFAULT );
+            $this->ag->get_arg( 'pass' ), PASSWORD_DEFAULT );
 
         $args_send_email = TRUE;
         if ( isset( $args[ 'send_email' ] ) ) {
             $args_send_email = $args[ 'send_email' ];
         }
 
-        $ag->c( 'user' )->add_user( $ag->get_arg( 'user' ), $pass,
-            $ag->get_arg( 'email' ), $send_email = $args_send_email );
+        $this->ag->c( 'user' )->add_user( $this->ag->get_arg( 'user' ), $pass,
+            $this->ag->get_arg( 'email' ), $send_email = $args_send_email );
 
-        $ag->set_redirect_header( GAME_URL . '?notify=' .
+        $this->ag->set_redirect_header( GAME_URL . '?notify=' .
             self::NOTIFY_VALIDATE_NEEDED );
 
         return TRUE;
     }
 
     public function content_activate( $args = FALSE ) {
-        global $ag;
-
-        if ( strcmp( 'activate', $ag->get_state() ) ) {
+        if ( strcmp( 'activate', $this->ag->get_state() ) ) {
             return FALSE;
         }
 
-        if ( ! $ag->get_arg( 'user' ) ) {
-            $ag->set_redirect_header( GAME_URL );
-
-            return FALSE;
-        }
-
-        if ( ! $ag->get_arg( 'activate' ) ) {
-            $ag->set_redirect_header( GAME_URL );
+        if ( ! $this->ag->get_arg( 'user' ) ) {
+            $this->ag->set_redirect_header( GAME_URL );
 
             return FALSE;
         }
 
-        $user = $ag->c( 'user' )->get_user_by_id( $ag->get_arg( 'user' ) );
+        if ( ! $this->ag->get_arg( 'activate' ) ) {
+            $this->ag->set_redirect_header( GAME_URL );
 
-        if ( ! strcmp( $ag->get_arg( 'activate' ),
+            return FALSE;
+        }
+
+        $user = $this->ag->c( 'user' )->get_user_by_id(
+            $this->ag->get_arg( 'user' ) );
+
+        if ( ! strcmp( $this->ag->get_arg( 'activate' ),
                        $user[ 'activation' ] ) ) {
-            if ( $ag->c( 'user' )->is_user_active( $user ) ) {
-                $ag->set_redirect_header( GAME_URL . '?notify=' .
+            if ( $this->ag->c( 'user' )->is_user_active( $user ) ) {
+                $this->ag->set_redirect_header( GAME_URL . '?notify=' .
                     self::NOTIFY_ALREADY_VALIDATED );
 
                 return FALSE;
             } else {
-                $ag->c( 'user' )->set_user_status( $user[ 'id' ],
-                    $ag->c( 'common' )->set_bit(
+                $this->ag->c( 'user' )->set_user_status( $user[ 'id' ],
+                    $this->ag->c( 'common' )->set_bit(
                         $user[ 'status' ], ArcadiaUser::USER_STATUS_ACTIVE ) );
 
-                $ag->do_action( 'validate_user',
+                $this->ag->do_action( 'validate_user',
                     $args = array( 'user_id' => $user[ 'id' ] ) );
 
-                $ag->set_redirect_header( GAME_URL . '?notify='     .
+                $this->ag->set_redirect_header( GAME_URL . '?notify='     .
                     self::NOTIFY_VALIDATE_SUCCESS );
 
                 return TRUE;
@@ -159,13 +168,11 @@ class ArcadiaLogin extends ArcadiaComponent {
     }
 
     public function content_logout( $args = FALSE ) {
-        global $ag;
-
-        if ( strcmp( 'logout', $ag->get_state() ) ) {
+        if ( strcmp( 'logout', $this->ag->get_state() ) ) {
             return FALSE;
         }
 
-        $ag->set_redirect_header( GAME_URL );
+        $this->ag->set_redirect_header( GAME_URL );
 
         $_SESSION = array();
         session_destroy();

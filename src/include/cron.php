@@ -2,15 +2,23 @@
 
 class ArcadiaCron extends ArcadiaComponent {
 
-    function __construct( $key_type = 1000 ) {
+    public $ag;
+
+    function __construct( $ag_obj = FALSE, $key_type = 1000 ) {
+        if ( $ag_obj ) {
+            $this->ag = $ag_obj;
+        } else {
+            global $ag;
+
+            $this->ag = $ag;
+        }
+
         $this->flag_game_meta = $key_type;
         $this->flag_character_meta = $key_type;
     }
 
     public function get_crons() {
-        global $ag;
-
-        return $ag->c( 'db' )->fetch_all(
+        return $this->ag->c( 'db' )->fetch_all(
             'SELECT * FROM game_meta WHERE key_type=?',
             array( $this->flag_game_meta ),
             'meta_key' );
