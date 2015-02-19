@@ -2,16 +2,8 @@
 
 class ArcadiaNpc extends ArcadiaComponent {
 
-    public $ag;
-
     function __construct( $ag_obj = FALSE, $key_type = 208 ) {
-        if ( $ag_obj ) {
-            $this->ag = $ag_obj;
-        } else {
-            global $ag;
-
-            $this->ag = $ag;
-        }
+        parent::__construct( $ag_obj );
 
         $this->flag_game_meta = $key_type;
         $this->flag_character_meta = $key_type;

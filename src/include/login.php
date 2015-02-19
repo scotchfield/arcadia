@@ -13,8 +13,6 @@ class ArcadiaLogin extends ArcadiaComponent {
     const NOTIFY_ALREADY_VALIDATED = 101;
     const NOTIFY_VALIDATE_SUCCESS = 102;
 
-    public $ag;
-
     function __construct( $ag_obj = FALSE ) {
 // TODO THIS IS A GAME-SETTING OPERATION, NOT INDEX
 /*        add_state( 'do_page_content', array( $this, 'content_login' ) );
@@ -22,13 +20,7 @@ class ArcadiaLogin extends ArcadiaComponent {
         add_state( 'do_page_content', array( $this, 'content_register' ) );
         add_state( 'do_page_content', array( $this, 'content_activate' ) );*/
 
-        if ( $ag_obj ) {
-            $this->ag = $ag_obj;
-        } else {
-            global $ag;
-
-            $this->ag = $ag;
-        }
+        parent::__construct( $ag_obj );
     }
 
     public function content_login( $args = FALSE ) {
