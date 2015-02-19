@@ -5,7 +5,7 @@ class ArcadiaUser extends ArcadiaComponent {
     const USER_STATUS_DEV = 0;
     const USER_STATUS_ACTIVE = 1;
 
-    private $ag;
+    protected $ag;
 
     public function __construct( $ag ) {
         $this->ag = $ag;
