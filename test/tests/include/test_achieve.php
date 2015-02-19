@@ -47,28 +47,6 @@ class TestArcadiaAchieve extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ArcadiaAchievement::__construct
-     */
-    public function test_achieve_construct_use_global_ag() {
-        global $ag;
-
-        $component = new ArcadiaAchievement();
-
-        $this->assertEquals( $ag, $component->ag );
-    }
-
-    /**
-     * @covers ArcadiaAchievement::__construct
-     */
-    public function test_achieve_construct_use_local_ag() {
-        $ag_new = new ArcadiaGame();
-
-        $component = new ArcadiaAchievement( $ag_ref = $ag_new );
-
-        $this->assertEquals( $ag_new, $component->ag );
-    }
-
-    /**
      * @covers ArcadiaAchievement::get_achievement
      */
     public function test_get_achievement_empty() {

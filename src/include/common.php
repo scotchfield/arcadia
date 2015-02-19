@@ -2,17 +2,10 @@
 
 class ArcadiaCommon extends ArcadiaComponent {
 
-    public $ag;
     public $game_nonce_life = 60;
 
     public function __construct( $ag_obj = FALSE, $nonce_life = FALSE ) {
-        if ( $ag_obj ) {
-            $this->ag = $ag_obj;
-        } else {
-            global $ag;
-
-            $this->ag = $ag;
-        }
+        parent::__construct( $ag_obj );
 
         if ( $nonce_life ) {
             $this->game_nonce_life = $nonce_life;
