@@ -1,10 +1,5 @@
 <?php
 
-define( 'GAME_DEV', TRUE );
-
-date_default_timezone_set( 'America/Toronto' );
-
-
 define( 'GAME_PATH', dirname( __FILE__ ) . '/' );
 define( 'GAME_URL', 'http://localhost:8888/' );
 
@@ -18,4 +13,4 @@ define( 'DB_PASSWORD', 'root' );
 
 define( 'GAME_STARTING_ZONE', 1 );
 
-
+date_default_timezone_set( 'America/Toronto' );
